@@ -28,6 +28,8 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.*;
 import javax.validation.constraints.*;
 
+//   interface is at http://localhost:8080/tmf-api/serviceProblemManagement/v3/serviceProblem/3 
+
 @Path("/serviceProblem")
 @Consumes({ "application/json;charset=utf-8" })
 @Produces({ "application/json;charset=utf-8" })
