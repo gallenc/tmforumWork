@@ -8,11 +8,14 @@
         </layout>
     </appender>
 
-    <logger name="org." level="debug" additivity="false">
+    <logger name="org." level="info" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="io.swagger" level="info" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="CONSOLE"/>
     </root>
 
