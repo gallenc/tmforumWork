@@ -2,11 +2,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.swagger</groupId>
-	<artifactId>swagger-jaxrs-server</artifactId>
+	<groupId>org.opennms.tmforum</groupId>
+	<artifactId>tmf656-spm-simulator</artifactId>
 	<packaging>war</packaging>
 	<name>swagger-jaxrs-server</name>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<licenses>
 		<license>
@@ -17,20 +17,21 @@
 	</licenses>
 
 	<properties>
-		<java.version>1.7</java.version>
+	     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<swagger-core-version>1.5.18</swagger-core-version>
-		<swagger-ui.version>3.24.3</swagger-ui.version>
+	
 		<jetty-version>9.3.27.v20190418</jetty-version>
 		<jersey2-version>2.22.2</jersey2-version>
 		<jackson-version>2.10.1</jackson-version>
 		<junit-version>4.12</junit-version>
 		<logback-version>1.1.7</logback-version>
 		<servlet-api-version>2.5</servlet-api-version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	
 		<!-- works with open api 2.0 or3.0 -->
 		<swagger-ui.version>3.25.0</swagger-ui.version>
+	     <swagger-core-version>1.5.18</swagger-core-version>
 	</properties>
 
 	<build>
