@@ -1,4 +1,4 @@
-package org.opennms.rest;
+package org.opennms.tmforum.tmf656.rest;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,9 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-    
-
+import org.springframework.stereotype.Component;
 
 //public class ApiApplication extends Application {
 //    @Override
@@ -36,7 +34,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //    }
 //}
 
-// @ApplicationPath("/rest")
+
+@ApplicationPath("/tmf-api/serviceProblemManagement/v3/")
 public class RestApp extends ResourceConfig {
 	Logger LOG = LoggerFactory.getLogger(RestApp.class);
 
@@ -44,16 +43,12 @@ public class RestApp extends ResourceConfig {
 	// see
 	// https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Getting-started
 	
+	// setting package names programatically because we may refactor
 	String packageApi = org.opennms.tmforum.swagger.tmf656.swagger.api.StringUtil.class.getPackage().getName();
 	String packageModel = org.opennms.tmforum.swagger.tmf656.swagger.model.Any.class.getPackage().getName();
 	
 	public RestApp() {
 		LOG.info("**************************** DEBUG STARTING INTERFACE REST APP ");
-		
-		//ObjectMapper mapper = new ObjectMapper();
-		//mapper.registerModule(new JavaTimeModule());
-		
-		// setting package names programatically because we may refactor
 
 		LOG.info("**************************** Registering packages "+packageApi+" "+packageModel);
 		
