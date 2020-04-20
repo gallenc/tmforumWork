@@ -114,10 +114,10 @@
 									<token> private final static</token>
 									<value><![CDATA[${line.separator}    @javax.inject.Inject${line.separator}    private final static]]></value>
 								</replacement>
-								<replacement>
-									<token>service = new</token>
-									<value>service = null; // = new</value>
-								</replacement>
+<!-- 								<replacement> -->
+<!-- 									<token>service = new</token> -->
+<!-- 									<value>service = null; // = new</value> -->
+<!-- 								</replacement> -->
 							</replacements>
 						</configuration>
 					</execution>
@@ -247,7 +247,7 @@
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
-			<version>1</version>
+			<version>${javax.inject.version}</version>
 			<scope>provided</scope>
 		</dependency>
 

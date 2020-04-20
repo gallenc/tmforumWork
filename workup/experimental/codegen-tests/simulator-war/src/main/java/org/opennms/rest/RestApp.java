@@ -8,13 +8,14 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import io.swagger.api.StringUtil;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
     
 
@@ -43,15 +44,20 @@ public class RestApp extends ResourceConfig {
 	// see
 	// https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Getting-started
 	
+	String packageApi = org.opennms.tmforum.swagger.tmf656.swagger.api.StringUtil.class.getPackage().getName();
+	String packageModel = org.opennms.tmforum.swagger.tmf656.swagger.model.Any.class.getPackage().getName();
+	
 	public RestApp() {
 		LOG.info("**************************** DEBUG STARTING INTERFACE REST APP ");
 		
-		// setting package names programatically because we may refactor
-		String package1 = io.swagger.api.StringUtil.class.getPackage().getName();
-		String package2 = io.swagger.model.Any.class.getPackage().getName();
-		LOG.info("**************************** Registering packages "+package1+" "+package2);
+		//ObjectMapper mapper = new ObjectMapper();
+		//mapper.registerModule(new JavaTimeModule());
 		
-		packages(package1, package2);
+		// setting package names programatically because we may refactor
+
+		LOG.info("**************************** Registering packages "+packageApi+" "+packageModel);
+		
+		packages(packageApi, packageModel);
 
 		configureSwagger();
 	}
@@ -68,7 +74,8 @@ public class RestApp extends ResourceConfig {
 		config.setVersion("1.0.0");
 		// swagger is at http://localhost:8080/tmf-api/serviceProblemManagement/v3/swagger.json
 		config.setBasePath("/tmf-api/serviceProblemManagement/v3/");
-		config.setResourcePackage("io.swagger.api");
+		//config.setResourcePackage("org.opennms.tmforum.swagger.tmf656.swagger.api");
+		config.setResourcePackage(packageApi);
 		config.setPrettyPrint(true);
 		config.setScan(true);
 
