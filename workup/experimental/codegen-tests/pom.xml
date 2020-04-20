@@ -33,6 +33,7 @@
   <modules>
   	<module>swagger-codegen-jaxrs-patch</module>
   	<module>generate-spec</module>
+  	<module>simulator-war</module>
   </modules>
   
 </project>
