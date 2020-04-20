@@ -112,7 +112,7 @@
 								</replacement>
 								<replacement>
 									<token>private final static</token>
-									<value><![CDATA[${line.separator}    @javax.inject.Inject${line.separator}    private ]]></value>
+									<value><![CDATA[${line.separator}    @javax.inject.Inject${line.separator}    private  final static]]></value>
 								</replacement>
 <!-- 								<replacement> -->
 <!--                                     <token>public static</token> -->
