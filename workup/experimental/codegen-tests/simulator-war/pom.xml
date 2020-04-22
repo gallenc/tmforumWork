@@ -324,13 +324,43 @@
 	<dependencies>
 
 		<!-- project dependencies -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+		<!-- <artifactId>generate-tmf656-jaxrs-server-spec</artifactId> -->
+		<!-- <version>${project.version}</version> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
+
 		<dependency>
 			<groupId>org.opennms.tmforum.swagger</groupId>
 			<artifactId>generate-tmf656-jaxrs-server-spec</artifactId>
+			<classifier>api</classifier>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.opennms.tmforum.swagger</groupId>
+			<artifactId>generate-tmf656-jaxrs-server-spec</artifactId>
+			<classifier>model</classifier>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+		<!-- <artifactId>generate-tmf656-jaxrs-server-spec</artifactId> -->
+		<!-- <classifier>mock-impl</classifier> -->
+		<!-- <version>${project.version}</version> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
+
+		<dependency>
+			<groupId>org.opennms.tmforum.swagger</groupId>
+			<artifactId>tmf656-spm-simulator-service</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>io.swagger</groupId>

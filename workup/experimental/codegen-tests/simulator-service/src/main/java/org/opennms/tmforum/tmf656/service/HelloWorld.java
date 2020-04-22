@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf656.rest;
+package org.opennms.tmforum.tmf656.service;
 
 
 import java.util.Arrays;

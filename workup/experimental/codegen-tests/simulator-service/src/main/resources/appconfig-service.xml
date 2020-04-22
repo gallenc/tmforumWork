@@ -24,5 +24,10 @@
 
     <!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
     <context:annotation-config />
+    
+        <!-- this just activates and destroys a a bean which provides some debug information -->
+    <bean id="helloWorld1" class="org.opennms.tmforum.tmf656.service.HelloWorld" init-method="init" destroy-method="destroy">
+    <property name="message" value="api-service" />
+    </bean>
 
 </beans>

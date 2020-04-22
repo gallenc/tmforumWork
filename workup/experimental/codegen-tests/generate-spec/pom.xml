@@ -88,7 +88,7 @@
 							</includes>
 							<regex>false</regex>
 							<replacements>
-							<!-- makes sure we use javax.ws.rs.PATCH and not io.swagger.jaxrs.PATCH -->
+								<!-- makes sure we use javax.ws.rs.PATCH and not io.swagger.jaxrs.PATCH -->
 								<replacement>
 									<token>PATCH</token>
 									<value>javax.ws.rs.PATCH</value>
@@ -146,15 +146,15 @@
 								<!-- removes constructor code -->
 								<replacement>
 									<token>servletContext) {</token>
-									<value><![CDATA[servletContext) {${line.separator}    /*]]></value>
+									<value><![CDATA[servletContext) {${line.separator}    /* removing constructor code so that inject works]]></value>
 								</replacement>
-								<replacement>
-									<token> if (delegate == null) {</token>
-									<value><![CDATA[    */${line.separator}      if (delegate == null) {]]></value>
-								</replacement>
+								<!-- TODO REMOVE <replacement> -->
+								<!-- <token> if (delegate == null) {</token> -->
+								<!-- <value><![CDATA[ */${line.separator} if (delegate == null) {]]></value> -->
+								<!-- </replacement> -->
 								<replacement>
 									<token>this.delegate = delegate;</token>
-									<value><![CDATA[// this.delegate = delegate;]]></value>
+									<value><![CDATA[this.delegate = delegate;${line.separator}    */]]></value>
 								</replacement>
 								<!-- adds @Named so that class is discovered by spring/karaf -->
 								<replacement>
@@ -228,6 +228,112 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>api</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>api</classifier>
+							<includes>
+								<include>**/api/*</include>
+							</includes>
+							<excludes>
+								<exclude>**/api/factories</exclude>
+								<exclude>**/api/impl</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>model</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>model</classifier>
+							<includes>
+								<include>**/model/*</include>
+							</includes>
+							<excludes>
+								<exclude>**/api/factories</exclude>
+								<exclude>**/api/impl</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>mock-impl</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>mock-impl</classifier>
+							<includes>
+								<include>**/impl/*</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>api</id>
+						<goals>
+							<!-- note jar-no-fork goal used to avoid generate-code running before each execution -->
+							<goal>jar-no-fork</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>api-sources</classifier>
+							<includes>
+								<include>**/api/*</include>
+							</includes>
+							<excludes>
+								<exclude>**/api/factories</exclude>
+								<exclude>**/api/impl</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>model</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>model-sources</classifier>
+							<includes>
+								<include>**/model/*</include>
+							</includes>
+							<excludes>
+								<exclude>**/api/factories</exclude>
+								<exclude>**/api/impl</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>mock-impl</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>mock-impl-sources</classifier>
+							<includes>
+								<include>**/impl/*</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -242,82 +348,7 @@
 
 		</plugins>
 
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>io.swagger</groupId>
-										<artifactId>swagger-codegen-maven-plugin</artifactId>
-										<versionRange>[${version.swagger.codegen},)</versionRange>
-										<goals>
-											<goal>generate</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
 
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.google.code.maven-replacer-plugin</groupId>
-										<artifactId>replacer</artifactId>
-										<versionRange>[${com.google.code.maven-replacer-plugin-version},)</versionRange>
-										<goals>
-											<goal>replace</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>io.swagger</groupId>
-										<artifactId>swagger-codegen-maven-plugin</artifactId>
-										<versionRange>[${version.swagger.codegen},)</versionRange>
-										<goals>
-											<goal>generate-sources</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>build-helper-maven-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>add-source</goal>
-											<goal>add-test-source</goal>
-											<goal>add-resource</goal>
-											<goal>add-test-resource</goal>
-											<goal>maven-version</goal>
-											<goal>parse-version</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute>
-											<runOnConfiguration>true</runOnConfiguration>
-											<runOnIncremental>true</runOnIncremental>
-										</execute>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<dependencies>
