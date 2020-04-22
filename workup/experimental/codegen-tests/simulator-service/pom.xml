@@ -64,6 +64,9 @@
 							<outputDirectory>${generated-sources-path}${file.separator}${generated-sources-java-path}</outputDirectory>
 							<overWriteReleases>true</overWriteReleases>
 							<overWriteSnapshots>true</overWriteSnapshots>
+							<!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
+							<!-- use this to exclude more generated code as project is built -->
+							<excludes></excludes>  
 						</configuration>
 					</execution>
 				</executions>
