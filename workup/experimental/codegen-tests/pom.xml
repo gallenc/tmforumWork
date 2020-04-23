@@ -45,6 +45,8 @@
 		<module>generate-client</module>
 		<module>simulator-service</module>
 		<module>simulator-war</module>
+		<module>simulator-client</module>
+
 	</modules>
 
 	<build>
