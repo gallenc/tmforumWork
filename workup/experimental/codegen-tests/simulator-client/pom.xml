@@ -13,6 +13,7 @@
 	<properties>
 		<generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
 		<generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
+		<generated-test-sources-java-path>src${file.separator}test${file.separator}java</generated-test-sources-java-path>
 	</properties>
 
 	<build>
@@ -24,7 +25,7 @@
 				<executions>
 					<execution>
 						<id>add-generated-source</id>
-						<phase>initialize</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-source</goal>
 						</goals>
@@ -34,6 +35,18 @@
 							</sources>
 						</configuration>
 					</execution>
+					<execution>
+                        <id>add_test_sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
 				</executions>
 			</plugin>
 
@@ -44,8 +57,8 @@
 				<version>3.1.1</version>
 				<executions>
 					<execution>
-						<id>unpack</id>
-						<phase>process-resources</phase>
+						<id>unpack-sources</id>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>unpack</goal>
 						</goals>
@@ -82,6 +95,30 @@
 							<excludes></excludes>
 						</configuration>
 					</execution>
+					<execution>
+                        <id>unpack-test-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.opennms.tmforum.swagger</groupId>
+                                    <artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
+                                    <classifier>test-sources</classifier>
+                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
+                            <!-- use this to exclude more generated code as project is built -->
+                            <excludes></excludes>
+                        </configuration>
+                    </execution>
 				</executions>
 			</plugin>
 

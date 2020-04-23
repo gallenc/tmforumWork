@@ -250,7 +250,7 @@
 				<executions>
 					<execution>
 						<id>add-generated-source</id>
-						<phase>initialize</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-source</goal>
 						</goals>
@@ -261,8 +261,8 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>add_test_sources</id>
-						<phase>generate-test-sources</phase>
+						<id>add-generated-test-sources</id>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-test-source</goal>
 						</goals>
@@ -320,6 +320,13 @@
 							</includes>
 						</configuration>
 					</execution>
+					<execution>
+						<id>test-jar</id>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
 				</executions>
 			</plugin>
 
@@ -340,6 +347,7 @@
 							<classifier>client-api-sources</classifier>
 							<includes>
 								<include>**/api/*</include>
+								<exclude>**/test</exclude>
 							</includes>
 						</configuration>
 					</execution>
@@ -368,6 +376,19 @@
 								<include>**/invoker/*</include>
 								<include>**/auth/*</include>
 							</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>client-test-sources</id>
+						<goals>
+							<goal>test-jar-no-fork</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<!-- <classifier>test-sources</classifier> -->
+							<!-- <includes> -->
+							<!-- <include>**/test/*</include> -->
+							<!-- </includes> -->
 						</configuration>
 					</execution>
 				</executions>
@@ -512,7 +533,7 @@
 			<version>1.1.0.Final</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
