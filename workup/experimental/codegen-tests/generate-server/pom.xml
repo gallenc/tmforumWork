@@ -13,7 +13,7 @@
 	<!-- see https://stackoverflow.com/questions/49384545/how-to-generate-client-code-using-with-swagger-codegen-plugin-maven -->
 
 	<properties>
-		<spec.file>${project.basedir}${file.separator}src${file.separator}main${file.separator}spec${file.separator}TMF656-ServiceProblem-3.0.0.swagger.json</spec.file>
+		<spec.file>${project.basedir}${file.separator}target${file.separator}download${file.separator}specification${file.separator}TMF656-ServiceProblem-3.0.0.swagger.json</spec.file>
 		<generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
 		<generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
 	</properties>
@@ -21,6 +21,39 @@
 	<build>
 		<plugins>
 
+			<!-- this plugin unpacks the swagger specification -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.opennms.tmforum.swagger</groupId>
+									<artifactId>tmf565-SPM-v3-spec</artifactId>
+									<version>${project.version}</version>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.basedir}${file.separator}target${file.separator}download</outputDirectory>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
+							<!-- use this to exclude more generated code as project is built -->
+							<excludes></excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- this plugin generates server code from the swagger specification -->
 			<plugin>
 				<groupId>io.swagger</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>

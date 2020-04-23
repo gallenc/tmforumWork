@@ -13,8 +13,8 @@
 	<!-- see https://stackoverflow.com/questions/49384545/how-to-generate-client-code-using-with-swagger-codegen-plugin-maven -->
 
 	<properties>
-        <generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
-        <generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
+		<generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
+		<generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
 	</properties>
 
 	<build>
@@ -66,11 +66,12 @@
 							<overWriteSnapshots>true</overWriteSnapshots>
 							<!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
 							<!-- use this to exclude more generated code as project is built -->
-							<excludes></excludes>  
+							<excludes></excludes>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -89,161 +90,161 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
-		      <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jersey2-jaxrs</artifactId>
-            <version>${swagger-core-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback-version}</version>
-            <scope>compile</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet-api.version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jersey2-jaxrs</artifactId>
+			<version>${swagger-core-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback-version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet-core</artifactId>
-            <version>${jersey2-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-multipart</artifactId>
-            <version>${jersey2-version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet-api.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <!-- Spring dependencies -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet-core</artifactId>
+			<version>${jersey2-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${jersey2-version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<!-- Spring dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <!--Spring MVC framework -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${spring-security.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring-security.version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<!--Spring MVC framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <!-- to allow jersey to work with spring as a component -->
-        <!-- note if not present need to have jersey-hk2 on classpath -->
-        <dependency>
-            <groupId>org.glassfish.jersey.ext</groupId>
-            <artifactId>jersey-spring5</artifactId>
-            <version>${jersey2-version}</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring-security.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <!-- use if not using spring -->
-        <!-- <dependency> -->
-        <!-- <groupId>org.glassfish.jersey.inject</groupId> -->
-        <!-- <artifactId>jersey-hk2</artifactId> -->
-        <!-- <version>${jersey2-version}</version> -->
-        <!-- <scope>compile</scope> -->
-        <!-- </dependency> -->
+		<!-- to allow jersey to work with spring as a component -->
+		<!-- note if not present need to have jersey-hk2 on classpath -->
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-spring5</artifactId>
+			<version>${jersey2-version}</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
-        <!-- <dependency> -->
-        <!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
-        <!-- <artifactId>jackson-datatype-joda</artifactId> -->
-        <!-- <version>${jackson-version}</version> -->
-        <!-- <scope>compile</scope> -->
-        <!-- </dependency> -->
+		<!-- use if not using spring -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.glassfish.jersey.inject</groupId> -->
+		<!-- <artifactId>jersey-hk2</artifactId> -->
+		<!-- <version>${jersey2-version}</version> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
 
-        <!-- <dependency> -->
-        <!-- <groupId>com.fasterxml.jackson.module</groupId> -->
-        <!-- <artifactId>jackson-modules-java8</artifactId> -->
-        <!-- <version>${jackson-version}</version> -->
-        <!-- <scope>compile</scope> -->
-        <!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
+		<!-- <artifactId>jackson-datatype-joda</artifactId> -->
+		<!-- <version>${jackson-version}</version> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson-version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>com.fasterxml.jackson.module</groupId> -->
+		<!-- <artifactId>jackson-modules-java8</artifactId> -->
+		<!-- <version>${jackson-version}</version> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>${jackson-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Base64 encoding that works in both JVM and Android -->
-        <dependency>
-            <groupId>com.brsanthu</groupId>
-            <artifactId>migbase64</artifactId>
-            <version>2.2</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${jackson-version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${jackson-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Base64 encoding that works in both JVM and Android -->
+		<dependency>
+			<groupId>com.brsanthu</groupId>
+			<artifactId>migbase64</artifactId>
+			<version>2.2</version>
+			<scope>compile</scope>
+		</dependency>
 
 
-        <!-- Bean Validation API support -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
-            <scope>compile</scope>
-        </dependency>
+		<!-- Bean Validation API support -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax.inject.version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${javax.inject.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit-version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

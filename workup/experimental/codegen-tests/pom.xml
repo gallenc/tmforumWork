@@ -39,12 +39,12 @@
 
 	</properties>
 	<modules>
+		<module>specification</module>
 		<module>swagger-codegen-jaxrs-patch</module>
 		<module>generate-server</module>
 		<module>generate-client</module>
 		<module>simulator-service</module>
 		<module>simulator-war</module>
-
 	</modules>
 
 	<build>
@@ -130,8 +130,10 @@
 									</pluginExecutionFilter>
 									<action>
 										<execute>
-											<runOnConfiguration>true</runOnConfiguration>
-											<runOnIncremental>true</runOnIncremental>
+											<!-- <runOnConfiguration>true</runOnConfiguration> -->
+											<!-- <runOnIncremental>true</runOnIncremental> -->
+											<!-- see https://stackoverflow.com/questions/30642630/artifact-has-not-been-packaged-yet -->
+											<ignore />
 										</execute>
 									</action>
 								</pluginExecution>
