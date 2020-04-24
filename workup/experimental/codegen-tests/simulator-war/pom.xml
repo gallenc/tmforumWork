@@ -89,21 +89,6 @@
 							<goal>set-system-properties</goal>
 						</goals>
 						<!-- logback -->
-						<configuration>
-							<properties>
-								<!-- makes jetty log the exception if it fails to initialize slf4j -->
-								<property>
-									<name>org.eclipse.jetty.util.log.IGNORED</name>
-									<value>true</value>
-								</property>
-								<!-- Location of logback config -->
-								<property>
-									<name>logback.configurationFile</name>
-									<value>./src/main/resources/logback.xml</value>
-								</property>
-							</properties>
-						</configuration>
-						<!-- log4j -->
 						<!-- <configuration> -->
 						<!-- <properties> -->
 						<!-- makes jetty log the exception if it fails to initialize slf4j -->
@@ -111,16 +96,35 @@
 						<!-- <name>org.eclipse.jetty.util.log.IGNORED</name> -->
 						<!-- <value>true</value> -->
 						<!-- </property> -->
-						<!-- this tells where the log4j configuration is -->
+						<!-- Location of logback config -->
 						<!-- <property> -->
-						<!-- <name>log4j.configuration</name> -->
-						<!-- <value>file:./src/main/resources/log4j.properties</value> -->
+						<!-- <name>logback.configurationFile</name> -->
+						<!-- <value>./src/main/resources/logback.xml</value> -->
 						<!-- </property> -->
-						<!-- this can be uncommented to debug startup log4j itself, e.g. -->
-						<!-- how it locates log4j.properties etc -->
-						<!-- <property> <name>log4j.debug</name> <value></value> </property> -->
 						<!-- </properties> -->
 						<!-- </configuration> -->
+
+						<!-- log4j -->
+						<configuration>
+							<properties>
+								<!-- makes jetty log the exception if it fails to initialize slf4j -->
+								<property>
+									<name>org.eclipse.jetty.util.log.IGNORED</name>
+									<value>true</value>
+								</property>
+								<!-- this tells where the log4j configuration is -->
+								<property>
+									<name>log4j.configuration</name>
+									<value>file:./src/main/resources/log4j2.xml</value>
+								</property>
+								<!-- this can be uncommented to debug startup log4j itself, e.g. -->
+								<!-- how it locates log4j.properties etc -->
+								<property>
+									<!-- <name>log4j.debug</name> -->
+									<!-- <value></value> -->
+								</property>
+							</properties>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -226,98 +230,6 @@
 
 		</plugins>
 
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>exec-maven-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>java</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>build-helper-maven-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>add-source</goal>
-											<goal>add-test-source</goal>
-											<goal>add-resource</goal>
-											<goal>add-test-resource</goal>
-											<goal>maven-version</goal>
-											<goal>parse-version</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute>
-											<runOnConfiguration>true</runOnConfiguration>
-											<runOnIncremental>true</runOnIncremental>
-										</execute>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[2.0,)</versionRange>
-										<goals>
-											<goal>copy-dependencies</goal>
-											<goal>unpack</goal>
-											<goal>unpack-dependencies</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<!-- <execute/> -->
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.opennms.maven.plugins</groupId>
-										<artifactId>features-maven-plugin</artifactId>
-										<versionRange>[1.0-SNAPSHOT,)</versionRange>
-										<goals>
-											<goal>generate-features-xml</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>properties-maven-plugin</artifactId>
-										<versionRange>1.0,)</versionRange>
-										<goals>
-											<goal>set-system-properties</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 
 	</build>
 
@@ -368,18 +280,60 @@
 			<version>${swagger-core-version}</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Logging -->
+		<!-- SLF4J api -->
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback-version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- running jcl over slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- log4j core -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback-version}</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<!-- running SLF4J over log4j -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Log4j web required to run in a servelet context -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+
+		<!-- <dependency> -->
+		<!-- <groupId>ch.qos.logback</groupId> -->
+		<!-- <artifactId>logback-classic</artifactId> -->
+		<!-- <version>${logback-version}</version> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>ch.qos.logback</groupId> -->
+		<!-- <artifactId>logback-core</artifactId> -->
+		<!-- <version>${logback-version}</version> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -459,6 +413,12 @@
 		<!-- <version>${jersey2-version}</version> -->
 		<!-- <scope>compile</scope> -->
 		<!-- </dependency> -->
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
 
 		<!-- <dependency> -->
 		<!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->

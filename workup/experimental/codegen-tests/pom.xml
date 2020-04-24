@@ -16,6 +16,10 @@
 
 		<build-helper-maven-plugin-version>3.1.0</build-helper-maven-plugin-version>
 		<com.google.code.maven-replacer-plugin-version>1.5.3</com.google.code.maven-replacer-plugin-version>
+		<maven.surefire.plugin.version>2.18</maven.surefire.plugin.version>
+		<maven-jar-plugin-version>3.2.0</maven-jar-plugin-version>
+		<maven-source-plugin-version>3.2.0</maven-source-plugin-version>
+		<maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
 
 		<jetty-version>9.3.27.v20190418</jetty-version>
 		<!-- <jersey2-version>2.30.1</jersey2-version> -->
@@ -24,6 +28,12 @@
 		<junit-version>4.12</junit-version>
 		<logback-version>1.1.7</logback-version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+
+		<slf4j.version>1.7.12</slf4j.version>
+		<log4j.version>2.11.1</log4j.version>
+
+		<com.brsanthu.migbase64.version>2.2</com.brsanthu.migbase64.version>
+		<javax.validation.validation-api.version>1.1.0.Final</javax.validation.validation-api.version>
 
 		<!-- JSR330 dependency injection api -->
 		<javax.inject.version>1</javax.inject.version>
@@ -50,8 +60,53 @@
 	</modules>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+			</plugin>
+		</plugins>
+
+
 		<pluginManagement>
 			<plugins>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven-source-plugin-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build-helper-maven-plugin-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.plugin.version}</version>
+					<configuration>
+						<excludes>
+							<!-- prevent tests running in any package with manual folder. These are manual one off development tests -->
+							<exclude>**/manual/*.java</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -147,6 +202,247 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- JSR330 dependency injection api -->
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>${javax.inject.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-jersey2-jaxrs</artifactId>
+				<version>${swagger-core-version}</version>
+			</dependency>
+
+			<!-- <dependency> -->
+			<!-- <groupId>ch.qos.logback</groupId> -->
+			<!-- <artifactId>logback-classic</artifactId> -->
+			<!-- <version>${logback-version}</version> -->
+			<!-- <scope>provided</scope> -->
+			<!-- </dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>ch.qos.logback</groupId> -->
+			<!-- <artifactId>logback-core</artifactId> -->
+			<!-- <version>${logback-version}</version> -->
+			<!-- <scope>provided</scope> -->
+			<!-- </dependency> -->
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.containers</groupId>
+				<artifactId>jersey-container-servlet-core</artifactId>
+				<version>${jersey2-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-multipart</artifactId>
+				<version>${jersey2-version}</version>
+			</dependency>
+
+			<!-- use if not using spring -->
+			<dependency>
+				<groupId>org.glassfish.jersey.inject</groupId>
+				<artifactId>jersey-hk2</artifactId>
+				<version>${jersey2-version}</version>
+			</dependency>
+
+			<!-- to allow jersey to work with spring as a component -->
+			<!-- note if not present need to have jersey-hk2 on classpath -->
+			<dependency>
+				<groupId>org.glassfish.jersey.ext</groupId>
+				<artifactId>jersey-spring5</artifactId>
+				<version>${jersey2-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- HTTP client: jersey-client -->
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersey2-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersey2-version}</version>
+			</dependency>
+
+			<!-- for tests with grizzly -->
+			<dependency>
+				<groupId>org.glassfish.jersey.containers</groupId>
+				<artifactId>jersey-container-grizzly2-servlet</artifactId>
+				<version>${jersey2-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.glassfish.jersey.connectors</groupId>
+				<artifactId>jersey-grizzly-connector</artifactId>
+				<version>${jersey2-version}</version>
+			</dependency>
+
+			<!-- for client -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+
+			<!-- for jersey server -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.jaxrs</groupId>
+				<artifactId>jackson-jaxrs-json-provider</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+
+			<!-- Base64 encoding that works in both JVM and Android -->
+			<dependency>
+				<groupId>com.brsanthu</groupId>
+				<artifactId>migbase64</artifactId>
+				<version>${com.brsanthu.migbase64.version}</version>
+			</dependency>
+
+			<!-- Bean Validation API support -->
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${javax.validation.validation-api.version}</version>
+			</dependency>
+
+			<!-- Logging -->
+			<!-- SLF4J api -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+
+			<!-- running jcl over slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<!-- running SLF4J over log4j -->
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-slf4j-impl</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-web</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+
+			<!-- Junit -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit-version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet-api.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.glassfish.jersey.containers</groupId>
+				<artifactId>jersey-container-servlet-core</artifactId>
+				<version>${jersey2-version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-multipart</artifactId>
+				<version>${jersey2-version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<!-- Spring dependencies -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<!--Spring MVC framework -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring-security.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
+				<version>${spring-security.version}</version>
+				<scope>compile</scope>
+			</dependency>
+
+
+		</dependencies>
+	</dependencyManagement>
 
 	<repositories>
 		<repository>
