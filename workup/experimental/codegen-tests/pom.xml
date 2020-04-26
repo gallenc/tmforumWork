@@ -14,16 +14,22 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
+		<!-- plugin versions -->
 		<build-helper-maven-plugin-version>3.1.0</build-helper-maven-plugin-version>
 		<com.google.code.maven-replacer-plugin-version>1.5.3</com.google.code.maven-replacer-plugin-version>
 		<maven.surefire.plugin.version>2.18</maven.surefire.plugin.version>
 		<maven-jar-plugin-version>3.2.0</maven-jar-plugin-version>
 		<maven-source-plugin-version>3.2.0</maven-source-plugin-version>
 		<maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
+		<properties-maven-plugin-version>1.0.0</properties-maven-plugin-version>
+		<maven-dependency-plugin-version>3.1.1</maven-dependency-plugin-version>
+		<maven-replacer-plugin-version>1.5.3</maven-replacer-plugin-version>
+		<maven-war-plugin-version>3.2.3</maven-war-plugin-version>
 
+		<!-- library dependencies versions -->
 		<jetty-version>9.3.27.v20190418</jetty-version>
-		<!-- <jersey2-version>2.30.1</jersey2-version> -->
-		<jersey2-version>2.29.1</jersey2-version>
+		<jersey2-version>2.30.1</jersey2-version>
+		<!-- <jersey2-version>2.29.1</jersey2-version> -->
 		<jackson-version>2.10.1</jackson-version>
 		<junit-version>4.12</junit-version>
 		<logback-version>1.1.7</logback-version>
@@ -44,7 +50,8 @@
 		<swagger-ui.version>3.25.0</swagger-ui.version>
 
 		<jsp-api.version>2.1</jsp-api.version>
-		<spring.version>5.2.3.RELEASE</spring.version>
+		<!-- <spring.version>5.2.3.RELEASE</spring.version> -->
+		<spring.version>5.1.5.RELEASE</spring.version>
 		<spring-security.version>5.2.1.RELEASE</spring-security.version>
 
 	</properties>
@@ -70,6 +77,36 @@
 
 		<pluginManagement>
 			<plugins>
+
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>${jetty-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven-war-plugin-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>replacer</artifactId>
+					<version>${maven-replacer-plugin-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>${maven-dependency-plugin-version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>properties-maven-plugin</artifactId>
+					<version>${properties-maven-plugin-version}</version>
+				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -195,9 +232,28 @@
 									</action>
 								</pluginExecution>
 
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>properties-maven-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>set-system-properties</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute>
+											<!-- <runOnConfiguration>true</runOnConfiguration> -->
+											<!-- <runOnIncremental>true</runOnIncremental> -->
+											<!-- see https://stackoverflow.com/questions/30642630/artifact-has-not-been-packaged-yet -->
+											<ignore />
+										</execute>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
+
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -346,10 +402,17 @@
 				<version>${slf4j.version}</version>
 			</dependency>
 
-			<!-- running jcl over slf4j -->
+			<!-- if running jcl over slf4j -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+
+			<!-- if running jul over slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
 
@@ -383,40 +446,24 @@
 				<version>${junit-version}</version>
 			</dependency>
 
-
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>${javax.servlet-api.version}</version>
-				<scope>compile</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.glassfish.jersey.containers</groupId>
-				<artifactId>jersey-container-servlet-core</artifactId>
-				<version>${jersey2-version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jersey.media</groupId>
-				<artifactId>jersey-media-multipart</artifactId>
-				<version>${jersey2-version}</version>
-				<scope>compile</scope>
-			</dependency>
-
 			<!-- Spring dependencies -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
 				<version>${spring.version}</version>
-				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-jcl</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
 				<version>${spring.version}</version>
-				<scope>compile</scope>
+
 			</dependency>
 
 			<!--Spring MVC framework -->

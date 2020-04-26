@@ -1,4 +1,4 @@
-package org.opennms.tmforum.impl.common;
+package org.opennms.tmforum.impl.common.experimental;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

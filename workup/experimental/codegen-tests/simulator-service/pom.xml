@@ -95,6 +95,28 @@
 			<scope>compile</scope>
 		</dependency>
 
+
+		<!-- SLF4J api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- running jcl over slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- running jul over slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- log4j core -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -121,7 +143,7 @@
 		<!-- <dependency> -->
 		<!-- <groupId>ch.qos.logback</groupId> -->
 		<!-- <artifactId>logback-core</artifactId> -->
-        <!-- <scope>compile</scope> -->
+		<!-- <scope>compile</scope> -->
 		<!-- </dependency> -->
 
 		<dependency>
@@ -190,14 +212,12 @@
 		<!-- <dependency> -->
 		<!-- <groupId>org.glassfish.jersey.inject</groupId> -->
 		<!-- <artifactId>jersey-hk2</artifactId> -->
-		<!-- <version>${jersey2-version}</version> -->
 		<!-- <scope>compile</scope> -->
 		<!-- </dependency> -->
 
 		<!-- <dependency> -->
 		<!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
 		<!-- <artifactId>jackson-datatype-joda</artifactId> -->
-		<!-- <version>${jackson-version}</version> -->
 		<!-- <scope>compile</scope> -->
 		<!-- </dependency> -->
 

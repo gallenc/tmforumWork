@@ -26,11 +26,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.1.1</version>
 				<executions>
 					<execution>
 						<id>unpack</id>
-						<phase>initialize</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>unpack</goal>
 						</goals>
@@ -246,7 +245,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>${build-helper-maven-plugin-version}</version>
 				<executions>
 					<execution>
 						<id>add-generated-source</id>
@@ -278,7 +276,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>client-api</id>
@@ -334,7 +331,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>client-api-sources</id>
@@ -397,7 +393,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -435,13 +430,11 @@
 		<!-- <dependency> -->
 		<!-- <groupId>ch.qos.logback</groupId> -->
 		<!-- <artifactId>logback-classic</artifactId> -->
-		<!-- <version>${logback-version}</version> -->
 		<!-- <scope>provided</scope> -->
 		<!-- </dependency> -->
 		<!-- <dependency> -->
 		<!-- <groupId>ch.qos.logback</groupId> -->
 		<!-- <artifactId>logback-core</artifactId> -->
-		<!-- <version>${logback-version}</version> -->
 		<!-- <scope>provided</scope> -->
 		<!-- </dependency> -->
 
@@ -469,7 +462,6 @@
 		<!-- <dependency> -->
 		<!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
 		<!-- <artifactId>jackson-datatype-joda</artifactId> -->
-		<!-- <version>${jackson-version}</version> -->
 		<!-- <scope>provided</scope> -->
 		<!-- </dependency> -->
 

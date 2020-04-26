@@ -21,7 +21,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>${build-helper-maven-plugin-version}</version>
 				<executions>
 					<execution>
 						<id>add-generated-source</id>
@@ -54,7 +53,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.1.1</version>
 				<executions>
 					<execution>
 						<id>unpack-sources</id>
@@ -279,7 +277,6 @@
 		<!-- <dependency> -->
 		<!-- <groupId>org.glassfish.jersey.inject</groupId> -->
 		<!-- <artifactId>jersey-hk2</artifactId> -->
-		<!-- <version>${jersey2-version}</version> -->
 		<!-- <scope>compile</scope> -->
 		<!-- </dependency> -->
 

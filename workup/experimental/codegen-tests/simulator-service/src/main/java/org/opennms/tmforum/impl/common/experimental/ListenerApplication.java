@@ -1,11 +1,9 @@
-package org.opennms.tmforum.impl.common;
+package org.opennms.tmforum.impl.common.experimental;
 
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
-
-import org.opennms.tmforum.impl.common.TestResource;
 
 /**
  * MyDemoApplication
