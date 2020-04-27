@@ -5,8 +5,9 @@
 	<Properties>
 		<!-- this sets the output style properties for the log messages -->
 		<!--<Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property> -->
-		<!-- %c{1.} abbraviates package name to sincle characters per segment -->
-		<Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%t] [%c{1.}] %-5level %logger{36} - %msg%n</Property>
+		<!-- %c{1.} abbraviates package name to single characters per segment -->
+<!-- 		<Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%t] [%c{1.}] %-5level %logger{36} - %msg%n</Property> -->
+        <Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%t] [%c{1.}] %-5level - %msg%n</Property>
 
 	</Properties>
 	<Appenders>
@@ -33,20 +34,20 @@
 		</logger>
 
 		<!-- log spring -->
-		<Logger name="org.springframework" additivity="false" level="DEBUG">
+		<Logger name="org.springframework" additivity="false" level="INFO">
 			<AppenderRef ref="Console" />
 		</Logger>
-
-		<Logger name="org.glassfish.grizzly" additivity="false" level="DEBUG">
-			<AppenderRef ref="Console" />
-		</Logger>
-
+		
+		<Logger name="org.hibernate" additivity="false" level="INFO">
+            <AppenderRef ref="Console" />
+        </Logger>
+        
 		<Logger name="org.glassfish.grizzly" additivity="false" level="DEBUG">
 			<AppenderRef ref="Console" />
 		</Logger>
 
 		<!-- log swagger -->
-		<Logger name="io.swagger" additivity="false" level="DEBUG">
+		<Logger name="io.swagger" additivity="false" level="INFO">
 			<AppenderRef ref="Console" />
 		</Logger>
 

@@ -5,7 +5,10 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.persistence.Convert;
 
+import org.opennms.tmforum.jpa.json.ObjectConverter;
+import org.opennms.tmforum.jpa.json.ObjectListConverter;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.Characteristic;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.EventRef;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ImpactPattern;
@@ -243,7 +246,7 @@ public class ServiceProblemImpl {
         this.timeRaised = timeRaised;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<Place> getAffectedLocation() {
         return affectedLocation;
     }
@@ -252,7 +255,7 @@ public class ServiceProblemImpl {
         this.affectedLocation = affectedLocation;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<ResourceRef> getAffectedResource() {
         return affectedResource;
     }
@@ -261,7 +264,7 @@ public class ServiceProblemImpl {
         this.affectedResource = affectedResource;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<ServiceRef> getAffectedService() {
         return affectedService;
     }
@@ -270,7 +273,7 @@ public class ServiceProblemImpl {
         this.affectedService = affectedService;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<SLAViolationRef> getAssociatedSLAViolation() {
         return associatedSLAViolation;
     }
@@ -279,7 +282,7 @@ public class ServiceProblemImpl {
         this.associatedSLAViolation = associatedSLAViolation;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<TroubleTicketRef> getAssociatedTroubleTicket() {
         return associatedTroubleTicket;
     }
@@ -288,7 +291,7 @@ public class ServiceProblemImpl {
         this.associatedTroubleTicket = associatedTroubleTicket;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<Note> getComment() {
         return comment;
     }
@@ -297,7 +300,7 @@ public class ServiceProblemImpl {
         this.comment = comment;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<Characteristic> getExtensionInfo() {
         return extensionInfo;
     }
@@ -306,7 +309,7 @@ public class ServiceProblemImpl {
         this.extensionInfo = extensionInfo;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectConverter.class)
     public RelatedEntityRef getFirstAlert() {
         return firstAlert;
     }
@@ -315,7 +318,7 @@ public class ServiceProblemImpl {
         this.firstAlert = firstAlert;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectConverter.class)
     public ImpactPattern getImpactPatterns() {
         return impactPatterns;
     }
@@ -324,7 +327,7 @@ public class ServiceProblemImpl {
         this.impactPatterns = impactPatterns;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectConverter.class)
     public RelatedParty getOriginatorParty() {
         return originatorParty;
     }
@@ -333,7 +336,7 @@ public class ServiceProblemImpl {
         this.originatorParty = originatorParty;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<ServiceProblemRef> getParentProblem() {
         return parentProblem;
     }
@@ -342,7 +345,7 @@ public class ServiceProblemImpl {
         this.parentProblem = parentProblem;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<EventRef> getRelatedEvent() {
         return relatedEvent;
     }
@@ -351,7 +354,7 @@ public class ServiceProblemImpl {
         this.relatedEvent = relatedEvent;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<RelatedEntityRef> getRelatedObject() {
         return relatedObject;
     }
@@ -360,7 +363,7 @@ public class ServiceProblemImpl {
         this.relatedObject = relatedObject;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<RelatedParty> getRelatedParty() {
         return relatedParty;
     }
@@ -369,7 +372,7 @@ public class ServiceProblemImpl {
         this.relatedParty = relatedParty;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectConverter.class)
     public RelatedParty getResponsibleParty() {
         return responsibleParty;
     }
@@ -378,7 +381,7 @@ public class ServiceProblemImpl {
         this.responsibleParty = responsibleParty;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<ResourceRef> getRootCauseResource() {
         return rootCauseResource;
     }
@@ -387,7 +390,7 @@ public class ServiceProblemImpl {
         this.rootCauseResource = rootCauseResource;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<ServiceRef> getRootCauseService() {
         return rootCauseService;
     }
@@ -396,7 +399,7 @@ public class ServiceProblemImpl {
         this.rootCauseService = rootCauseService;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<TrackingRecord> getTrackingRecord() {
         return trackingRecord;
     }
@@ -405,7 +408,7 @@ public class ServiceProblemImpl {
         this.trackingRecord = trackingRecord;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<ResourceAlarmRef> getUnderlyingAlarm() {
         return underlyingAlarm;
     }
@@ -414,7 +417,7 @@ public class ServiceProblemImpl {
         this.underlyingAlarm = underlyingAlarm;
     }
 
-    @Transient // TODO DO MAPPING
+    @Convert(converter = ObjectListConverter.class)
     public List<ServiceProblemRef> getUnderlyingProblem() {
         return underlyingProblem;
     }
@@ -445,6 +448,27 @@ public class ServiceProblemImpl {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceProblemImpl [ID=" + ID + ", href=" + href + ", affectedNumberOfServices="
+                + affectedNumberOfServices + ", category=" + category + ", correlationId=" + correlationId
+                + ", description=" + description + ", impactImportanceFactor=" + impactImportanceFactor
+                + ", originatingSystem=" + originatingSystem + ", priority=" + priority + ", problemEscalation="
+                + problemEscalation + ", reason=" + reason + ", resolutionDate=" + resolutionDate + ", status=" + status
+                + ", statusChangeDate=" + statusChangeDate + ", statusChangeReason=" + statusChangeReason
+                + ", timeChanged=" + timeChanged + ", timeRaised=" + timeRaised + ", affectedLocation="
+                + affectedLocation + ", affectedResource=" + affectedResource + ", affectedService=" + affectedService
+                + ", associatedSLAViolation=" + associatedSLAViolation + ", associatedTroubleTicket="
+                + associatedTroubleTicket + ", comment=" + comment + ", extensionInfo=" + extensionInfo
+                + ", firstAlert=" + firstAlert + ", impactPatterns=" + impactPatterns + ", originatorParty="
+                + originatorParty + ", parentProblem=" + parentProblem + ", relatedEvent=" + relatedEvent
+                + ", relatedObject=" + relatedObject + ", relatedParty=" + relatedParty + ", responsibleParty="
+                + responsibleParty + ", rootCauseResource=" + rootCauseResource + ", rootCauseService="
+                + rootCauseService + ", trackingRecord=" + trackingRecord + ", underlyingAlarm=" + underlyingAlarm
+                + ", underlyingProblem=" + underlyingProblem + ", baseType=" + baseType + ", schemaLocation="
+                + schemaLocation + ", type=" + type + "]";
     }
     
     
