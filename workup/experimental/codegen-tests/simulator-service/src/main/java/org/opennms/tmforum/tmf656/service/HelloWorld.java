@@ -28,6 +28,7 @@ public class HelloWorld {
 
     public void init() {
         LOG.debug("init() Application context started HelloWorld " + message);
+        LOG.debug("init() java.io.tmpdir ="+System.getProperty("java.io.tmpdir"));
 
         // this simply prints out the contents of the applicationContext
         String[] beannames = applicationContext.getBeanDefinitionNames();
