@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
@@ -39,10 +41,12 @@ import org.springframework.stereotype.Component;
 //}
 
 
-@ApplicationPath("/tmf-api/serviceProblemManagement/v3/")
 public class RestApp extends ResourceConfig {
-	Logger LOG = LoggerFactory.getLogger(RestApp.class);
-
+	private Logger LOG = LoggerFactory.getLogger(RestApp.class);
+	
+	// should be injected but leave for now
+	private String basePath = "/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/";
+	
 	// produces http://localhost:8080/tmf-api/serviceProblemManagement/v3/swagger.json
 	// see
 	// https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Getting-started
@@ -77,8 +81,8 @@ public class RestApp extends ResourceConfig {
 		config.setConfigId("spring-jaxrs-swagger");
 		config.setTitle("Swagger Server");
 		config.setVersion("1.0.0");
-		// swagger is at http://localhost:8080/tmf-api/serviceProblemManagement/v3/swagger.json
-		config.setBasePath("/tmf-api/serviceProblemManagement/v3/");
+		// swagger is at http://localhost:8080/basePath/swagger.json
+		config.setBasePath(basePath);
 		//config.setResourcePackage("org.opennms.tmforum.swagger.tmf656.swagger.api");
 		config.setResourcePackage(packageApi);
 		config.setPrettyPrint(true);
