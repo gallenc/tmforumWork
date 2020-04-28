@@ -226,7 +226,7 @@
 								<!-- changes response to error not implemented -->
 								<replacement>
 									<token>return Response.ok()</token>
-									<value><![CDATA[return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "method not implemented")).build();${line.separator}        // return Response.ok()]]></value>
+									<value><![CDATA[return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "this method not implemented")).build();${line.separator}        // return Response.ok()]]></value>
 								</replacement>
 							</replacements>
 						</configuration>

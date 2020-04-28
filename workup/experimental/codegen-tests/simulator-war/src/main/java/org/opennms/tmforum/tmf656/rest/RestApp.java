@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import io.swagger.jaxrs.config.BeanConfig;
@@ -16,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+
 import org.springframework.stereotype.Component;
 
 //public class ApiApplication extends Application {
@@ -52,10 +56,16 @@ public class RestApp extends ResourceConfig {
 
 		LOG.info("**************************** Registering packages "+packageApi+" "+packageModel);
 		
-		packages(packageApi, packageModel);
+		packages(packageApi, packageModel, "org.opennms.tmforum.tmf656.simulator.api.impl");
+		
+		register(JacksonFeature.class);
+
+	    register(JacksonObjectMapperProvider.class);
 
 		configureSwagger();
 	}
+	
+
 
 	// swagger 1.5
 	// see
