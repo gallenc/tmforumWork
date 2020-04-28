@@ -1,3 +1,3 @@
 # Experimental work
 
-This folder contains work in progress
+This folder contains development work in progress and experiments related to the catalysts

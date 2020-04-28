@@ -17,7 +17,9 @@
 
 	<!-- this allows annotations to be picked up by configuration -->
 	<!-- Scans for components that will be auto-registered as Spring beans -->
-	<context:component-scan base-package="org.opennms.tmforum.swagger.tmf656.swagger.api.impl" />
+	<context:component-scan base-package="org.opennms.tmforum.tmf656.simulator.api.impl, 
+    org.opennms.tmforum.swagger.tmf656.swagger.api.impl" />
+    
 
 	<!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
 	<context:annotation-config />

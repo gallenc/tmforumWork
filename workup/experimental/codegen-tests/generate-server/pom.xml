@@ -223,10 +223,15 @@
 									<token>public class</token>
 									<value><![CDATA[${line.separator}// NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection${line.separator}@javax.inject.Named${line.separator}public class]]></value>
 								</replacement>
+                                <!-- gets class name into a string for debug  -->
+                                <replacement>
+                                    <token>ApiService {</token>
+                                    <value><![CDATA[ApiService {${line.separator}${line.separator}    // statically finds the fully qualificed name of this class${line.separator}    private static String apiServiceImplClassName = java.lang.invoke.MethodHandles.lookup().lookupClass().getName();${line.separator}]]></value>
+                                </replacement>
 								<!-- changes response to error not implemented -->
 								<replacement>
 									<token>return Response.ok()</token>
-									<value><![CDATA[return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "this method not implemented")).build();${line.separator}        // return Response.ok()]]></value>
+									<value><![CDATA[return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "this method not implemented in class="+apiServiceImplClassName)).build();${line.separator}        // return Response.ok()]]></value>
 								</replacement>
 							</replacements>
 						</configuration>
@@ -241,7 +246,7 @@
 				<executions>
 					<execution>
 						<id>add-generated-source</id>
-						<phase>initialize</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-source</goal>
 						</goals>
@@ -405,21 +410,14 @@
 		<!-- <dependency> -->
 		<!-- <groupId>ch.qos.logback</groupId> -->
 		<!-- <artifactId>logback-classic</artifactId> -->
-		<!-- <version>${logback-version}</version> -->
 		<!-- <scope>provided</scope> -->
 		<!-- </dependency> -->
 		<!-- <dependency> -->
 		<!-- <groupId>ch.qos.logback</groupId> -->
 		<!-- <artifactId>logback-core</artifactId> -->
-		<!-- <version>${logback-version}</version> -->
 		<!-- <scope>provided</scope> -->
 		<!-- </dependency> -->
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -444,8 +442,7 @@
 		<!-- <dependency> -->
 		<!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
 		<!-- <artifactId>jackson-datatype-joda</artifactId> -->
-		<!-- <version>${jackson-version}</version> -->
-		<!-- <scope>compile</scope> -->
+		<!-- <scope>provided</scope> -->
 		<!-- </dependency> -->
 		
 		<dependency>
@@ -470,6 +467,12 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
