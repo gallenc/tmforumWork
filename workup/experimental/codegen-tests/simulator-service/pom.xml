@@ -10,8 +10,6 @@
 
 	<packaging>jar</packaging>
 
-	<!-- see https://stackoverflow.com/questions/49384545/how-to-generate-client-code-using-with-swagger-codegen-plugin-maven -->
-
 	<properties>
 		<generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
 		<generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
@@ -201,6 +199,40 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Spring-Data-JPA -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- spring test framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- JPA Implementation (Hibernate) -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- IN MEMORY Database and JDBC Driver -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- to allow jersey to work with spring as a component -->
 		<!-- note if not present need to have jersey-hk2 on classpath -->
 		<dependency>
@@ -222,6 +254,7 @@
 		<!-- <scope>compile</scope> -->
 		<!-- </dependency> -->
 
+		<!-- Jackson json -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>

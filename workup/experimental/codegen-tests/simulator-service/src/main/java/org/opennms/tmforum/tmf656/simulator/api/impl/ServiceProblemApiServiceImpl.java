@@ -23,6 +23,8 @@ import javax.validation.constraints.*;
 // NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection
 @javax.inject.Named
 public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
+    
+    
     @Override
     public Response createServiceProblem(ServiceProblemCreate serviceProblem, SecurityContext securityContext) throws NotFoundException {
         // do some magic!

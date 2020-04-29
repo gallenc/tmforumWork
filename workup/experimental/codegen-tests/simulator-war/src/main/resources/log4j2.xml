@@ -41,7 +41,11 @@
         <Logger name="org.springframework" additivity="false" level="DEBUG">
             <AppenderRef ref="Console" />
         </Logger>
-
+        
+        <!-- log spring properties loading-->
+        <Logger name="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" additivity="false" level="DEBUG">
+            <AppenderRef ref="Console" />
+        </Logger>
 
         <!-- log swagger -->
         <Logger name="io.swagger" additivity="false" level="INFO">

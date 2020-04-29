@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author cgallen
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring.xml" })
+@ContextConfiguration(locations = { "/spring-dao-test-context.xml" })
 public class ServiceProblemRepositoryTest {
     
     private static final Logger LOG = LoggerFactory.getLogger(ServiceProblemRepositoryTest.class);
