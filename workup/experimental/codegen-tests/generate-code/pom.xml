@@ -10,6 +10,11 @@
     <artifactId>tmf656-jaxrs-generate-code</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <!-- used in package name of generated code - changed if generating a different spec -->
+        <specPackageName>tmf656</specPackageName>
+    </properties>
+
     <modules>
         <module>specification</module>
         <module>swagger-codegen-jaxrs-patch</module>

@@ -1,13 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.opennms.tmforum.swagger</groupId>
-    <artifactId>tmf656-jaxrs-generate-code</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>tmf656-jaxrs-generated-server-spec-model</artifactId>
-  
-        <packaging>jar</packaging>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opennms.tmforum.swagger</groupId>
+        <artifactId>tmf656-jaxrs-generate-code</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>tmf656-jaxrs-generated-server-spec-model</artifactId>
+
+    <packaging>jar</packaging>
 
     <properties>
         <generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
@@ -51,7 +52,7 @@
                                 <artifactItem>
                                     <groupId>org.opennms.tmforum.swagger</groupId>
                                     <artifactId>generate-tmf656-jaxrs-server-spec</artifactId>
-                                    <classifier>model</classifier>
+                                    <classifier>model-sources</classifier>
                                     <type>jar</type>
                                     <version>${project.version}</version>
                                 </artifactItem>
@@ -61,8 +62,21 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
                             <!-- use this to exclude more generated code as project is built -->
-<!--                             <excludes>**/ServiceProblemApiServiceImpl.java</excludes> -->
+                            <!-- <excludes>**/ServiceProblemApiServiceImpl.java</excludes> -->
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -70,28 +84,28 @@
         </plugins>
     </build>
     <dependencies>
-<!--         <dependency> -->
-<!--             <groupId>org.opennms.tmforum.swagger</groupId> -->
-<!--             <artifactId>generate-tmf656-jaxrs-server-spec</artifactId> -->
-<!--             <classifier>api</classifier> -->
-<!--             <version>${project.version}</version> -->
-<!--             <scope>provided</scope> -->
-<!--         </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+        <!-- <artifactId>generate-tmf656-jaxrs-server-spec</artifactId> -->
+        <!-- <classifier>api</classifier> -->
+        <!-- <version>${project.version}</version> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
 
-<!--         <dependency> -->
-<!--             <groupId>org.opennms.tmforum.swagger</groupId> -->
-<!--             <artifactId>generate-tmf656-jaxrs-server-spec</artifactId> -->
-<!--             <classifier>model</classifier> -->
-<!--             <version>${project.version}</version> -->
-<!--             <scope>provided</scope> -->
-<!--         </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+        <!-- <artifactId>generate-tmf656-jaxrs-server-spec</artifactId> -->
+        <!-- <classifier>model</classifier> -->
+        <!-- <version>${project.version}</version> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
 
-<!--         <dependency> -->
-<!--             <groupId>org.opennms.tmforum.swagger</groupId> -->
-<!--             <artifactId>tmf656-spm-simulator-dao</artifactId> -->
-<!--             <version>${project.version}</version> -->
-<!--             <scope>provided</scope> -->
-<!--         </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+        <!-- <artifactId>tmf656-spm-simulator-dao</artifactId> -->
+        <!-- <version>${project.version}</version> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <dependency>
             <groupId>io.swagger</groupId>

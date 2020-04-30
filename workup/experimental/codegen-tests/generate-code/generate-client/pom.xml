@@ -1,532 +1,541 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.opennms.tmforum.swagger</groupId>
-		<artifactId>tmf656-jaxrs-generate-code</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opennms.tmforum.swagger</groupId>
+        <artifactId>tmf656-jaxrs-generate-code</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
+    <packaging>jar</packaging>
 
-	<!-- see https://stackoverflow.com/questions/49384545/how-to-generate-client-code-using-with-swagger-codegen-plugin-maven -->
+    <!-- see https://stackoverflow.com/questions/49384545/how-to-generate-client-code-using-with-swagger-codegen-plugin-maven -->
 
-	<properties>
-		<spec.file>${project.basedir}${file.separator}target${file.separator}download${file.separator}specification${file.separator}TMF656-ServiceProblem-3.0.0.swagger.json</spec.file>
-		<generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
-		<generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
-		<generated-test-sources-java-path>src${file.separator}test${file.separator}java</generated-test-sources-java-path>
-	</properties>
+    <properties>
+        <spec.file>${project.basedir}${file.separator}target${file.separator}download${file.separator}specification${file.separator}TMF656-ServiceProblem-3.0.0.swagger.json</spec.file>
+        <generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
+        <generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
+        <generated-test-sources-java-path>src${file.separator}test${file.separator}java</generated-test-sources-java-path>
+    </properties>
 
-	<build>
-		<plugins>
+    <build>
+        <plugins>
 
-			<!-- this plugin unpacks the swagger specification -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.opennms.tmforum.swagger</groupId>
-									<artifactId>tmf565-SPM-v3-spec</artifactId>
-									<version>${project.version}</version>
-									<type>jar</type>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${project.basedir}${file.separator}target${file.separator}download</outputDirectory>
-							<overWriteReleases>true</overWriteReleases>
-							<overWriteSnapshots>true</overWriteSnapshots>
-							<!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
-							<!-- use this to exclude more generated code as project is built -->
-							<excludes></excludes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- prevent this artifact from deploying to central repo - deploy separate modules -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
 
-			<!-- this plugin generates client code from the swagger specification -->
-			<plugin>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<version>${version.swagger.codegen}</version>
-				<configuration>
-					<inputSpec>${spec.file}</inputSpec>
-					<configOptions>
-						<sourceFolder>${generated-sources-java-path}</sourceFolder>
-						<library>jersey2</library>
-						<dateLibrary>java8</dateLibrary>
-					</configOptions>
-					<output>${generated-sources-path}</output>
-				</configuration>
-				<executions>
-					<execution>
-						<id>generate-swagger-client</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<!-- <language>jaxrs</language> -->
-							<language>java</language>
-							<!-- <language>org.opennms.tmforum.swagger.patch.JavaJerseyServerCodegen</language> -->
+            <!-- this plugin unpacks the swagger specification -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.opennms.tmforum.swagger</groupId>
+                                    <artifactId>tmf565-SPM-v3-spec</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.basedir}${file.separator}target${file.separator}download</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
+                            <!-- use this to exclude more generated code as project is built -->
+                            <excludes></excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-							<addCompileSourceRoot>false</addCompileSourceRoot>
+            <!-- this plugin generates client code from the swagger specification -->
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>${version.swagger.codegen}</version>
+                <configuration>
+                    <inputSpec>${spec.file}</inputSpec>
+                    <configOptions>
+                        <sourceFolder>${generated-sources-java-path}</sourceFolder>
+                        <library>jersey2</library>
+                        <dateLibrary>java8</dateLibrary>
+                    </configOptions>
+                    <output>${generated-sources-path}</output>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-swagger-client</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- <language>jaxrs</language> -->
+                            <language>java</language>
+                            <!-- <language>org.opennms.tmforum.swagger.patch.JavaJerseyServerCodegen</language> -->
 
-							<modelPackage>${project.groupId}.tmf656.swagger.model</modelPackage>
-							<apiPackage>${project.groupId}.tmf656.swagger.client.api</apiPackage>
-							<invokerPackage>${project.groupId}.tmf656.swagger.client.invoker</invokerPackage>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.opennms.tmforum.swagger</groupId>
-						<artifactId>swagger-codegen-jaxrs-patch</artifactId>
-						<version>${project.version}</version>
-						<!-- prevent pulling in other tansitive dependencies -->
-						<exclusions>
-							<exclusion>
-								<groupId>*</groupId>
-								<artifactId>*</artifactId>
-							</exclusion>
-						</exclusions>
-					</dependency>
-				</dependencies>
-			</plugin>
+                            <addCompileSourceRoot>false</addCompileSourceRoot>
 
-
-			<!-- <plugin> -->
-			<!-- <groupId>com.google.code.maven-replacer-plugin</groupId> -->
-			<!-- <artifactId>replacer</artifactId> -->
-			<!-- <version>${com.google.code.maven-replacer-plugin-version}</version> -->
-
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <id>make-sure-PATCH-works</id> -->
-			<!-- <phase>process-sources</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>replace</goal> -->
-			<!-- </goals> -->
-			<!-- <configuration> -->
-			<!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
-			<!-- <includes> -->
-			<!-- <include>**/api/*.java</include> -->
-			<!-- </includes> -->
-			<!-- <regex>false</regex> -->
-			<!-- <replacements> -->
-			<!-- makes sure we use javax.ws.rs.PATCH and not io.swagger.jaxrs.PATCH -->
-			<!-- <replacement> -->
-			<!-- <token>PATCH</token> -->
-			<!-- <value>javax.ws.rs.PATCH</value> -->
-			<!-- </replacement> -->
-			<!-- </replacements> -->
-			<!-- </configuration> -->
-			<!-- </execution> -->
-			<!-- <execution> -->
-			<!-- <id>add-inject-to-factories</id> -->
-			<!-- <phase>process-sources</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>replace</goal> -->
-			<!-- </goals> -->
-			<!-- <configuration> -->
-			<!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
-			<!-- <includes> -->
-			<!-- <include>**/factories/*.java</include> -->
-			<!-- </includes> -->
-			<!-- <regex>false</regex> -->
-			<!-- <replacements> -->
-			<!-- <replacement> -->
-			<!-- <token>public class</token> -->
-			<!-- <value><![CDATA[${line.separator}@javax.inject.Named${line.separator}public class]]></value> -->
-			<!-- </replacement> -->
-			<!-- <replacement> -->
-			<!-- <token>private final static</token> -->
-			<!-- <value><![CDATA[${line.separator} @javax.inject.Inject${line.separator} private final static]]></value> -->
-			<!-- </replacement> -->
-			<!-- <replacement> -->
-			<!-- <token>public static</token> -->
-			<!-- <value><![CDATA[public ]]></value> -->
-			<!-- </replacement> -->
-
-			<!-- <replacement> -->
-			<!-- <token>service = new</token> -->
-			<!-- <value>service = null; // = new</value> -->
-			<!-- </replacement> -->
-			<!-- </replacements> -->
-			<!-- </configuration> -->
-			<!-- </execution> -->
-			<!-- <execution> -->
-			<!-- <id>add-inject-to-api</id> -->
-			<!-- <phase>process-sources</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>replace</goal> -->
-			<!-- </goals> -->
-			<!-- <configuration> -->
-			<!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
-			<!-- <includes> -->
-			<!-- <include>**/api/*Api.java</include> -->
-			<!-- </includes> -->
-			<!-- <regex>false</regex> -->
-			<!-- <replacements> -->
-			<!-- modifies code to allow delegate to be injected to service classes (order is important) -->
-			<!-- removes constructor code -->
-			<!-- <replacement> -->
-			<!-- <token>servletContext) {</token> -->
-			<!-- <value><![CDATA[servletContext) {${line.separator} /* removing constructor code so that inject works]]></value> -->
-			<!-- </replacement> -->
-			<!-- TODO REMOVE <replacement> -->
-			<!-- <token> if (delegate == null) {</token> -->
-			<!-- <value><![CDATA[ */${line.separator} if (delegate == null) {]]></value> -->
-			<!-- </replacement> -->
-			<!-- <replacement> -->
-			<!-- <token>this.delegate = delegate;</token> -->
-			<!-- <value><![CDATA[this.delegate = delegate;${line.separator} */]]></value> -->
-			<!-- </replacement> -->
-			<!-- adds @Named so that class is discovered by spring/karaf -->
-			<!-- <replacement> -->
-			<!-- <token>public class</token> -->
-			<!-- <value><![CDATA[${line.separator}// NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection${line.separator}@javax.inject.Named${line.separator}public 
-				class]]></value> -->
-			<!-- </replacement> -->
-			<!-- adds @Inject so that class is wired by spring/karaf -->
-			<!-- <replacement> -->
-			<!-- <token>private final </token> -->
-			<!-- <value><![CDATA[${line.separator} @javax.inject.Inject${line.separator} private ]]></value> -->
-			<!-- </replacement> -->
-			<!-- <replacement> -->
-			<!-- <token>Service delegate;</token> -->
-			<!-- <value><![CDATA[Service delegate = null; ]]></value> -->
-			<!-- </replacement> -->
-
-			<!-- </replacements> -->
-			<!-- </configuration> -->
-			<!-- </execution> -->
-			<!-- <execution> -->
-			<!-- <id>service-impl-inject-returns-not-implemeted</id> -->
-			<!-- <phase>process-sources</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>replace</goal> -->
-			<!-- </goals> -->
-			<!-- <configuration> -->
-			<!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
-			<!-- <includes> -->
-			<!-- <include>**/impl/*Impl.java</include> -->
-			<!-- </includes> -->
-			<!-- <regex>false</regex> -->
-			<!-- <replacements> -->
-			<!-- adds @Named so that dummy implementation class is discovered by spring/karaf -->
-			<!-- <replacement> -->
-			<!-- <token>public class</token> -->
-			<!-- <value><![CDATA[${line.separator}// NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection${line.separator}@javax.inject.Named${line.separator}public 
-				class]]></value> -->
-			<!-- </replacement> -->
-			<!-- changes response to error not implemented -->
-			<!-- <replacement> -->
-			<!-- <token>return Response.ok()</token> -->
-			<!-- <value><![CDATA[return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "method 
-				not implemented")).build();${line.separator} // return Response.ok()]]></value> -->
-			<!-- </replacement> -->
-			<!-- </replacements> -->
-			<!-- </configuration> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-
-			<!-- </plugin> -->
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>add-generated-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>${generated-sources-path}${file.separator}${generated-sources-java-path}</source>
-							</sources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>add-generated-test-sources</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-test-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>client-api</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>client-api</classifier>
-							<includes>
-								<include>**/api/*</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>client-model</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>client-model</classifier>
-							<includes>
-								<include>**/model/*</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>client-invoker</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>client-invoker</classifier>
-							<includes>
-								<include>**/invoker/*</include>
-								<include>**/auth/*</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>test-jar</id>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-						<phase>package</phase>
-					</execution>
-				</executions>
-			</plugin>
+                            <modelPackage>${project.groupId}.${specPackageName}.swagger.model</modelPackage>
+                            <apiPackage>${project.groupId}.${specPackageName}.swagger.client.api</apiPackage>
+                            <invokerPackage>${project.groupId}.${specPackageName}.swagger.client.invoker</invokerPackage>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.opennms.tmforum.swagger</groupId>
+                        <artifactId>swagger-codegen-jaxrs-patch</artifactId>
+                        <version>${project.version}</version>
+                        <!-- prevent pulling in other tansitive dependencies -->
+                        <exclusions>
+                            <exclusion>
+                                <groupId>*</groupId>
+                                <artifactId>*</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                </dependencies>
+            </plugin>
 
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>client-api-sources</id>
-						<goals>
-							<!-- note jar-no-fork goal used to avoid generate-code running before each execution -->
-							<goal>jar-no-fork</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>client-api-sources</classifier>
-							<includes>
-								<include>**/api/*</include>
-								<exclude>**/test</exclude>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>client-model-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>client-model-sources</classifier>
-							<includes>
-								<include>**/model/*</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>client-invoker-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>client-invoker-sources</classifier>
-							<includes>
-								<include>**/invoker/*</include>
-								<include>**/auth/*</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>client-test-sources</id>
-						<goals>
-							<goal>test-jar-no-fork</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<!-- <classifier>test-sources</classifier> -->
-							<!-- <includes> -->
-							<!-- <include>**/test/*</include> -->
-							<!-- </includes> -->
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- <plugin> -->
+            <!-- <groupId>com.google.code.maven-replacer-plugin</groupId> -->
+            <!-- <artifactId>replacer</artifactId> -->
+            <!-- <version>${com.google.code.maven-replacer-plugin-version}</version> -->
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
+            <!-- <executions> -->
+            <!-- <execution> -->
+            <!-- <id>make-sure-PATCH-works</id> -->
+            <!-- <phase>process-sources</phase> -->
+            <!-- <goals> -->
+            <!-- <goal>replace</goal> -->
+            <!-- </goals> -->
+            <!-- <configuration> -->
+            <!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
+            <!-- <includes> -->
+            <!-- <include>**/api/*.java</include> -->
+            <!-- </includes> -->
+            <!-- <regex>false</regex> -->
+            <!-- <replacements> -->
+            <!-- makes sure we use javax.ws.rs.PATCH and not io.swagger.jaxrs.PATCH -->
+            <!-- <replacement> -->
+            <!-- <token>PATCH</token> -->
+            <!-- <value>javax.ws.rs.PATCH</value> -->
+            <!-- </replacement> -->
+            <!-- </replacements> -->
+            <!-- </configuration> -->
+            <!-- </execution> -->
+            <!-- <execution> -->
+            <!-- <id>add-inject-to-factories</id> -->
+            <!-- <phase>process-sources</phase> -->
+            <!-- <goals> -->
+            <!-- <goal>replace</goal> -->
+            <!-- </goals> -->
+            <!-- <configuration> -->
+            <!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
+            <!-- <includes> -->
+            <!-- <include>**/factories/*.java</include> -->
+            <!-- </includes> -->
+            <!-- <regex>false</regex> -->
+            <!-- <replacements> -->
+            <!-- <replacement> -->
+            <!-- <token>public class</token> -->
+            <!-- <value><![CDATA[${line.separator}@javax.inject.Named${line.separator}public class]]></value> -->
+            <!-- </replacement> -->
+            <!-- <replacement> -->
+            <!-- <token>private final static</token> -->
+            <!-- <value><![CDATA[${line.separator} @javax.inject.Inject${line.separator} private final static]]></value> -->
+            <!-- </replacement> -->
+            <!-- <replacement> -->
+            <!-- <token>public static</token> -->
+            <!-- <value><![CDATA[public ]]></value> -->
+            <!-- </replacement> -->
 
-		</plugins>
+            <!-- <replacement> -->
+            <!-- <token>service = new</token> -->
+            <!-- <value>service = null; // = new</value> -->
+            <!-- </replacement> -->
+            <!-- </replacements> -->
+            <!-- </configuration> -->
+            <!-- </execution> -->
+            <!-- <execution> -->
+            <!-- <id>add-inject-to-api</id> -->
+            <!-- <phase>process-sources</phase> -->
+            <!-- <goals> -->
+            <!-- <goal>replace</goal> -->
+            <!-- </goals> -->
+            <!-- <configuration> -->
+            <!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
+            <!-- <includes> -->
+            <!-- <include>**/api/*Api.java</include> -->
+            <!-- </includes> -->
+            <!-- <regex>false</regex> -->
+            <!-- <replacements> -->
+            <!-- modifies code to allow delegate to be injected to service classes (order is important) -->
+            <!-- removes constructor code -->
+            <!-- <replacement> -->
+            <!-- <token>servletContext) {</token> -->
+            <!-- <value><![CDATA[servletContext) {${line.separator} /* removing constructor code so that inject works]]></value> -->
+            <!-- </replacement> -->
+            <!-- TODO REMOVE <replacement> -->
+            <!-- <token> if (delegate == null) {</token> -->
+            <!-- <value><![CDATA[ */${line.separator} if (delegate == null) {]]></value> -->
+            <!-- </replacement> -->
+            <!-- <replacement> -->
+            <!-- <token>this.delegate = delegate;</token> -->
+            <!-- <value><![CDATA[this.delegate = delegate;${line.separator} */]]></value> -->
+            <!-- </replacement> -->
+            <!-- adds @Named so that class is discovered by spring/karaf -->
+            <!-- <replacement> -->
+            <!-- <token>public class</token> -->
+            <!-- <value><![CDATA[${line.separator}// NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection${line.separator}@javax.inject.Named${line.separator}public 
+                class]]></value> -->
+            <!-- </replacement> -->
+            <!-- adds @Inject so that class is wired by spring/karaf -->
+            <!-- <replacement> -->
+            <!-- <token>private final </token> -->
+            <!-- <value><![CDATA[${line.separator} @javax.inject.Inject${line.separator} private ]]></value> -->
+            <!-- </replacement> -->
+            <!-- <replacement> -->
+            <!-- <token>Service delegate;</token> -->
+            <!-- <value><![CDATA[Service delegate = null; ]]></value> -->
+            <!-- </replacement> -->
+
+            <!-- </replacements> -->
+            <!-- </configuration> -->
+            <!-- </execution> -->
+            <!-- <execution> -->
+            <!-- <id>service-impl-inject-returns-not-implemeted</id> -->
+            <!-- <phase>process-sources</phase> -->
+            <!-- <goals> -->
+            <!-- <goal>replace</goal> -->
+            <!-- </goals> -->
+            <!-- <configuration> -->
+            <!-- <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir> -->
+            <!-- <includes> -->
+            <!-- <include>**/impl/*Impl.java</include> -->
+            <!-- </includes> -->
+            <!-- <regex>false</regex> -->
+            <!-- <replacements> -->
+            <!-- adds @Named so that dummy implementation class is discovered by spring/karaf -->
+            <!-- <replacement> -->
+            <!-- <token>public class</token> -->
+            <!-- <value><![CDATA[${line.separator}// NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection${line.separator}@javax.inject.Named${line.separator}public 
+                class]]></value> -->
+            <!-- </replacement> -->
+            <!-- changes response to error not implemented -->
+            <!-- <replacement> -->
+            <!-- <token>return Response.ok()</token> -->
+            <!-- <value><![CDATA[return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, 
+                "method not implemented")).build();${line.separator} // return Response.ok()]]></value> -->
+            <!-- </replacement> -->
+            <!-- </replacements> -->
+            <!-- </configuration> -->
+            <!-- </execution> -->
+            <!-- </executions> -->
+
+            <!-- </plugin> -->
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-generated-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated-sources-path}${file.separator}${generated-sources-java-path}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-generated-test-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>client-api</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>client-api</classifier>
+                            <includes>
+                                <include>**/api/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>client-model</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>client-model</classifier>
+                            <includes>
+                                <include>**/model/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>client-invoker</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>client-invoker</classifier>
+                            <includes>
+                                <include>**/invoker/*</include>
+                                <include>**/auth/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-jar</id>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
 
 
-	</build>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>client-api-sources</id>
+                        <goals>
+                            <!-- note jar-no-fork goal used to avoid generate-code running before each execution -->
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>client-api-sources</classifier>
+                            <includes>
+                                <include>**/api/*</include>
+                                <exclude>**/test</exclude>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>client-model-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>client-model-sources</classifier>
+                            <includes>
+                                <include>**/model/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>client-invoker-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>client-invoker-sources</classifier>
+                            <includes>
+                                <include>**/invoker/*</include>
+                                <include>**/auth/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>client-test-sources</id>
+                        <goals>
+                            <goal>test-jar-no-fork</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <!-- <classifier>test-sources</classifier> -->
+                            <!-- <includes> -->
+                            <!-- <include>**/test/*</include> -->
+                            <!-- </includes> -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-	<dependencies>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
 
-		<!-- JSR330 dependency injection api -->
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-jersey2-jaxrs</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- Logging -->
-		<!-- SLF4J api -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- <dependency> -->
-		<!-- <groupId>ch.qos.logback</groupId> -->
-		<!-- <artifactId>logback-classic</artifactId> -->
-		<!-- <scope>provided</scope> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>ch.qos.logback</groupId> -->
-		<!-- <artifactId>logback-core</artifactId> -->
-		<!-- <scope>provided</scope> -->
-		<!-- </dependency> -->
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-multipart</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.inject</groupId>
-			<artifactId>jersey-hk2</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- <dependency> -->
-		<!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
-		<!-- <artifactId>jackson-datatype-joda</artifactId> -->
-		<!-- <scope>provided</scope> -->
-		<!-- </dependency> -->
-
-		<!-- HTTP client: jersey-client -->
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-json-jackson</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- for client -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- for jersey server -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- Base64 encoding that works in both JVM and Android -->
-		<dependency>
-			<groupId>com.brsanthu</groupId>
-			<artifactId>migbase64</artifactId>
-			<scope>provided</scope>
-		</dependency>
+        </plugins>
 
 
-		<!-- Bean Validation API support -->
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
+    </build>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
 
-	</dependencies>
+        <!-- JSR330 dependency injection api -->
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jersey2-jaxrs</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Logging -->
+        <!-- SLF4J api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- <dependency> -->
+        <!-- <groupId>ch.qos.logback</groupId> -->
+        <!-- <artifactId>logback-classic</artifactId> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>ch.qos.logback</groupId> -->
+        <!-- <artifactId>logback-core</artifactId> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- <dependency> -->
+        <!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
+        <!-- <artifactId>jackson-datatype-joda</artifactId> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+
+        <!-- HTTP client: jersey-client -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- for client -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- for jersey server -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Base64 encoding that works in both JVM and Android -->
+        <dependency>
+            <groupId>com.brsanthu</groupId>
+            <artifactId>migbase64</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- Bean Validation API support -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
 
 
 </project>

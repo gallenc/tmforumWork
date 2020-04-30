@@ -93,30 +93,43 @@
                             <excludes></excludes>
                         </configuration>
                     </execution>
-<!--                     <execution> -->
-<!--                         <id>unpack-test-sources</id> -->
-<!--                         <phase>generate-sources</phase> -->
-<!--                         <goals> -->
-<!--                             <goal>unpack</goal> -->
-<!--                         </goals> -->
-<!--                         <configuration> -->
-<!--                             <artifactItems> -->
-<!--                                 <artifactItem> -->
-<!--                                     <groupId>org.opennms.tmforum.swagger</groupId> -->
-<!--                                     <artifactId>generate-tmf656-jaxrs-client-spec</artifactId> -->
-<!--                                     <classifier>test-sources</classifier> -->
-<!--                                     <type>jar</type> -->
-<!--                                     <version>${project.version}</version> -->
-<!--                                 </artifactItem> -->
-<!--                             </artifactItems> -->
-<!--                             <outputDirectory>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</outputDirectory> -->
-<!--                             <overWriteReleases>true</overWriteReleases> -->
-<!--                             <overWriteSnapshots>true</overWriteSnapshots> -->
-<!--                             A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
-<!--                             use this to exclude more generated code as project is built -->
-<!--                             <excludes></excludes> -->
-<!--                         </configuration> -->
-<!--                     </execution> -->
+                    <!-- <execution> -->
+                    <!-- <id>unpack-test-sources</id> -->
+                    <!-- <phase>generate-sources</phase> -->
+                    <!-- <goals> -->
+                    <!-- <goal>unpack</goal> -->
+                    <!-- </goals> -->
+                    <!-- <configuration> -->
+                    <!-- <artifactItems> -->
+                    <!-- <artifactItem> -->
+                    <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+                    <!-- <artifactId>generate-tmf656-jaxrs-client-spec</artifactId> -->
+                    <!-- <classifier>test-sources</classifier> -->
+                    <!-- <type>jar</type> -->
+                    <!-- <version>${project.version}</version> -->
+                    <!-- </artifactItem> -->
+                    <!-- </artifactItems> -->
+                    <!-- <outputDirectory>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</outputDirectory> -->
+                    <!-- <overWriteReleases>true</overWriteReleases> -->
+                    <!-- <overWriteSnapshots>true</overWriteSnapshots> -->
+                    <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
+                    <!-- use this to exclude more generated code as project is built -->
+                    <!-- <excludes></excludes> -->
+                    <!-- </configuration> -->
+                    <!-- </execution> -->
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -135,8 +148,7 @@
 
         <dependency>
             <groupId>org.opennms.tmforum.swagger</groupId>
-            <artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
-            <classifier>model</classifier>
+            <artifactId>tmf656-jaxrs-generated-client-spec-model</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

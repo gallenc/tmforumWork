@@ -51,8 +51,8 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.opennms.tmforum.swagger</groupId>
-									<artifactId>generate-tmf656-jaxrs-server-spec</artifactId>
-									<classifier>mock-impl-sources</classifier>
+									<artifactId>tmf656-jaxrs-generated-server-spec-mock-impl</artifactId>
+									<classifier>sources</classifier>
 									<type>jar</type>
 									<version>${project.version}</version>
 								</artifactItem>
@@ -71,18 +71,17 @@
 		</plugins>
 	</build>
 	<dependencies>
+
+        <!-- project dependencies -->
 		<dependency>
 			<groupId>org.opennms.tmforum.swagger</groupId>
-			<artifactId>generate-tmf656-jaxrs-server-spec</artifactId>
-			<classifier>api</classifier>
+			<artifactId>tmf656-jaxrs-generated-server-spec-model</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
+        <dependency>
 			<groupId>org.opennms.tmforum.swagger</groupId>
-			<artifactId>generate-tmf656-jaxrs-server-spec</artifactId>
-			<classifier>model</classifier>
+			<artifactId>tmf656-jaxrs-generated-server-spec-api</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>

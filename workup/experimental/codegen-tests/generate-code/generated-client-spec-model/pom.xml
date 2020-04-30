@@ -120,6 +120,19 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
     <dependencies>
@@ -133,13 +146,13 @@
         <!-- <scope>provided</scope> -->
         <!-- </dependency> -->
 
-        <dependency>
-            <groupId>org.opennms.tmforum.swagger</groupId>
-            <artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
-            <classifier>model</classifier>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- <dependency> -->
+        <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+        <!-- <artifactId>generate-tmf656-jaxrs-client-spec</artifactId> -->
+        <!-- <classifier>model</classifier> -->
+        <!-- <version>${project.version}</version> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <dependency>
             <groupId>io.swagger</groupId>
