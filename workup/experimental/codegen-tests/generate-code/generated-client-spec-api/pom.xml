@@ -1,0 +1,337 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opennms.tmforum.swagger</groupId>
+        <artifactId>tmf656-jaxrs-generate-code</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>tmf656-jaxrs-generated-client-spec-api</artifactId>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <generated-sources-path>${project.build.directory}${file.separator}generated-sources</generated-sources-path>
+        <generated-sources-java-path>src${file.separator}main${file.separator}java</generated-sources-java-path>
+        <generated-test-sources-java-path>src${file.separator}test${file.separator}java</generated-test-sources-java-path>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-generated-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated-sources-path}${file.separator}${generated-sources-java-path}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add_test_sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- this plugin downloads the generated swagger client code -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.opennms.tmforum.swagger</groupId>
+                                    <artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
+                                    <classifier>client-api-sources</classifier>
+                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                                <!-- <artifactItem> -->
+                                <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+                                <!-- <artifactId>generate-tmf656-jaxrs-client-spec</artifactId> -->
+                                <!-- <classifier>client-invoker-sources</classifier> -->
+                                <!-- <type>jar</type> -->
+                                <!-- <version>${project.version}</version> -->
+                                <!-- </artifactItem> -->
+                                <!-- note need to check if common server model works -->
+                                <!-- <artifactItem> -->
+                                <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+                                <!-- <artifactId>generate-tmf656-jaxrs-client-spec</artifactId> -->
+                                <!-- <classifier>client-model-sources</classifier> -->
+                                <!-- <type>jar</type> -->
+                                <!-- <version>${project.version}</version> -->
+                                <!-- </artifactItem> -->
+                            </artifactItems>
+                            <outputDirectory>${generated-sources-path}${file.separator}${generated-sources-java-path}</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
+                            <!-- use this to exclude more generated code as project is built -->
+                            <excludes></excludes>
+                        </configuration>
+                    </execution>
+                    <!-- <execution> -->
+                    <!-- <id>unpack-test-sources</id> -->
+                    <!-- <phase>generate-sources</phase> -->
+                    <!-- <goals> -->
+                    <!-- <goal>unpack</goal> -->
+                    <!-- </goals> -->
+                    <!-- <configuration> -->
+                    <!-- <artifactItems> -->
+                    <!-- <artifactItem> -->
+                    <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+                    <!-- <artifactId>generate-tmf656-jaxrs-client-spec</artifactId> -->
+                    <!-- <classifier>test-sources</classifier> -->
+                    <!-- <type>jar</type> -->
+                    <!-- <version>${project.version}</version> -->
+                    <!-- </artifactItem> -->
+                    <!-- </artifactItems> -->
+                    <!-- <outputDirectory>${generated-sources-path}${file.separator}${generated-test-sources-java-path}</outputDirectory> -->
+                    <!-- <overWriteReleases>true</overWriteReleases> -->
+                    <!-- <overWriteSnapshots>true</overWriteSnapshots> -->
+                    <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
+                    <!-- use this to exclude more generated code as project is built -->
+                    <!-- <excludes></excludes> -->
+                    <!-- </configuration> -->
+                    <!-- </execution> -->
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+    <dependencies>
+
+
+        <!-- <dependency> -->
+        <!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+        <!-- <artifactId>generate-tmf656-jaxrs-server-spec</artifactId> -->
+        <!-- <classifier>api</classifier> -->
+        <!-- <version>${project.version}</version> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+
+        <dependency>
+            <groupId>org.opennms.tmforum.swagger</groupId>
+            <artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
+            <classifier>client-model</classifier>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.opennms.tmforum.swagger</groupId>
+            <artifactId>generate-tmf656-jaxrs-client-spec</artifactId>
+            <classifier>client-invoker</classifier>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jersey2-jaxrs</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- log4j core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- running SLF4J over log4j -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- <dependency> -->
+        <!-- <groupId>ch.qos.logback</groupId> -->
+        <!-- <artifactId>logback-classic</artifactId> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>ch.qos.logback</groupId> -->
+        <!-- <artifactId>logback-core</artifactId> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- HTTP client: jersey-client -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- for client -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--Spring MVC framework -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- to allow jersey to work with spring as a component -->
+        <!-- note if not present need to have jersey-hk2 on classpath -->
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-spring5</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- use if not using spring -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.glassfish.jersey.inject</groupId> -->
+        <!-- <artifactId>jersey-hk2</artifactId> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+
+        <!-- <dependency> -->
+        <!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
+        <!-- <artifactId>jackson-datatype-joda</artifactId> -->
+        <!-- <version>${jackson-version}</version> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+
+        <!-- <dependency> -->
+        <!-- <groupId>com.fasterxml.jackson.module</groupId> -->
+        <!-- <artifactId>jackson-modules-java8</artifactId> -->
+        <!-- <version>${jackson-version}</version> -->
+        <!-- <scope>provided</scope> -->
+        <!-- </dependency> -->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Base64 encoding that works in both JVM and Android -->
+        <dependency>
+            <groupId>com.brsanthu</groupId>
+            <artifactId>migbase64</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- Bean Validation API support -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
