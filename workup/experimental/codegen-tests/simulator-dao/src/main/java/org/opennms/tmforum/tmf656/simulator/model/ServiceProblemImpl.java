@@ -3,6 +3,7 @@ package org.opennms.tmforum.tmf656.simulator.model;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 import javax.persistence.Convert;
@@ -470,6 +471,61 @@ public class ServiceProblemImpl {
                 + ", underlyingProblem=" + underlyingProblem + ", baseType=" + baseType + ", schemaLocation="
                 + schemaLocation + ", type=" + type + "]";
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID, affectedLocation, affectedNumberOfServices, affectedResource, affectedService,
+                associatedSLAViolation, associatedTroubleTicket, baseType, category, comment, correlationId,
+                description, extensionInfo, firstAlert, href, impactImportanceFactor, impactPatterns, originatingSystem,
+                originatorParty, parentProblem, priority, problemEscalation, reason, relatedEvent, relatedObject,
+                relatedParty, resolutionDate, responsibleParty, rootCauseResource, rootCauseService, schemaLocation,
+                status, statusChangeDate, statusChangeReason, timeChanged, timeRaised, trackingRecord, type,
+                underlyingAlarm, underlyingProblem);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ServiceProblemImpl other = (ServiceProblemImpl) obj;
+        return Objects.equals(ID, other.ID) && Objects.equals(affectedLocation, other.affectedLocation)
+                && Objects.equals(affectedNumberOfServices, other.affectedNumberOfServices)
+                && Objects.equals(affectedResource, other.affectedResource)
+                && Objects.equals(affectedService, other.affectedService)
+                && Objects.equals(associatedSLAViolation, other.associatedSLAViolation)
+                && Objects.equals(associatedTroubleTicket, other.associatedTroubleTicket)
+                && Objects.equals(baseType, other.baseType) && Objects.equals(category, other.category)
+                && Objects.equals(comment, other.comment) && Objects.equals(correlationId, other.correlationId)
+                && Objects.equals(description, other.description) && Objects.equals(extensionInfo, other.extensionInfo)
+                && Objects.equals(firstAlert, other.firstAlert) && Objects.equals(href, other.href)
+                && Objects.equals(impactImportanceFactor, other.impactImportanceFactor)
+                && Objects.equals(impactPatterns, other.impactPatterns)
+                && Objects.equals(originatingSystem, other.originatingSystem)
+                && Objects.equals(originatorParty, other.originatorParty)
+                && Objects.equals(parentProblem, other.parentProblem) && Objects.equals(priority, other.priority)
+                && Objects.equals(problemEscalation, other.problemEscalation) && Objects.equals(reason, other.reason)
+                && Objects.equals(relatedEvent, other.relatedEvent)
+                && Objects.equals(relatedObject, other.relatedObject)
+                && Objects.equals(relatedParty, other.relatedParty)
+                && Objects.equals(resolutionDate, other.resolutionDate)
+                && Objects.equals(responsibleParty, other.responsibleParty)
+                && Objects.equals(rootCauseResource, other.rootCauseResource)
+                && Objects.equals(rootCauseService, other.rootCauseService)
+                && Objects.equals(schemaLocation, other.schemaLocation) && Objects.equals(status, other.status)
+                && Objects.equals(statusChangeDate, other.statusChangeDate)
+                && Objects.equals(statusChangeReason, other.statusChangeReason)
+                && Objects.equals(timeChanged, other.timeChanged) && Objects.equals(timeRaised, other.timeRaised)
+                && Objects.equals(trackingRecord, other.trackingRecord) && Objects.equals(type, other.type)
+                && Objects.equals(underlyingAlarm, other.underlyingAlarm)
+                && Objects.equals(underlyingProblem, other.underlyingProblem);
+    }
+    
+    
+    
     
     
 

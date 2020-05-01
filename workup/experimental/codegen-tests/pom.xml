@@ -26,6 +26,7 @@
         <maven-replacer-plugin-version>1.5.3</maven-replacer-plugin-version>
         <maven-war-plugin-version>3.2.3</maven-war-plugin-version>
         <maven-deploy-plugin-version>3.0.0-M1</maven-deploy-plugin-version>
+        <maven-antrun-plugin-version>3.0.0</maven-antrun-plugin-version>
 
         <!-- library dependencies versions -->
         <jetty-version>9.3.27.v20190418</jetty-version>
@@ -65,16 +66,55 @@
 
 
     </properties>
-    <modules>
-        <module>generate-code</module>
-        <module>simulator-dao</module>
-        <module>simulator-service</module>
-        <module>simulator-war</module>
-        <module>simulator-client</module>
-    </modules>
+
+    <profiles>
+        <profile>
+            <id>all</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>generate-code</module>
+                <module>simulator-dao</module>
+                <module>simulator-service</module>
+                <module>simulator-war</module>
+                <module>simulator-client</module>
+            </modules>
+        </profile>
+        <!-- if you have already generated the code then use mvn clean install -P no-gen-code to speed up the build -->
+        <profile>
+            <id>no-gen-code</id>
+            <modules>
+                <module>simulator-dao</module>
+                <module>simulator-service</module>
+                <module>simulator-war</module>
+                <module>simulator-client</module>
+            </modules>
+        </profile>
+    </profiles>
+
 
     <build>
         <plugins>
+        
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!-- logs details of build profile to console -->
+                                <echo>current active profile: ${project.activeProfiles[0].id}</echo>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.eclipse.m2e</groupId>
                 <artifactId>lifecycle-mapping</artifactId>
@@ -84,6 +124,12 @@
 
         <pluginManagement>
             <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin-version</artifactId>
+                    <version>${maven-antrun-plugin-version}</version>
+                </plugin>
 
                 <plugin>
                     <groupId>org.eclipse.jetty</groupId>

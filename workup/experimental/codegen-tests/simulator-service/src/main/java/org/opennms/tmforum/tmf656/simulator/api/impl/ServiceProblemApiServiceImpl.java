@@ -7,6 +7,7 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.Error;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblem;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemCreate;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemUpdate;
+import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
 
 import java.util.List;
 import org.opennms.tmforum.swagger.tmf656.swagger.api.NotFoundException;
@@ -17,12 +18,17 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "org.opennms.tmforum.swagger.patch.JavaJerseyServerCodegen", date = "2020-04-27T17:02:50.919+01:00")
 
-// NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection
-@javax.inject.Named
+
+@Named
 public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
+    
+    @Inject
+    ServiceProblemRepository serviceProblemRepository;
     
     
     @Override
