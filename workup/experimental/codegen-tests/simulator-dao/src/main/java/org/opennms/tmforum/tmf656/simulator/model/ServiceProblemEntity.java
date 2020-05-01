@@ -27,7 +27,7 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.TrackingRecord;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.TroubleTicketRef;
 
 @Entity
-public class ServiceProblemImpl {
+public class ServiceProblemEntity {
 
     private Long ID = null;
 
@@ -491,7 +491,7 @@ public class ServiceProblemImpl {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ServiceProblemImpl other = (ServiceProblemImpl) obj;
+        ServiceProblemEntity other = (ServiceProblemEntity) obj;
         return Objects.equals(ID, other.ID) && Objects.equals(affectedLocation, other.affectedLocation)
                 && Objects.equals(affectedNumberOfServices, other.affectedNumberOfServices)
                 && Objects.equals(affectedResource, other.affectedResource)

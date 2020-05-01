@@ -64,7 +64,6 @@
 
         <mapstructVersion>1.3.0.Final</mapstructVersion>
 
-
     </properties>
 
     <profiles>
@@ -96,7 +95,11 @@
 
     <build>
         <plugins>
-        
+            <plugin>
+                <groupId>org.eclipse.m2e</groupId>
+                <artifactId>lifecycle-mapping</artifactId>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -115,10 +118,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.eclipse.m2e</groupId>
-                <artifactId>lifecycle-mapping</artifactId>
-            </plugin>
         </plugins>
 
 
@@ -165,6 +164,10 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin-version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
                 </plugin>
 
                 <plugin>
@@ -254,7 +257,7 @@
                                     <pluginExecutionFilter>
                                         <groupId>org.codehaus.mojo</groupId>
                                         <artifactId>build-helper-maven-plugin</artifactId>
-                                        <versionRange>[1.0,)</versionRange>
+                                        <versionRange>[3.0,)</versionRange>
                                         <goals>
                                             <goal>add-source</goal>
                                             <goal>add-test-source</goal>
@@ -309,6 +312,21 @@
                                         </execute>
                                     </action>
                                 </pluginExecution>
+
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-antrun-plugin</artifactId>
+                                        <versionRange>[1.3,)</versionRange>
+                                        <goals>
+                                            <goal>run</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
@@ -586,6 +604,10 @@
                 <version>${hsqldb.version}</version>
             </dependency>
 
+            <!-- Note [WARNING] The artifact org.mapstruct:mapstruct-jdk8:jar:1.3.0.Final has been relocated -->
+            <!-- to org.mapstruct:mapstruct:jar:1.3.0.Final -->
+            <!-- see https://github.com/mapstruct/mapstruct/issues/1301 -->
+            <!-- using this to match opennms but can change later -->
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-jdk8</artifactId>

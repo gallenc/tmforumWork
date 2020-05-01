@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.Note;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.RelatedEntityRef;
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
-import org.opennms.tmforum.tmf656.simulator.model.ServiceProblemImpl;
+import org.opennms.tmforum.tmf656.simulator.model.ServiceProblemEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class ServiceProblemRepositoryTest {
     public void test1() {
         LOG.debug("start of test1");
 
-        ServiceProblemImpl serviceProblem1 = new ServiceProblemImpl();
+        ServiceProblemEntity serviceProblem1 = new ServiceProblemEntity();
         
         RelatedEntityRef firstAlert= new  RelatedEntityRef();
         firstAlert.setId("1");
@@ -74,7 +74,7 @@ public class ServiceProblemRepositoryTest {
         LOG.debug("serviceProblem1=" + serviceProblem1);
 
         Long id = serviceProblem1.getID();
-        ServiceProblemImpl serviceProblem2 = serviceProblemRepository.getOne(id);
+        ServiceProblemEntity serviceProblem2 = serviceProblemRepository.getOne(id);
         LOG.debug("serviceProblem2=" + serviceProblem2);
         
         // check saved and restored are equal
