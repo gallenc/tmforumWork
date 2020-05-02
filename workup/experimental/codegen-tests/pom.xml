@@ -20,7 +20,7 @@
         <maven.surefire.plugin.version>2.18</maven.surefire.plugin.version>
         <maven-jar-plugin-version>3.2.0</maven-jar-plugin-version>
         <maven-source-plugin-version>3.2.0</maven-source-plugin-version>
-        <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
+        <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
         <properties-maven-plugin-version>1.0.0</properties-maven-plugin-version>
         <maven-dependency-plugin-version>3.1.1</maven-dependency-plugin-version>
         <maven-replacer-plugin-version>1.5.3</maven-replacer-plugin-version>
@@ -165,8 +165,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin-version}</version>
                     <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
                     </configuration>
                 </plugin>
 
@@ -317,6 +317,7 @@
                                     <pluginExecutionFilter>
                                         <groupId>org.apache.maven.plugins</groupId>
                                         <artifactId>maven-antrun-plugin</artifactId>
+                                        <!-- note needs to be 1.3,) even though maven-antrun-plugin is 3.0 - go figure -->
                                         <versionRange>[1.3,)</versionRange>
                                         <goals>
                                             <goal>run</goal>
@@ -326,7 +327,7 @@
                                         <ignore />
                                     </action>
                                 </pluginExecution>
-                                
+
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>

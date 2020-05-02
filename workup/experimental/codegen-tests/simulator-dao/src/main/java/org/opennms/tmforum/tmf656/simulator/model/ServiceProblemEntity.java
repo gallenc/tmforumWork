@@ -20,7 +20,6 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.RelatedParty;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ResourceAlarmRef;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ResourceRef;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.SLAViolationRef;
-import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblem;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemRef;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceRef;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.TrackingRecord;
