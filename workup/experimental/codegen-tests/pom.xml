@@ -102,6 +102,8 @@
 
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <!-- prevents running in child modules -->
+                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
