@@ -31,6 +31,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
@@ -51,7 +52,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
     @Override
     @Transactional
-    public Response createServiceProblem(ServiceProblemCreate serviceProblemCreate, SecurityContext securityContext)
+    public Response createServiceProblem(ServiceProblemCreate serviceProblemCreate, SecurityContext securityContext, UriInfo uriInfo)
             throws NotFoundException {
         try {
             LOG.debug("POST /serviceProblem createServiceProblem called");
@@ -86,7 +87,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
     @Override
     @Transactional
-    public Response deleteServiceProblem(String idStr, SecurityContext securityContext) throws NotFoundException {
+    public Response deleteServiceProblem(String idStr, SecurityContext securityContext, UriInfo uriInfo) throws NotFoundException {
 
         try {
             LOG.debug("DELETE /deleteServiceProblem/{id} called id=" + idStr);
@@ -115,7 +116,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
     }
 
     @Override
-    public Response listServiceProblem(String fields, Integer offset, Integer limit, SecurityContext securityContext)
+    public Response listServiceProblem(String fields, Integer offset, Integer limit, SecurityContext securityContext, UriInfo uriInfo)
             throws NotFoundException {
 
         try {
@@ -162,7 +163,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
     @Override
     @Transactional
-    public Response patchServiceProblem(String id, ServiceProblemUpdate serviceProblem, SecurityContext securityContext)
+    public Response patchServiceProblem(String id, ServiceProblemUpdate serviceProblem, SecurityContext securityContext, UriInfo uriInfo)
             throws NotFoundException {
         // do some magic!
         return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR)
@@ -172,7 +173,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
     }
 
     @Override
-    public Response retrieveServiceProblem(String idStr, String fields, SecurityContext securityContext)
+    public Response retrieveServiceProblem(String idStr, String fields, SecurityContext securityContext, UriInfo uriInfo)
             throws NotFoundException {
 
         try {

@@ -113,6 +113,7 @@
                 <groupId>com.google.code.maven-replacer-plugin</groupId>
                 <artifactId>replacer</artifactId>
 
+                <!-- remove ambiguities about whether we are using avax.ws.rs.PATCH and not io.swagger.jaxrs.PATCH -->
                 <executions>
                     <execution>
                         <id>make-sure-PATCH-works</id>
@@ -135,6 +136,8 @@
                             </replacements>
                         </configuration>
                     </execution>
+
+                    <!-- to do remove - factories are not used -->
                     <execution>
                         <id>add-inject-to-factories</id>
                         <phase>process-sources</phase>
@@ -182,7 +185,7 @@
                             <regex>false</regex>
                             <replacements>
                                 <!-- modifies code to allow delegate to be injected to service classes (order is important) -->
-                                
+
                                 <!-- removes factories import code -->
                                 <replacement>
                                     <token>import ${project.groupId}.${specPackageName}.swagger.api.factories</token>
@@ -249,7 +252,8 @@
                             </replacements>
                         </configuration>
                     </execution>
-                    
+
+                    <!-- This is a work around because I cannot yet find out how to make the Jackson objectFactory respect empty objects -->
                     <execution>
                         <id>fix-Any</id>
                         <phase>process-sources</phase>
@@ -263,19 +267,85 @@
                             </includes>
                             <regex>false</regex>
                             <replacements>
-                                <!-- modifies code so that Any filed can be accessed by jackson -->
+                                <!-- modifies code so that Any fieled can be accessed by jackson -->
+                                <!-- this may not be necessary if the object mapper can be fixed -->
                                 <replacement>
-                                    <token>public class Any   {</token>
+                                    <token><![CDATA[public class Any   {]]></token>
                                     <value><![CDATA[public class Any   {${line.separator}${line.separator}  //added to prevent empty field problems in jackson${line.separator}  @com.fasterxml.jackson.annotation.JsonProperty("anyStr")${line.separator}  private String anyStr=null;${line.separator}${line.separator}  @com.fasterxml.jackson.annotation.JsonProperty("anyStr")${line.separator}  public String getAnyStr() {return anyStr;}${line.separator}${line.separator}  public void setAnyStr(String anyStr) { this.anyStr = anyStr; }]]></value>
                                 </replacement>
-                               
+
                             </replacements>
                         </configuration>
                     </execution>
-                    
-                    
-                    
-                    
+
+                    <!-- These replacements allow Rest service access to UriInfo by UriInfo to generated code -->
+                    <execution>
+                        <id>add-request-uri-to-api-service</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir>
+                            <includes>
+                                <include>**/api/*ApiService.java</include>
+                            </includes>
+                            <regex>false</regex>
+                            <replacements>
+                                <!-- makes sure we use javax.ws.rs.core.UriInfo uriInfo -->
+                                <replacement>
+                                    <token>SecurityContext securityContext)</token>
+                                    <value><![CDATA[SecurityContext securityContext, javax.ws.rs.core.UriInfo uriInfo)]]></value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-request-uri-to-api-service-impl</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir>
+                            <includes>
+                                <include>**/impl/*ApiServiceImpl.java</include>
+                            </includes>
+                            <regex>false</regex>
+                            <replacements>
+                                <!-- makes sure we use javax.ws.rs.core.UriInfo uriInfo -->
+                                <replacement>
+                                    <token>SecurityContext securityContext)</token>
+                                    <value><![CDATA[SecurityContext securityContext, javax.ws.rs.core.UriInfo uriInfo)]]></value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-request-uri-to-api</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir>
+                            <includes>
+                                <include>**/api/*Api.java</include>
+                            </includes>
+                            <regex>false</regex>
+                            <replacements>
+                                <!-- makes sure we use javax.ws.rs.core.UriInfo uriInfo -->
+                                <replacement>
+                                    <token>SecurityContext securityContext)</token>
+                                    <value><![CDATA[SecurityContext securityContext, @Context javax.ws.rs.core.UriInfo uriInfo)]]></value>
+                                </replacement>
+                                <replacement>
+                                    <token>securityContext);</token>
+                                    <value><![CDATA[securityContext, uriInfo);]]></value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
                 </executions>
 
             </plugin>
