@@ -73,7 +73,7 @@ public class ServiceProblemRepositoryTest {
         serviceProblem1 = serviceProblemRepository.save(serviceProblem1);
         LOG.debug("serviceProblem1=" + serviceProblem1);
 
-        Long id = serviceProblem1.getID();
+        Long id = serviceProblem1.getId();
         ServiceProblemEntity serviceProblem2 = serviceProblemRepository.getOne(id);
         LOG.debug("serviceProblem2=" + serviceProblem2);
         

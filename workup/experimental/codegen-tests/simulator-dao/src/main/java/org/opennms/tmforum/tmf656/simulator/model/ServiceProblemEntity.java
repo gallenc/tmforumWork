@@ -28,7 +28,8 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.TroubleTicketRef;
 @Entity
 public class ServiceProblemEntity {
 
-    private Long ID = null;
+
+    private Long id = null;
 
     private String href = null;
 
@@ -110,12 +111,13 @@ public class ServiceProblemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getID() {
-        return ID;
+    
+    public Long getId() {
+        return id;
     }
 
-    public void setID(Long iD) {
-        ID = iD;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getHref() {
@@ -247,6 +249,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<Place> getAffectedLocation() {
         return affectedLocation;
     }
@@ -256,6 +259,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<ResourceRef> getAffectedResource() {
         return affectedResource;
     }
@@ -265,6 +269,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<ServiceRef> getAffectedService() {
         return affectedService;
     }
@@ -274,6 +279,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<SLAViolationRef> getAssociatedSLAViolation() {
         return associatedSLAViolation;
     }
@@ -283,6 +289,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<TroubleTicketRef> getAssociatedTroubleTicket() {
         return associatedTroubleTicket;
     }
@@ -292,6 +299,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<Note> getComment() {
         return comment;
     }
@@ -301,6 +309,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<Characteristic> getExtensionInfo() {
         return extensionInfo;
     }
@@ -310,6 +319,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectConverter.class)
+    @Column(length = 1000)
     public RelatedEntityRef getFirstAlert() {
         return firstAlert;
     }
@@ -319,6 +329,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectConverter.class)
+    @Column(length = 1000)
     public ImpactPattern getImpactPatterns() {
         return impactPatterns;
     }
@@ -328,6 +339,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectConverter.class)
+    @Column(length = 1000)
     public RelatedParty getOriginatorParty() {
         return originatorParty;
     }
@@ -337,6 +349,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<ServiceProblemRef> getParentProblem() {
         return parentProblem;
     }
@@ -346,6 +359,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<EventRef> getRelatedEvent() {
         return relatedEvent;
     }
@@ -355,6 +369,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<RelatedEntityRef> getRelatedObject() {
         return relatedObject;
     }
@@ -364,6 +379,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<RelatedParty> getRelatedParty() {
         return relatedParty;
     }
@@ -373,6 +389,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectConverter.class)
+    @Column(length = 1000)
     public RelatedParty getResponsibleParty() {
         return responsibleParty;
     }
@@ -382,6 +399,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<ResourceRef> getRootCauseResource() {
         return rootCauseResource;
     }
@@ -391,6 +409,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<ServiceRef> getRootCauseService() {
         return rootCauseService;
     }
@@ -400,6 +419,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<TrackingRecord> getTrackingRecord() {
         return trackingRecord;
     }
@@ -409,6 +429,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<ResourceAlarmRef> getUnderlyingAlarm() {
         return underlyingAlarm;
     }
@@ -418,6 +439,7 @@ public class ServiceProblemEntity {
     }
 
     @Convert(converter = ObjectListConverter.class)
+    @Column(length = 1000)
     public List<ServiceProblemRef> getUnderlyingProblem() {
         return underlyingProblem;
     }
@@ -451,35 +473,14 @@ public class ServiceProblemEntity {
     }
 
     @Override
-    public String toString() {
-        return "ServiceProblemImpl [ID=" + ID + ", href=" + href + ", affectedNumberOfServices="
-                + affectedNumberOfServices + ", category=" + category + ", correlationId=" + correlationId
-                + ", description=" + description + ", impactImportanceFactor=" + impactImportanceFactor
-                + ", originatingSystem=" + originatingSystem + ", priority=" + priority + ", problemEscalation="
-                + problemEscalation + ", reason=" + reason + ", resolutionDate=" + resolutionDate + ", status=" + status
-                + ", statusChangeDate=" + statusChangeDate + ", statusChangeReason=" + statusChangeReason
-                + ", timeChanged=" + timeChanged + ", timeRaised=" + timeRaised + ", affectedLocation="
-                + affectedLocation + ", affectedResource=" + affectedResource + ", affectedService=" + affectedService
-                + ", associatedSLAViolation=" + associatedSLAViolation + ", associatedTroubleTicket="
-                + associatedTroubleTicket + ", comment=" + comment + ", extensionInfo=" + extensionInfo
-                + ", firstAlert=" + firstAlert + ", impactPatterns=" + impactPatterns + ", originatorParty="
-                + originatorParty + ", parentProblem=" + parentProblem + ", relatedEvent=" + relatedEvent
-                + ", relatedObject=" + relatedObject + ", relatedParty=" + relatedParty + ", responsibleParty="
-                + responsibleParty + ", rootCauseResource=" + rootCauseResource + ", rootCauseService="
-                + rootCauseService + ", trackingRecord=" + trackingRecord + ", underlyingAlarm=" + underlyingAlarm
-                + ", underlyingProblem=" + underlyingProblem + ", baseType=" + baseType + ", schemaLocation="
-                + schemaLocation + ", type=" + type + "]";
-    }
-
-    @Override
     public int hashCode() {
-        return Objects.hash(ID, affectedLocation, affectedNumberOfServices, affectedResource, affectedService,
+        return Objects.hash(affectedLocation, affectedNumberOfServices, affectedResource, affectedService,
                 associatedSLAViolation, associatedTroubleTicket, baseType, category, comment, correlationId,
-                description, extensionInfo, firstAlert, href, impactImportanceFactor, impactPatterns, originatingSystem,
-                originatorParty, parentProblem, priority, problemEscalation, reason, relatedEvent, relatedObject,
-                relatedParty, resolutionDate, responsibleParty, rootCauseResource, rootCauseService, schemaLocation,
-                status, statusChangeDate, statusChangeReason, timeChanged, timeRaised, trackingRecord, type,
-                underlyingAlarm, underlyingProblem);
+                description, extensionInfo, firstAlert, href, id, impactImportanceFactor, impactPatterns,
+                originatingSystem, originatorParty, parentProblem, priority, problemEscalation, reason, relatedEvent,
+                relatedObject, relatedParty, resolutionDate, responsibleParty, rootCauseResource, rootCauseService,
+                schemaLocation, status, statusChangeDate, statusChangeReason, timeChanged, timeRaised, trackingRecord,
+                type, underlyingAlarm, underlyingProblem);
     }
 
     @Override
@@ -491,7 +492,7 @@ public class ServiceProblemEntity {
         if (getClass() != obj.getClass())
             return false;
         ServiceProblemEntity other = (ServiceProblemEntity) obj;
-        return Objects.equals(ID, other.ID) && Objects.equals(affectedLocation, other.affectedLocation)
+        return Objects.equals(affectedLocation, other.affectedLocation)
                 && Objects.equals(affectedNumberOfServices, other.affectedNumberOfServices)
                 && Objects.equals(affectedResource, other.affectedResource)
                 && Objects.equals(affectedService, other.affectedService)
@@ -501,7 +502,7 @@ public class ServiceProblemEntity {
                 && Objects.equals(comment, other.comment) && Objects.equals(correlationId, other.correlationId)
                 && Objects.equals(description, other.description) && Objects.equals(extensionInfo, other.extensionInfo)
                 && Objects.equals(firstAlert, other.firstAlert) && Objects.equals(href, other.href)
-                && Objects.equals(impactImportanceFactor, other.impactImportanceFactor)
+                && Objects.equals(id, other.id) && Objects.equals(impactImportanceFactor, other.impactImportanceFactor)
                 && Objects.equals(impactPatterns, other.impactPatterns)
                 && Objects.equals(originatingSystem, other.originatingSystem)
                 && Objects.equals(originatorParty, other.originatorParty)
@@ -522,13 +523,27 @@ public class ServiceProblemEntity {
                 && Objects.equals(underlyingAlarm, other.underlyingAlarm)
                 && Objects.equals(underlyingProblem, other.underlyingProblem);
     }
-    
-    
-    
-    
-    
 
-
+    @Override
+    public String toString() {
+        return "ServiceProblemEntity [id=" + id + ", href=" + href + ", affectedNumberOfServices="
+                + affectedNumberOfServices + ", category=" + category + ", correlationId=" + correlationId
+                + ", description=" + description + ", impactImportanceFactor=" + impactImportanceFactor
+                + ", originatingSystem=" + originatingSystem + ", priority=" + priority + ", problemEscalation="
+                + problemEscalation + ", reason=" + reason + ", resolutionDate=" + resolutionDate + ", status=" + status
+                + ", statusChangeDate=" + statusChangeDate + ", statusChangeReason=" + statusChangeReason
+                + ", timeChanged=" + timeChanged + ", timeRaised=" + timeRaised + ", affectedLocation="
+                + affectedLocation + ", affectedResource=" + affectedResource + ", affectedService=" + affectedService
+                + ", associatedSLAViolation=" + associatedSLAViolation + ", associatedTroubleTicket="
+                + associatedTroubleTicket + ", comment=" + comment + ", extensionInfo=" + extensionInfo
+                + ", firstAlert=" + firstAlert + ", impactPatterns=" + impactPatterns + ", originatorParty="
+                + originatorParty + ", parentProblem=" + parentProblem + ", relatedEvent=" + relatedEvent
+                + ", relatedObject=" + relatedObject + ", relatedParty=" + relatedParty + ", responsibleParty="
+                + responsibleParty + ", rootCauseResource=" + rootCauseResource + ", rootCauseService="
+                + rootCauseService + ", trackingRecord=" + trackingRecord + ", underlyingAlarm=" + underlyingAlarm
+                + ", underlyingProblem=" + underlyingProblem + ", baseType=" + baseType + ", schemaLocation="
+                + schemaLocation + ", type=" + type + "]";
+    }
 
 
 

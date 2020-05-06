@@ -26,11 +26,16 @@
         <Logger name="org.hibernate" additivity="false" level="INFO">
             <AppenderRef ref="Console" />
         </Logger>
-        
+
         <Logger name="org.reflections" additivity="false" level="INFO">
             <AppenderRef ref="Console" />
         </Logger>
-        
+
+        <Logger name="org.glassfish.jersey" additivity="false" level="DEBUG">
+            <AppenderRef ref="Console" />
+        </Logger>
+
+
         <!-- used to show request mappings in spring 5 -->
         <!--<logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="TRACE" > -->
         <logger name="org.springframework.web.servlet.mvc" level="TRACE">
@@ -41,8 +46,8 @@
         <Logger name="org.springframework" additivity="false" level="DEBUG">
             <AppenderRef ref="Console" />
         </Logger>
-        
-        <!-- log spring properties loading-->
+
+        <!-- log spring properties loading -->
         <Logger name="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" additivity="false" level="DEBUG">
             <AppenderRef ref="Console" />
         </Logger>

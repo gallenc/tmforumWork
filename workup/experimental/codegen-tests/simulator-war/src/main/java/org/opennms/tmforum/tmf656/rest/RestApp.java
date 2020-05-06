@@ -3,13 +3,16 @@ package org.opennms.tmforum.tmf656.rest;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.CommonProperties;
+//import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import io.swagger.jaxrs.config.BeanConfig;
@@ -40,55 +43,87 @@ import org.springframework.stereotype.Component;
 //    }
 //}
 
-
 public class RestApp extends ResourceConfig {
-	private Logger LOG = LoggerFactory.getLogger(RestApp.class);
-	
-	// should be injected but leave for now
-	private String basePath = "/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/";
-	
-	// produces http://localhost:8080/tmf-api/serviceProblemManagement/v3/swagger.json
-	// see
-	// https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Getting-started
-	
-	// setting package names programatically because we may refactor
-	String packageApi = org.opennms.tmforum.swagger.tmf656.swagger.api.StringUtil.class.getPackage().getName();
-	String packageModel = org.opennms.tmforum.swagger.tmf656.swagger.model.Any.class.getPackage().getName();
-	
-	public RestApp() {
-		LOG.info("**************************** DEBUG STARTING INTERFACE REST APP ");
+    private static Logger LOG = LoggerFactory.getLogger(RestApp.class);
 
-		LOG.info("**************************** Registering packages "+packageApi+" "+packageModel);
+    // should be injected but leave for now
+    private String basePath = "/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/";
+
+    // produces
+    // http://localhost:8080/tmf-api/serviceProblemManagement/v3/swagger.json
+    // see
+    // https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Getting-started
+
+    // setting package names programatically because we may refactor
+    String packageApi = org.opennms.tmforum.swagger.tmf656.swagger.api.StringUtil.class.getPackage().getName();
+    String packageModel = org.opennms.tmforum.swagger.tmf656.swagger.model.Any.class.getPackage().getName();
+
+    public RestApp() {
+        LOG.info("**************************** DEBUG STARTING INTERFACE REST APP ");
+
+        LOG.info("**************************** Registering packages " + packageApi + " " + packageModel);
+
+        //// search in jackson's package "com.fasterxml.jackson"
+        
+        packages(packageApi, packageModel, "org.opennms.tmforum.tmf656.simulator.api.impl");
+        
+        //register(JacksonObjectMapperProvider.class);
+
+		//register(JacksonFeature.class);
+        register(NewJacksonFeature.class);
 		
-		packages(packageApi, packageModel, "org.opennms.tmforum.tmf656.simulator.api.impl");
-		
-		register(JacksonFeature.class);
+        // this logs over jul. Use jul to slf4j bridge in classpath
+        registerInstances(new LoggingFeature(new JulFacade(), Level.FINE, 
+                LoggingFeature.Verbosity.PAYLOAD_ANY, 1000));
 
-	    register(JacksonObjectMapperProvider.class);
+        configureSwagger();
+    }
 
-		configureSwagger();
-	}
-	
+    // used to map jul logging into slf4j
+    // see
+    // https://stackoverflow.com/questions/4121722/how-to-make-jersey-to-use-slf4j-instead-of-jul
+    private static class JulFacade extends java.util.logging.Logger {
+        JulFacade() {
+            super("Jersey", null);
+            LOG.info("**************************** set up logging on jersey ");
+        }
 
+        @Override
+        public void info(String msg) {
+            LOG.info(msg);
+        }
+        
+        @Override
+        public void fine(String msg) {
+            LOG.debug(msg);
+        }
+        
+        @Override
+        public void finest(String msg) {
+            LOG.trace(msg);
+        }
+        
+    }
+    
 
-	// swagger 1.5
-	// see
-	// https://stackoverflow.com/questions/40480131/how-to-use-swagger-with-resourceconfig-in-jersey
-	private void configureSwagger() {
-		this.register(ApiListingResource.class);
-		this.register(SwaggerSerializers.class);
-		BeanConfig config = new BeanConfig();
-		config.setConfigId("spring-jaxrs-swagger");
-		config.setTitle("Swagger Server");
-		config.setVersion("1.0.0");
-		// swagger is at http://localhost:8080/basePath/swagger.json
-		config.setBasePath(basePath);
-		//config.setResourcePackage("org.opennms.tmforum.swagger.tmf656.swagger.api");
-		config.setResourcePackage(packageApi);
-		config.setPrettyPrint(true);
-		config.setScan(true);
+    // swagger 1.5
+    // see
+    // https://stackoverflow.com/questions/40480131/how-to-use-swagger-with-resourceconfig-in-jersey
+    private void configureSwagger() {
+        this.register(ApiListingResource.class);
+        this.register(SwaggerSerializers.class);
+        BeanConfig config = new BeanConfig();
+        config.setConfigId("spring-jaxrs-swagger");
+        config.setTitle("Swagger Server");
+        config.setVersion("1.0.0");
+        // swagger is at http://localhost:8080/basePath/swagger.json
+        config.setBasePath(basePath);
+        // config.setResourcePackage("org.opennms.tmforum.swagger.tmf656.swagger.api");
+        config.setResourcePackage(packageApi);
+        config.setPrettyPrint(true);
+        config.setScan(true);
 
-		// http://localhost:8084/project-web/rest/swagger/v1.0/swagger.json
-		// http://localhost:8080/swagger/v1.0/swagger.json
-	}
+        // http://localhost:8084/project-web/rest/swagger/v1.0/swagger.json
+        // http://localhost:8080/swagger/v1.0/swagger.json
+    }
 }

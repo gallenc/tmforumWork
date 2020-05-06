@@ -249,6 +249,33 @@
                             </replacements>
                         </configuration>
                     </execution>
+                    
+                    <execution>
+                        <id>fix-Any</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${generated-sources-path}${file.separator}${generated-sources-java-path}</basedir>
+                            <includes>
+                                <include>**/model/Any.java</include>
+                            </includes>
+                            <regex>false</regex>
+                            <replacements>
+                                <!-- modifies code so that Any filed can be accessed by jackson -->
+                                <replacement>
+                                    <token>public class Any   {</token>
+                                    <value><![CDATA[public class Any   {${line.separator}${line.separator}  //added to prevent empty field problems in jackson${line.separator}  @com.fasterxml.jackson.annotation.JsonProperty("anyStr")${line.separator}  private String anyStr=null;${line.separator}${line.separator}  @com.fasterxml.jackson.annotation.JsonProperty("anyStr")${line.separator}  public String getAnyStr() {return anyStr;}${line.separator}${line.separator}  public void setAnyStr(String anyStr) { this.anyStr = anyStr; }]]></value>
+                                </replacement>
+                               
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    
+                    
+                    
+                    
                 </executions>
 
             </plugin>
