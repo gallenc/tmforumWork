@@ -71,6 +71,11 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             // map jpa entity to swagger dto
             ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                     .serviceProblemEntityToServiceProblem(serviceProblemEntity);
+            
+            // add absolute path href
+            String idStr=serviceProblem.getId();
+            String href = uriInfo.getAbsolutePath().toASCIIString()+"/"+idStr;
+            serviceProblem.setHref(href);
 
             LOG.debug("created service problem returning serviceProblem:" + serviceProblem);
 
@@ -143,6 +148,11 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
                 ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                         .serviceProblemEntityToServiceProblem(serviceProblemEntity);
                 
+                // add absolute path href
+                String idStr=serviceProblem.getId();
+                String href = uriInfo.getAbsolutePath().toASCIIString()+"/"+idStr;
+                serviceProblem.setHref(href);
+                
                 FieldFilter<ServiceProblem> fieldFilter = new FieldFilter<ServiceProblem>();
 
                 serviceProblem = fieldFilter.filter(serviceProblem, fields, null);
@@ -197,6 +207,10 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             // map jpa entity to swagger dto
             ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                     .serviceProblemEntityToServiceProblem(serviceProblemEntity);
+            
+            // add absolute path href
+            String href = uriInfo.getAbsolutePath().toASCIIString();
+            serviceProblem.setHref(href);
 
             LOG.debug("mapped serviceProblem:" + serviceProblem);
 

@@ -2,6 +2,7 @@ package org.opennms.tmforum.tmf656.service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +11,8 @@ public class FieldFilter<T> {
     /**
      * filters object, making fields null unless named in userFields or
      * defaultFields
+     * 
+     * If fields contains 'none', then only href and id are returned
      * 
      * @param objectToFilter objectToFilter object which will have fields made null.
      *                       (Note this object is modified not cloned).
@@ -46,6 +49,8 @@ public class FieldFilter<T> {
      * filters object, making fields null unless named in userFields or
      * defaultFields
      * 
+     * If userFields contains 'none', then only href and id are returned
+     * 
      * @param objectToFilter object which will have fields made null
      * @param userFields     fields which user wants returned
      * @param defaultFields  fields which will always be returned (as list of
@@ -60,9 +65,14 @@ public class FieldFilter<T> {
         }
 
         List<String> allfields = new ArrayList<String>();
-        allfields.addAll(userFields);
-        if (defaultFields != null) {
-            allfields.addAll(defaultFields);
+
+        if (userFields.contains("none")) {
+            allfields.addAll(Arrays.asList("href", "id"));
+        } else {
+            allfields.addAll(userFields);
+            if (defaultFields != null) {
+                allfields.addAll(defaultFields);
+            }
         }
 
         // get objects fields and check if all requested fields can be returned by this

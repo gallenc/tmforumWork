@@ -65,7 +65,7 @@ public class RestApp extends ResourceConfig {
 
         //// search in jackson's package "com.fasterxml.jackson"
         
-        packages(packageApi, packageModel, "org.opennms.tmforum.tmf656.simulator.api.impl");
+        packages(packageApi, packageModel, "org.opennms.tmforum.tmf656.simulator.api.impl", "org.opennms.tmforum.rest");
         
         //register(JacksonObjectMapperProvider.class);
 
