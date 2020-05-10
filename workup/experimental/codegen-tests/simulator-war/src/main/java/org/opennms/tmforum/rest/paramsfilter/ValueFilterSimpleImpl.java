@@ -2,8 +2,15 @@ package org.opennms.tmforum.rest.paramsfilter;
 
 import java.util.Objects;
 
-public class SimpleValueFilterImpl extends ValueFilter {
+import javax.persistence.criteria.CriteriaBuilder;
+
+public class ValueFilterSimpleImpl extends ValueFilter {
     
+    ValueFilterSimpleImpl(CriteriaBuilder cb) {
+        super(cb);
+    }
+
+
     String value=null;
 
     @Override
@@ -15,7 +22,7 @@ public class SimpleValueFilterImpl extends ValueFilter {
 
     @Override
     public String getQuery() {
-        return value;
+        return " '"+value+"' ";
     }
 
 

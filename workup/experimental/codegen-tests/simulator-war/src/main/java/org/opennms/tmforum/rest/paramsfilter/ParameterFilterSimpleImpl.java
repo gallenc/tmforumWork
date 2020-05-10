@@ -2,8 +2,14 @@ package org.opennms.tmforum.rest.paramsfilter;
 
 import java.util.Objects;
 
-public  class SimpleParameterFilterImpl extends ParameterFilter {
+import javax.persistence.criteria.CriteriaBuilder;
+
+public  class ParameterFilterSimpleImpl extends ParameterFilter {
     
+    public ParameterFilterSimpleImpl(CriteriaBuilder cb) {
+        super(cb);
+    }
+
     String param=null;
     
     @Override

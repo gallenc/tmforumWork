@@ -1,14 +1,20 @@
 package org.opennms.tmforum.rest.paramsfilter;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+
 public abstract class Filter {
  
+    protected CriteriaBuilder cb;
     
     private Filter childFilter=null;
     
-    protected  Filter() {
+    protected Filter(CriteriaBuilder cb) {
+        this.cb=cb;
     }
     
-    public Filter(Filter childFilter) {
+    public Filter(CriteriaBuilder cb, Filter childFilter) {
+        this.cb=cb;
         this.childFilter = childFilter;
     }
     
@@ -16,5 +22,6 @@ public abstract class Filter {
     public String getQuery() {
         return (childFilter==null) ? "" :childFilter.getQuery() ;
     }
+    
 
 }

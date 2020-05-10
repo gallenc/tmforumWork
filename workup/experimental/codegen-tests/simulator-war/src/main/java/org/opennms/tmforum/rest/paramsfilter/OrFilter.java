@@ -6,14 +6,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public class OrFilter extends Filter {
 
     List<Filter> filters = new ArrayList<Filter>();
     
-    public OrFilter() {
+    public OrFilter(CriteriaBuilder cb) {
+        super(cb);
     }
-
-    public OrFilter(Filter... childFilters) {
+    
+    public OrFilter(CriteriaBuilder cb, Filter... childFilters) {
+        super(cb);
         filters.addAll(Arrays.asList(childFilters));
     }
 

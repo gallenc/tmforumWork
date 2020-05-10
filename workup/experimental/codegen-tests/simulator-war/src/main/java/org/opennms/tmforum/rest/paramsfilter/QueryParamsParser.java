@@ -8,17 +8,10 @@ import javax.ws.rs.core.MultivaluedMap;
 public class QueryParamsParser {
 
     // @Inject
-    ParameterFilterFactory parameterFilterFactory = new SimpleParameterFilterFactoryImpl();
+    QueryParamsFilterFactory queryParamsFilterFactory = new QueryParamsFilterFactorySimpleImpl();
 
-    // @Inject
-    ValueFilterFactory valueFilterFactory = new SimpleValueFilterFactoryImpl();
-
-    public void setParameterFilterFactory(ParameterFilterFactory parameterFilterFactory) {
-        this.parameterFilterFactory = parameterFilterFactory;
-    }
-
-    public void setValueFilterFactory(ValueFilterFactory valueFilterFactory) {
-        this.valueFilterFactory = valueFilterFactory;
+    public void setQueryParamsFilterFactory(QueryParamsFilterFactory queryParamsFilterFactory) {
+        this.queryParamsFilterFactory = queryParamsFilterFactory;
     }
 
     /*
@@ -27,7 +20,7 @@ public class QueryParamsParser {
      */
     public Filter parse(MultivaluedMap<String, String> mvMap) {
 
-        AndFilter andFilter = new AndFilter();
+        AndFilter andFilter = queryParamsFilterFactory.getNewAndFilter();
 
         for (String param : mvMap.keySet()) {
             List<String> values = mvMap.get(param);
@@ -36,17 +29,19 @@ public class QueryParamsParser {
             if (param.endsWith(".gt")) {
                 paramName = param.substring(0, param.lastIndexOf(".gt"));
 
-                OrFilter orFilter = new OrFilter();
+                OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterFilter parameterFilter = parameterFilterFactory.getNewParameterFilter();
-                    parameterFilter.setParameter(paramName);
-                    ValueFilter valueFilter = valueFilterFactory.getNewValueFilter();
+                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                            .getNewParameterValueFilterPair(paramName);
+                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
+
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
-                        
-                        Filter gtFilter = new GreaterThanFilter(parameterFilter, valueFilter);
+
+                        Filter gtFilter = queryParamsFilterFactory.getNewGreaterThanFilter(parameterFilter, valueFilter);
                         orFilter.add(gtFilter);
                     }
                 }
@@ -56,17 +51,18 @@ public class QueryParamsParser {
             } else if (param.endsWith(".gte")) {
                 paramName = param.substring(0, param.lastIndexOf(".gte"));
 
-                OrFilter orFilter = new OrFilter();
+                OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
+                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                            .getNewParameterValueFilterPair(paramName);
+                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
 
-                    ParameterFilter parameterFilter = parameterFilterFactory.getNewParameterFilter();
-                    parameterFilter.setParameter(paramName);
-                    ValueFilter valueFilter = valueFilterFactory.getNewValueFilter();
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
-                        
-                        Filter gteFilter = new GreaterThanEqualsFilter(parameterFilter, valueFilter);
+
+                        Filter gteFilter = queryParamsFilterFactory.getNewGreaterThanEqualsFilter(parameterFilter, valueFilter);
                         orFilter.add(gteFilter);
                     }
 
@@ -77,17 +73,19 @@ public class QueryParamsParser {
             } else if (param.endsWith(".lt")) {
                 paramName = param.substring(0, param.lastIndexOf(".lt"));
 
-                OrFilter orFilter = new OrFilter();
+                OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterFilter parameterFilter = parameterFilterFactory.getNewParameterFilter();
-                    parameterFilter.setParameter(paramName);
-                    ValueFilter valueFilter = valueFilterFactory.getNewValueFilter();
+                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                            .getNewParameterValueFilterPair(paramName);
+                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
+
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
-                        Filter ltFilter = new LessThanFilter(parameterFilter, valueFilter);
+                        Filter ltFilter = queryParamsFilterFactory.getNewLessThanFilter(parameterFilter, valueFilter);
                         orFilter.add(ltFilter);
                     }
 
@@ -98,17 +96,19 @@ public class QueryParamsParser {
             } else if (param.endsWith(".lte")) {
                 paramName = param.substring(0, param.lastIndexOf(".lte"));
 
-                OrFilter orFilter = new OrFilter();
+                OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterFilter parameterFilter = parameterFilterFactory.getNewParameterFilter();
-                    parameterFilter.setParameter(paramName);
-                    ValueFilter valueFilter = valueFilterFactory.getNewValueFilter();
+                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                            .getNewParameterValueFilterPair(paramName);
+                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
+
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
-                        Filter lteFilter = new LessThanEqualsFilter(parameterFilter, valueFilter);
+                        Filter lteFilter = queryParamsFilterFactory.getNewLessThanEqualsFilter(parameterFilter, valueFilter);
                         orFilter.add(lteFilter);
                     }
 
@@ -119,17 +119,19 @@ public class QueryParamsParser {
             } else if (param.endsWith(".regex")) {
                 paramName = param.substring(0, param.lastIndexOf(".regex"));
 
-                OrFilter orFilter = new OrFilter();
+                OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterFilter parameterFilter = parameterFilterFactory.getNewParameterFilter();
-                    parameterFilter.setParameter(paramName);
-                    ValueFilter valueFilter = valueFilterFactory.getNewValueFilter();
+                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                            .getNewParameterValueFilterPair(paramName);
+                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
+
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
-                        Filter regexFilter = new RegexFilter(parameterFilter, valueFilter);
+                        Filter regexFilter = queryParamsFilterFactory.getNewRegexFilter(parameterFilter, valueFilter);
                         orFilter.add(regexFilter);
                     }
 
@@ -142,17 +144,19 @@ public class QueryParamsParser {
                 // all values are ored in this case
                 paramName = param;
 
-                OrFilter orFilter = new OrFilter();
+                OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterFilter parameterFilter = parameterFilterFactory.getNewParameterFilter();
-                    parameterFilter.setParameter(paramName);
-                    ValueFilter valueFilter = valueFilterFactory.getNewValueFilter();
+                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                            .getNewParameterValueFilterPair(paramName);
+                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
+
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
-                        Filter eqFilter = new EqualsFilter(parameterFilter, valueFilter);
+                        Filter eqFilter = queryParamsFilterFactory.getNewEqualsFilter(parameterFilter, valueFilter);
                         orFilter.add(eqFilter);
                     }
                 }

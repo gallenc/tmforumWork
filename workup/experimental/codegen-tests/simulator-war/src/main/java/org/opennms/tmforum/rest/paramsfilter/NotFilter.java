@@ -1,10 +1,13 @@
 package org.opennms.tmforum.rest.paramsfilter;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public class NotFilter extends Filter {
 
     private Filter childFilter = null;
 
-    public NotFilter(Filter childFilter) {
+    public NotFilter(CriteriaBuilder cb, Filter childFilter) {
+        super(cb);
         this.childFilter = childFilter;
     }
 

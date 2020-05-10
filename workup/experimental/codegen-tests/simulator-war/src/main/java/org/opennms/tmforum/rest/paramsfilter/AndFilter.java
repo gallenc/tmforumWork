@@ -5,14 +5,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 public class AndFilter extends Filter{
     
     List<Filter> filters = new ArrayList<Filter>();
     
-    public AndFilter() {
+    public AndFilter(CriteriaBuilder cb) {
+        super(cb);
     }
 
-    public AndFilter(Filter... childFilters) {
+    public AndFilter(CriteriaBuilder cb, Filter... childFilters) {
+        super(cb);
         filters.addAll(Arrays.asList(childFilters));
     }
 
@@ -40,5 +45,8 @@ public class AndFilter extends Filter{
         
         return query;
     }
+    
+    
+
 
 }

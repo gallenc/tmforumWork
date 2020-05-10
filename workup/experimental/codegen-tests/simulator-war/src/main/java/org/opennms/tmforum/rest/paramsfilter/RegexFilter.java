@@ -1,11 +1,14 @@
 package org.opennms.tmforum.rest.paramsfilter;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public class RegexFilter extends Filter{
 
     Filter childFilterA;
-    Filter childFilterB;
+    ValueFilter childFilterB;
 
-    public RegexFilter(Filter childFilterA, Filter childFilterB) {
+    public RegexFilter(CriteriaBuilder cb, Filter childFilterA, ValueFilter childFilterB) {
+        super(cb);
         this.childFilterA=childFilterA;
         this.childFilterB=childFilterB;
     }
