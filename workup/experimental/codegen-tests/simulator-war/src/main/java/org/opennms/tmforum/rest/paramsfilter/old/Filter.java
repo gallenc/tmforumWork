@@ -1,6 +1,7 @@
-package org.opennms.tmforum.rest.paramsfilter;
+package org.opennms.tmforum.rest.paramsfilter.old;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 
 public abstract class Filter {
@@ -23,5 +24,7 @@ public abstract class Filter {
         return (childFilter==null) ? "" :childFilter.getQuery() ;
     }
     
+    
+    public abstract Expression  getExpression() ;
 
 }

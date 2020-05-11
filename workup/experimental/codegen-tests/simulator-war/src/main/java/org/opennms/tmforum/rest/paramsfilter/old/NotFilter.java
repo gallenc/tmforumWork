@@ -1,6 +1,7 @@
-package org.opennms.tmforum.rest.paramsfilter;
+package org.opennms.tmforum.rest.paramsfilter.old;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
 
 public class NotFilter extends Filter {
 
@@ -17,6 +18,13 @@ public class NotFilter extends Filter {
         String query = " NOT ( " + childFilter.getQuery() + " ) ";
         return query;
 
+    }
+    
+    @Override
+    public Predicate getExpression() {
+
+        return cb.not(childFilter.getExpression());
+        
     }
 
 }

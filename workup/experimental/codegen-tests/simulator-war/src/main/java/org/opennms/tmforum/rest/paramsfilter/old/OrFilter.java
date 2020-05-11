@@ -1,4 +1,4 @@
-package org.opennms.tmforum.rest.paramsfilter;
+package org.opennms.tmforum.rest.paramsfilter.old;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 
 public class OrFilter extends Filter {
 
@@ -43,6 +45,18 @@ public class OrFilter extends Filter {
         query+=") ";
         
         return query;
+    }
+    
+    @Override
+    public Predicate getExpression() {
+        
+        List<Expression> expressions = new ArrayList<Expression>();
+        for(Filter f:filters) {
+            expressions.add(f.getExpression());
+        }
+        
+        return cb.or(expressions.toArray(new Predicate[0]));
+        
     }
 
 }

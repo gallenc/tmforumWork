@@ -1,7 +1,7 @@
 package org.opennms.tmforum.rest;
 
-import org.opennms.tmforum.rest.paramsfilter.Filter;
-import org.opennms.tmforum.rest.paramsfilter.QueryParamsParser;
+import org.opennms.tmforum.rest.paramsfilter.old.Filter;
+import org.opennms.tmforum.rest.paramsfilter.old.QueryParamsParser;
 import org.opennms.tmforum.swagger.tmf656.swagger.api.*;
 
 import org.slf4j.Logger;
