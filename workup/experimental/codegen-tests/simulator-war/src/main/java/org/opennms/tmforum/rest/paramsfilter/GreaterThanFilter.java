@@ -1,6 +1,8 @@
 package org.opennms.tmforum.rest.paramsfilter;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 
 public class GreaterThanFilter extends Filter{
 
@@ -17,5 +19,11 @@ public class GreaterThanFilter extends Filter{
     public String getQuery() {
         
         return "("+ childFilterA.getQuery() +" > "+ childFilterB.getQuery()+" )";
+    }
+
+    @Override
+    public Predicate getExpression() {
+        // TODO Auto-generated method stub
+        return cb.gt(childFilterA.getExpression(), childFilterB.getExpression());
     }
 }

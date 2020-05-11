@@ -1,5 +1,8 @@
 package org.opennms.tmforum.rest.paramsfilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 
 public class QueryParamsFilterFactorySimpleImpl implements QueryParamsFilterFactory{
@@ -9,6 +12,8 @@ public class QueryParamsFilterFactorySimpleImpl implements QueryParamsFilterFact
     public void setCriteriaBuilder(CriteriaBuilder criteriaBuilder) {
         this.criteriaBuilder = criteriaBuilder;
     }
+    
+    List<ParameterValueFilterPair> parameterValueFilterPairList = new ArrayList<ParameterValueFilterPair>();
 
     @Override
     public ParameterValueFilterPair getNewParameterValueFilterPair(String parameterName) {
@@ -18,7 +23,11 @@ public class QueryParamsFilterFactorySimpleImpl implements QueryParamsFilterFact
         
         ValueFilter valueFilter = new ValueFilterSimpleImpl(criteriaBuilder);
         
-        return new ParameterValueFilterPair(parameterFilter, valueFilter);
+        ParameterValueFilterPair parameterValueFilterPair =  new ParameterValueFilterPair(parameterFilter, valueFilter);
+        
+        parameterValueFilterPairList.add(parameterValueFilterPair);
+        
+        return parameterValueFilterPair;
        
     }
 
@@ -75,8 +84,6 @@ public class QueryParamsFilterFactorySimpleImpl implements QueryParamsFilterFact
 
         return new RegexFilter(criteriaBuilder, childFilterA, childFilterB);
     }
-
-
 
  
 

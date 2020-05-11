@@ -3,6 +3,7 @@ package org.opennms.tmforum.rest.paramsfilter;
 import java.util.Objects;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
 
 public  class ParameterFilterSimpleImpl extends ParameterFilter {
     
@@ -21,6 +22,12 @@ public  class ParameterFilterSimpleImpl extends ParameterFilter {
     @Override
     public String getQuery() {
         return param;
+    }
+
+    @Override
+    public Predicate getExpression() {
+        // TODO Auto-generated method stub
+        return null;
     };
 
 }

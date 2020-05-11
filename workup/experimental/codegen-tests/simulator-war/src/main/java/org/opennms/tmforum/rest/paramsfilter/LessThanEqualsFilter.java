@@ -1,6 +1,8 @@
 package org.opennms.tmforum.rest.paramsfilter;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 
 public class LessThanEqualsFilter extends Filter{
 
@@ -16,6 +18,12 @@ public class LessThanEqualsFilter extends Filter{
     @Override
     public String getQuery() {
         return "("+ childFilterA.getQuery() +" <= "+ childFilterB.getQuery()+" )";
+    }
+
+    @Override
+    public Predicate getExpression() {
+
+        return cb.le(childFilterA.getExpression(), childFilterB.getExpression());
     }
 
 }

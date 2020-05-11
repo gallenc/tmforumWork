@@ -3,6 +3,7 @@ package org.opennms.tmforum.rest.paramsfilter;
 import java.util.Objects;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 
 public abstract class ValueFilter extends Filter{
     
@@ -14,5 +15,8 @@ public abstract class ValueFilter extends Filter{
 
     @Override
     public abstract String getQuery() ;
+    
+    @Override
+    public abstract Expression  getExpression() ;
 
 }

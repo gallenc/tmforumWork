@@ -32,16 +32,16 @@ public class QueryParamsParser {
                 OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
-                            .getNewParameterValueFilterPair(paramName);
-                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
-
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                                .getNewParameterValueFilterPair(paramName);
+                        ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
                         ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
-                        Filter gtFilter = queryParamsFilterFactory.getNewGreaterThanFilter(parameterFilter, valueFilter);
+                        Filter gtFilter = queryParamsFilterFactory.getNewGreaterThanFilter(parameterFilter,
+                                valueFilter);
                         orFilter.add(gtFilter);
                     }
                 }
@@ -53,16 +53,17 @@ public class QueryParamsParser {
 
                 OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
+
+                    String[] multiValue = value.split(",");
                     ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
                             .getNewParameterValueFilterPair(paramName);
                     ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
-
-                    String[] multiValue = value.split(",");
                     for (String val : multiValue) {
                         ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
-                        Filter gteFilter = queryParamsFilterFactory.getNewGreaterThanEqualsFilter(parameterFilter, valueFilter);
+                        Filter gteFilter = queryParamsFilterFactory.getNewGreaterThanEqualsFilter(parameterFilter,
+                                valueFilter);
                         orFilter.add(gteFilter);
                     }
 
@@ -76,12 +77,11 @@ public class QueryParamsParser {
                 OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
-                            .getNewParameterValueFilterPair(paramName);
-                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
-
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                                .getNewParameterValueFilterPair(paramName);
+                        ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
                         ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
@@ -99,16 +99,16 @@ public class QueryParamsParser {
                 OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
+                    String[] multiValue = value.split(",");
                     ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
                             .getNewParameterValueFilterPair(paramName);
                     ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
-
-                    String[] multiValue = value.split(",");
                     for (String val : multiValue) {
                         ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
-                        Filter lteFilter = queryParamsFilterFactory.getNewLessThanEqualsFilter(parameterFilter, valueFilter);
+                        Filter lteFilter = queryParamsFilterFactory.getNewLessThanEqualsFilter(parameterFilter,
+                                valueFilter);
                         orFilter.add(lteFilter);
                     }
 
@@ -122,12 +122,12 @@ public class QueryParamsParser {
                 OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
-                            .getNewParameterValueFilterPair(paramName);
-                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
-
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+
+                        ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                                .getNewParameterValueFilterPair(paramName);
+                        ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
                         ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
@@ -147,12 +147,11 @@ public class QueryParamsParser {
                 OrFilter orFilter = queryParamsFilterFactory.getNewOrFilter();
                 for (String value : values) {
 
-                    ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
-                            .getNewParameterValueFilterPair(paramName);
-                    ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
-
                     String[] multiValue = value.split(",");
                     for (String val : multiValue) {
+                        ParameterValueFilterPair parameterValueFilterPair = queryParamsFilterFactory
+                                .getNewParameterValueFilterPair(paramName);
+                        ParameterFilter parameterFilter = parameterValueFilterPair.getParameterFilter();
                         ValueFilter valueFilter = parameterValueFilterPair.getValueFilter();
                         valueFilter.setValue(val);
 
