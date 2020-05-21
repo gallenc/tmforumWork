@@ -92,7 +92,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
                             <!-- use this to exclude more generated code as project is built -->
-                            <excludes>**/ServiceProblemApiServiceImpl.java</excludes>
+                            <excludes>**/ServiceProblemApiServiceImpl.java,**/HubApiServiceImpl.java</excludes>
                         </configuration>
                     </execution>
                 </executions>
@@ -351,6 +351,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- testing -->
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-jetty</artifactId>
             <scope>test</scope>
         </dependency>
 

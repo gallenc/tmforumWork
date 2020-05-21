@@ -242,7 +242,7 @@
                                 <!-- gets class name into a string for debug -->
                                 <replacement>
                                     <token><![CDATA[ApiService {]]></token>
-                                    <value><![CDATA[ApiService {${line.separator}${line.separator}    // statically finds the fully qualificed name of this class${line.separator}    private static String apiServiceImplClassName = java.lang.invoke.MethodHandles.lookup().lookupClass().getName();${line.separator}]]></value>
+                                    <value><![CDATA[ApiService {${line.separator}${line.separator}    // statically finds the fully qualified name of this class${line.separator}    private static String apiServiceImplClassName = java.lang.invoke.MethodHandles.lookup().lookupClass().getName();${line.separator}]]></value>
                                 </replacement>
                                 <!-- changes response to error not implemented -->
                                 <replacement>

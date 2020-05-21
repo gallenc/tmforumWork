@@ -405,6 +405,13 @@
                 </exclusions>
             </dependency>
 
+            <!-- jersey test -->
+            <dependency>
+                <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+                <artifactId>jersey-test-framework-provider-jetty</artifactId>
+                <version>${jersey2-version}</version>
+            </dependency>
+
             <!-- HTTP client: jersey-client -->
             <dependency>
                 <groupId>org.glassfish.jersey.media</groupId>
