@@ -417,19 +417,6 @@
                 <version>${jersey2-version}</version>
             </dependency>
 
-            <!-- for tests with grizzly -->
-            <dependency>
-                <groupId>org.glassfish.jersey.containers</groupId>
-                <artifactId>jersey-container-grizzly2-servlet</artifactId>
-                <version>${jersey2-version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.glassfish.jersey.connectors</groupId>
-                <artifactId>jersey-grizzly-connector</artifactId>
-                <version>${jersey2-version}</version>
-            </dependency>
-
             <!-- for client -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>

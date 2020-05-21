@@ -42,10 +42,6 @@
             <AppenderRef ref="Console" />
         </Logger>
 
-        <Logger name="org.glassfish.grizzly" additivity="false" level="DEBUG">
-            <AppenderRef ref="Console" />
-        </Logger>
-
         <!-- log swagger -->
         <Logger name="io.swagger" additivity="false" level="INFO">
             <AppenderRef ref="Console" />
