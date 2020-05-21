@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf656.simulator.api.impl;
+package org.opennms.tmforum.tmf656.simulator.api.hub.impl;
 
 import org.opennms.tmforum.swagger.tmf656.swagger.api.*;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.*;

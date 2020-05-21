@@ -7,7 +7,7 @@ import io.swagger.jaxrs.*;
 import org.opennms.tmforum.tmf650.api.GenericHubApiService;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
-import org.opennms.tmforum.tmf656.simulator.api.impl.HubApiServiceImpl;
+import org.opennms.tmforum.tmf656.simulator.api.hub.impl.HubApiServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,12 +41,14 @@ public class GenericHubApi {
     @javax.inject.Inject
     private GenericHubApiService delegate = null;
 
+    // additional method to allow browser to test if server running
     @GET
+    
     @Consumes({ "application/json;charset=utf-8" })
     @Produces({ "application/json;charset=utf-8" })
     public Response simpleResponse(@Context SecurityContext securityContext, @Context javax.ws.rs.core.UriInfo uriInfo) {
         LOG.debug("GenericHubApi simpleResponse() called delegate=" + delegate);
-        return Response.status(javax.ws.rs.core.Response.Status.OK).entity("{ \"message\" : \"api working\" }").build();
+        return Response.status(javax.ws.rs.core.Response.Status.OK).entity("{ \"message\" : \"api server working\" }").build();
 
     }
 
