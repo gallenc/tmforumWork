@@ -24,7 +24,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.time.OffsetDateTime;  
+import java.time.OffsetDateTime;
 
 public class JerseyGenericListenerTest extends JerseyTest {
     private static Logger LOG = LoggerFactory.getLogger(JerseyGenericListenerTest.class);
@@ -40,31 +40,30 @@ public class JerseyGenericListenerTest extends JerseyTest {
                 "org.opennms.tmforum.tmf650.api.rest", "org.opennms.tmforum.tmf650.api.impl");
 
         rc.property("contextConfigLocation", "classpath:spring-simple-rest-test-context.xml");
-        
+
         // configures jackson data binding
         rc.register(NewJacksonFeature.class);
 
         return rc;
     }
 
- 
     @Test
     public void testPostGenericEvent() {
         LOG.debug("start of test PostGenericEvent");
-        
+
         GenericEvent genericEvent = new GenericEvent();
         GenericNotification genericNotification = new GenericNotification();
         genericNotification.setEvent(genericEvent);
         genericNotification.setEventId("10");
-        OffsetDateTime eventTime = OffsetDateTime.now() ;
-        genericNotification.setEventTime(eventTime );
+        OffsetDateTime eventTime = OffsetDateTime.now();
+        // genericNotification.setEventTime(eventTime ); // TODO TIME
         genericNotification.setEventType("GenericNotification");
-        //genericNotification.setFieldPath(fieldPath);
-        //genericNotification.setResourcePath(resourcePath);
+        // genericNotification.setFieldPath(fieldPath);
+        // genericNotification.setResourcePath(resourcePath);
 
         LOG.debug("genericNotification=" + genericNotification);
-        
-        Response response = target("/generic-listener").request()
+
+        Response response = target("/generic-listener/notification").request()
                 .post(Entity.entity(genericNotification, MediaType.APPLICATION_JSON));
 
         assertEquals("Should return status 200", 200, response.getStatus());
@@ -74,26 +73,28 @@ public class JerseyGenericListenerTest extends JerseyTest {
 
         LOG.debug("end of test PostGenericEvent");
     }
-    
+
     @Test
     public void testPostServiceProblemAttributeValueChangeEvent() {
         LOG.debug("start of test PostServiceProblemAttributeValueChangeEvent");
-        
+
         ServiceProblem serviceProblem = new ServiceProblem();
         ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
         event.setServiceProblem(serviceProblem);
         ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
         notification.setEvent(event);
         notification.setEventId("10");
-        OffsetDateTime eventTime = OffsetDateTime.now() ;
-        notification.setEventTime(eventTime );
+        OffsetDateTime eventTime = OffsetDateTime.now();
+        
+        //notification.setEventTime(eventTime); //TODO TIME
+        
         notification.setEventType("GenericNotification");
-        //genericNotification.setFieldPath(fieldPath);
-        //genericNotification.setResourcePath(resourcePath);
+        // genericNotification.setFieldPath(fieldPath);
+        // genericNotification.setResourcePath(resourcePath);
 
         LOG.debug("serviceProblemAttributeValueChangeNotification=" + notification);
-        
-        Response response = target("/generic-listener").request()
+
+        Response response = target("/generic-listener/notification").request()
                 .post(Entity.entity(notification, MediaType.APPLICATION_JSON));
 
         assertEquals("Should return status 200", 200, response.getStatus());
@@ -103,6 +104,5 @@ public class JerseyGenericListenerTest extends JerseyTest {
 
         LOG.debug("end of test PostServiceProblemAttributeValueChangeEvent");
     }
-   
 
 }

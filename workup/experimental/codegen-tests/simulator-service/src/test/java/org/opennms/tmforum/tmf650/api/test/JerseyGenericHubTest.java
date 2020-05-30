@@ -17,7 +17,7 @@ import org.springframework.web.filter.RequestContextFilter;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;  
+import static org.junit.Assert.*;
 
 public class JerseyGenericHubTest extends JerseyTest {
     private static Logger LOG = LoggerFactory.getLogger(JerseyGenericHubTest.class);
@@ -33,7 +33,7 @@ public class JerseyGenericHubTest extends JerseyTest {
                 "org.opennms.tmforum.tmf650.api.rest", "org.opennms.tmforum.tmf650.api.impl");
 
         rc.property("contextConfigLocation", "classpath:spring-simple-rest-test-context.xml");
-        
+
         // configures jackson data binding
         rc.register(NewJacksonFeature.class);
 
@@ -61,8 +61,7 @@ public class JerseyGenericHubTest extends JerseyTest {
         GenericEventSubscriptionInput subscriptionRequest = new GenericEventSubscriptionInput();
         LOG.debug("subscriptionRequest=" + subscriptionRequest);
 
-        Response response = target("/generic-hub").request()
-                .get();
+        Response response = target("/generic-hub").request().get();
         assertEquals("Should return status 200", 200, response.getStatus());
 
         String subscriptionReply = response.readEntity(String.class);
@@ -70,7 +69,7 @@ public class JerseyGenericHubTest extends JerseyTest {
 
         LOG.debug("end of test get");
     }
-    
+
     @Test
     public void testAdd() {
         LOG.debug("start of test add subscription");
@@ -86,15 +85,14 @@ public class JerseyGenericHubTest extends JerseyTest {
 
         LOG.debug("end of test add subscription");
     }
-    
+
     @Test
     public void testDelete() {
         LOG.debug("start of test delete subscription");
         GenericEventSubscriptionInput subscriptionRequest = new GenericEventSubscriptionInput();
         LOG.debug("subscriptionRequest=" + subscriptionRequest);
 
-        Response response = target("/generic-hub/5").request()
-                .delete();
+        Response response = target("/generic-hub/5").request().delete();
         assertEquals("Should return status 204", 204, response.getStatus());
 
         LOG.debug("end of test delete subscription");
