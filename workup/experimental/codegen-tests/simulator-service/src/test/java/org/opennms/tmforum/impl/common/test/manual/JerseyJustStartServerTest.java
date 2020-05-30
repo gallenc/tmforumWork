@@ -5,6 +5,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -40,6 +41,13 @@ public class JerseyJustStartServerTest extends JerseyTest {
         rc.register(NewJacksonFeature.class);
 
         return rc;
+    }
+    
+
+    @Override
+    public void configureClient(ClientConfig config) {
+        // configures jackson data binding
+        config.register(NewJacksonFeature.class);
     }
 
 

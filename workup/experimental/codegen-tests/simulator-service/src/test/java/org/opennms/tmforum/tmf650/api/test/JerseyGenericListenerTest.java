@@ -5,6 +5,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -13,12 +14,10 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblem;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemAttributeValueChangeEvent;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemAttributeValueChangeNotification;
 import org.opennms.tmforum.tmf650.model.GenericEvent;
-import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
-import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
+
 import org.opennms.tmforum.tmf650.model.GenericNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.filter.RequestContextFilter;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -46,6 +45,12 @@ public class JerseyGenericListenerTest extends JerseyTest {
 
         return rc;
     }
+    
+    @Override
+    public void configureClient(ClientConfig config) {
+        // configures jackson data binding
+        config.register(NewJacksonFeature.class);
+    }
 
     @Test
     public void testPostGenericEvent() {
@@ -56,7 +61,7 @@ public class JerseyGenericListenerTest extends JerseyTest {
         genericNotification.setEvent(genericEvent);
         genericNotification.setEventId("10");
         OffsetDateTime eventTime = OffsetDateTime.now();
-        // genericNotification.setEventTime(eventTime ); // TODO TIME
+        genericNotification.setEventTime(eventTime );
         genericNotification.setEventType("GenericNotification");
         // genericNotification.setFieldPath(fieldPath);
         // genericNotification.setResourcePath(resourcePath);
@@ -85,8 +90,7 @@ public class JerseyGenericListenerTest extends JerseyTest {
         notification.setEvent(event);
         notification.setEventId("10");
         OffsetDateTime eventTime = OffsetDateTime.now();
-        
-        //notification.setEventTime(eventTime); //TODO TIME
+        notification.setEventTime(eventTime);
         
         notification.setEventType("GenericNotification");
         // genericNotification.setFieldPath(fieldPath);

@@ -5,6 +5,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
@@ -40,19 +41,10 @@ public class JerseyGenericHubTest extends JerseyTest {
         return rc;
     }
 
-    @Ignore
-    @Test
-    public void testJustStartServer() {
-        LOG.debug("starting generic hub test  - waiting");
-
-        try {
-            Thread.sleep(120000); // 2 minute
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        LOG.debug("end of generic hub test");
+    @Override
+    public void configureClient(ClientConfig config) {
+        // configures jackson data binding
+        config.register(NewJacksonFeature.class);
     }
 
     @Test
