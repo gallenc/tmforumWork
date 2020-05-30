@@ -27,9 +27,6 @@ import javax.validation.constraints.*;
 public class GenericHubApiServiceImpl extends GenericHubApiService {
     private static Logger LOG = LoggerFactory.getLogger(GenericHubApiServiceImpl.class);
 
-    // statically finds the fully qualified name of this class
-    private static String apiServiceImplClassName = java.lang.invoke.MethodHandles.lookup().lookupClass().getName();
-
     @Override
     public Response registerListener(GenericEventSubscriptionInput data, SecurityContext securityContext, javax.ws.rs.core.UriInfo uriInfo) throws NotFoundException {
         LOG.debug("register listener called EventSubscriptionInput="+data);
@@ -52,6 +49,8 @@ public class GenericHubApiServiceImpl extends GenericHubApiService {
         
         return Response.ok().entity(subscriptionDetails).build();
     }
+    
+    
     @Override
     public Response unregisterListener(String id, SecurityContext securityContext, javax.ws.rs.core.UriInfo uriInfo) throws NotFoundException {
         LOG.debug("unregister listener called id="+id);

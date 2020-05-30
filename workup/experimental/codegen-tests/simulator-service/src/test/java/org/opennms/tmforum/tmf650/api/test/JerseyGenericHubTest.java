@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
+import org.opennms.tmforum.impl.common.NewJacksonFeature;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
 import org.slf4j.Logger;
@@ -32,6 +33,9 @@ public class JerseyGenericHubTest extends JerseyTest {
                 "org.opennms.tmforum.tmf650.api.rest", "org.opennms.tmforum.tmf650.api.impl");
 
         rc.property("contextConfigLocation", "classpath:spring-simple-rest-test-context.xml");
+        
+        // configures jackson data binding
+        rc.register(NewJacksonFeature.class);
 
         return rc;
     }

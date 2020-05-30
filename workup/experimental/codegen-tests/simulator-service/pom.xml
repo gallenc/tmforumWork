@@ -315,11 +315,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <scope>provided</scope>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.glassfish.jersey.media</groupId> -->
+<!--             <artifactId>jersey-media-json-jackson</artifactId> -->
+<!--             <scope>compile</scope> -->
+<!--         </dependency> -->
 
         <!-- Base64 encoding that works in both JVM and Android -->
         <dependency>

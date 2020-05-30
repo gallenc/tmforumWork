@@ -43,13 +43,11 @@ public class GenericHubApi {
 
     // additional method to allow browser to test if server running
     @GET
-    
     @Consumes({ "application/json;charset=utf-8" })
     @Produces({ "application/json;charset=utf-8" })
     public Response simpleResponse(@Context SecurityContext securityContext, @Context javax.ws.rs.core.UriInfo uriInfo) {
         LOG.debug("GenericHubApi simpleResponse() called delegate=" + delegate);
         return Response.status(javax.ws.rs.core.Response.Status.OK).entity("{ \"message\" : \"api server working\" }").build();
-
     }
 
     @POST
