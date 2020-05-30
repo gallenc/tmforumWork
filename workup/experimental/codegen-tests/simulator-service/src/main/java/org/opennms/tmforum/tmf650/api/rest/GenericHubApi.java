@@ -7,7 +7,7 @@ import io.swagger.jaxrs.*;
 import org.opennms.tmforum.tmf650.api.GenericHubApiService;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
-import org.opennms.tmforum.tmf656.simulator.api.hub.impl.HubApiServiceImpl;
+import org.opennms.tmforum.tmf656.simulator.api.impl.HubApiServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf656.simulator.api.hub.impl;
+package org.opennms.tmforum.tmf656.simulator.api.hub.mapper;
 
 import org.mapstruct.factory.Mappers;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.EventSubscriptionInput;

@@ -18,8 +18,8 @@
     <context:component-scan
         base-package="org.opennms.tmforum.tmf650.api, 
         org.opennms.tmforum.tmf650.rest, 
-        org.opennms.tmforum.tmf650.service
-    org.opennms.tmforum.tmf650.model" />
+        org.opennms.tmforum.tmf650.impl,
+        org.opennms.tmforum.tmf650.model" />
 
 
     <!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->

@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf650.service;
+package org.opennms.tmforum.tmf650.impl;
 
 import org.opennms.tmforum.tmf650.api.*;
 import org.opennms.tmforum.tmf650.model.*;
@@ -6,7 +6,7 @@ import org.opennms.tmforum.tmf650.model.*;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.Error;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
-import org.opennms.tmforum.tmf656.simulator.api.hub.impl.HubApiServiceImpl;
+import org.opennms.tmforum.tmf656.simulator.api.impl.HubApiServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

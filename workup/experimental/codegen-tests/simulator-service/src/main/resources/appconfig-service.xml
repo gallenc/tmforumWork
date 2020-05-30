@@ -21,7 +21,8 @@
     <!-- Scans for components that will be auto-registered as Spring beans -->
     <context:component-scan
         base-package="org.opennms.tmforum.tmf656.simulator.api.impl, 
-    org.opennms.tmforum.swagger.tmf656.swagger.api.impl" />
+    org.opennms.tmforum.swagger.tmf656.swagger.api.impl,
+    org.opennms.tmforum.tmf650.impl" />
 
 
     <!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
