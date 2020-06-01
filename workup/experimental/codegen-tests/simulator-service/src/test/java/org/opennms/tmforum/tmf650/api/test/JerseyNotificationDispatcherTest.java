@@ -11,6 +11,7 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemAttributeV
 import org.opennms.tmforum.tmf650.impl.GenericRestNotificationPoster;
 import org.opennms.tmforum.tmf650.impl.NewJacksonFeature;
 import org.opennms.tmforum.tmf650.impl.NotificationDispatcher;
+import org.opennms.tmforum.tmf650.impl.NotificationDispatcherImpl;
 import org.opennms.tmforum.tmf650.impl.NotificationPoster;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
 
@@ -62,7 +63,7 @@ public class JerseyNotificationDispatcherTest extends JerseyTest {
         long maxConsecutiveErrors = 3;
         String notificationFilter = null;
 
-        NotificationDispatcher notificationDispatcher = new NotificationDispatcher();
+        NotificationDispatcher notificationDispatcher = new NotificationDispatcherImpl();
         notificationDispatcher.setMaxConsecutiveErrors(maxConsecutiveErrors);
         notificationDispatcher.setTimeout(timeout);
 
