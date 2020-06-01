@@ -25,6 +25,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "Sets the communication endpoint address the service instance must use to deliver notification information")
 public class GenericEventSubscription   {
+    
   @JsonProperty("id")
   private String id = null;
 

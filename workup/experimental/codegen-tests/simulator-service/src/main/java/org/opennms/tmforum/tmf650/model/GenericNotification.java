@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,7 +30,7 @@ public class GenericNotification {
     private String resourcePath = null;
 
     @JsonProperty("event")
-    private GenericEvent event = null;
+    private JsonNode event = null;
 
     /**
      * The identifier of the notification
@@ -113,11 +114,11 @@ public class GenericNotification {
      **/
     @JsonProperty("event")
     @ApiModelProperty(value = "The event linked to the involved resource object")
-    public GenericEvent getEvent() {
+    public JsonNode getEvent() {
         return event;
     }
 
-    public void setEvent(GenericEvent event) {
+    public void setEvent(JsonNode event) {
         this.event = event;
     }
 

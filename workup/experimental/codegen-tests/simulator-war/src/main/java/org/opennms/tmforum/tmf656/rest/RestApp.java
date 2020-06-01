@@ -14,6 +14,7 @@ import org.glassfish.jersey.CommonProperties;
 //import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.opennms.tmforum.tmf650.impl.NewJacksonFeature;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;

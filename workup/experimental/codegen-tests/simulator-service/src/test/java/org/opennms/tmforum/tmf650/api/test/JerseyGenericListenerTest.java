@@ -9,15 +9,20 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
 import org.glassfish.jersey.test.JerseyTest;
-import org.opennms.tmforum.impl.common.NewJacksonFeature;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblem;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemAttributeValueChangeEvent;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemAttributeValueChangeNotification;
+import org.opennms.tmforum.tmf650.impl.NewJacksonFeature;
 import org.opennms.tmforum.tmf650.model.GenericEvent;
 
 import org.opennms.tmforum.tmf650.model.GenericNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -45,7 +50,7 @@ public class JerseyGenericListenerTest extends JerseyTest {
 
         return rc;
     }
-    
+
     @Override
     public void configureClient(ClientConfig config) {
         // configures jackson data binding
@@ -56,13 +61,20 @@ public class JerseyGenericListenerTest extends JerseyTest {
     public void testPostGenericEvent() {
         LOG.debug("start of test PostGenericEvent");
 
+        // ObjectReader or = NewJacksonFeature.getObjectReader();
+        // ObjectWriter ow = NewJacksonFeature.getObjectWriter();
+        ObjectMapper om = NewJacksonFeature.getObjectMapper();
+
         GenericEvent genericEvent = new GenericEvent();
+        JsonNode jsonNode = om.valueToTree(genericEvent);
+
         GenericNotification genericNotification = new GenericNotification();
-        genericNotification.setEvent(genericEvent);
+        genericNotification.setEvent(jsonNode);
+
         genericNotification.setEventId("10");
         OffsetDateTime eventTime = OffsetDateTime.now();
-        genericNotification.setEventTime(eventTime );
-        genericNotification.setEventType("GenericNotification");
+        genericNotification.setEventTime(eventTime);
+        genericNotification.setEventType(genericEvent.getClass().getSimpleName());
         // genericNotification.setFieldPath(fieldPath);
         // genericNotification.setResourcePath(resourcePath);
 
@@ -91,8 +103,8 @@ public class JerseyGenericListenerTest extends JerseyTest {
         notification.setEventId("10");
         OffsetDateTime eventTime = OffsetDateTime.now();
         notification.setEventTime(eventTime);
-        
-        notification.setEventType("GenericNotification");
+
+        notification.setEventType(event.getClass().getSimpleName());
         // genericNotification.setFieldPath(fieldPath);
         // genericNotification.setResourcePath(resourcePath);
 

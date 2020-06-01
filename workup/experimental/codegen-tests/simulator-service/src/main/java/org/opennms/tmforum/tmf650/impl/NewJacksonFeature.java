@@ -1,4 +1,4 @@
-package org.opennms.tmforum.impl.common;
+package org.opennms.tmforum.tmf650.impl;
 
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.core.FeatureContext;
@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -45,5 +47,18 @@ public class NewJacksonFeature implements Feature {
         context.register(provider);
 
         return true;
+    }
+    
+    // used to get hold of Jason serialisers
+    public static ObjectMapper getObjectMapper() {
+        return MAPPER;
+    }
+    
+    public static ObjectReader getObjectReader() {
+        return MAPPER.reader();
+    }
+    
+    public static ObjectWriter getObjectWriter() {
+        return MAPPER.writer();
     }
 }
