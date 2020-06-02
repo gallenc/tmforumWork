@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblem;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemAttributeValueChangeEvent;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemAttributeValueChangeNotification;
-import org.opennms.tmforum.tmf650.impl.GenericRestNotificationPoster;
+import org.opennms.tmforum.tmf650.hub.impl.GenericRestNotificationPoster;
+import org.opennms.tmforum.tmf650.hub.impl.NotificationDispatcher;
+import org.opennms.tmforum.tmf650.hub.impl.NotificationDispatcherImpl;
+import org.opennms.tmforum.tmf650.hub.impl.NotificationPoster;
 import org.opennms.tmforum.tmf650.impl.NewJacksonFeature;
-import org.opennms.tmforum.tmf650.impl.NotificationDispatcher;
-import org.opennms.tmforum.tmf650.impl.NotificationDispatcherImpl;
-import org.opennms.tmforum.tmf650.impl.NotificationPoster;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
 
 import static org.junit.Assert.*;
@@ -40,7 +40,7 @@ public class JerseyNotificationDispatcherTest extends JerseyTest {
         rc.register(SpringLifecycleListener.class);
         // rc.register(RequestContextFilter.class);
         rc.packages("org.opennms.tmforum.tmf650.api", "org.opennms.tmforum.tmf650.api.model",
-                "org.opennms.tmforum.tmf650.api.rest", "org.opennms.tmforum.tmf650.api.impl");
+                "org.opennms.tmforum.tmf650.api.rest", "org.opennms.tmforum.tmf650.api.impl", "org.opennms.tmforum.tmf650.listener.impl", "org.opennms.tmforum.tmf650.hub.impl");
 
         rc.property("contextConfigLocation", "classpath:spring-simple-rest-test-context.xml");
 

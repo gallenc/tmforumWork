@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf650.impl;
+package org.opennms.tmforum.tmf650.hub.impl;
 
 import java.net.URI;
 import java.util.concurrent.Future;

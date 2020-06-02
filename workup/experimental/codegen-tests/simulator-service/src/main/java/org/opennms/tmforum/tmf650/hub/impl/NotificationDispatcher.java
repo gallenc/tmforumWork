@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf650.impl;
+package org.opennms.tmforum.tmf650.hub.impl;
 
 import org.opennms.tmforum.tmf650.model.AllSubscriptionStatistics;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscription;

@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf650.impl;
+package org.opennms.tmforum.tmf650.hub.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -68,7 +68,7 @@ public class NotificationDispatcherImpl implements NotificationDispatcher {
         try {
             targetUri = new URI(callback);
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("cannot parse callback " + callback, e);
+            throw new IllegalArgumentException("cannot parse callback " + callback+ "cause: "+ e.getMessage());
         }
 
         LOG.debug("registering new listener subscriptionId=" + id + " callback=" + callback + "query=" + query);

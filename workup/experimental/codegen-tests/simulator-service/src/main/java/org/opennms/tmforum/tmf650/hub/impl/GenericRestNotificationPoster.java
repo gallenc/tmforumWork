@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf650.impl;
+package org.opennms.tmforum.tmf650.hub.impl;
 
 import java.net.URI;
 import java.util.concurrent.Future;
@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientProperties;
+import org.opennms.tmforum.tmf650.impl.NewJacksonFeature;
 import org.opennms.tmforum.tmf650.model.SubscriptionStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

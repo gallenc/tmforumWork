@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf650.impl;
+package org.opennms.tmforum.tmf650.hub.impl;
 
 import org.opennms.tmforum.tmf650.api.*;
 import org.opennms.tmforum.tmf650.model.*;
@@ -40,18 +40,21 @@ public class GenericHubApiServiceImpl extends GenericHubApiService {
         try {
 
             LOG.debug("register listener called EventSubscriptionInput=" + data);
+            
+            GenericEventSubscription subscriptionDetails = notificationDispatcher.registerListener(data);
+            
             // unique UUID created
-            String id = UUID.randomUUID().toString();
-            String query = data.getQuery();
-            String callback = data.getCallback();
-
-            GenericEventSubscription subscriptionDetails = new GenericEventSubscription();
-
-            subscriptionDetails.callback(callback);
-
-            subscriptionDetails.setId(id);
-
-            subscriptionDetails.setQuery(query);
+//            String id = UUID.randomUUID().toString();
+//            String query = data.getQuery();
+//            String callback = data.getCallback();
+//
+//            GenericEventSubscription subscriptionDetails = new GenericEventSubscription();
+//
+//            subscriptionDetails.callback(callback);
+//
+//            subscriptionDetails.setId(id);
+//
+//            subscriptionDetails.setQuery(query);
 
             // return Response.status(javax.ws.rs.core.Response.Status.OK).build();
 
@@ -71,6 +74,8 @@ public class GenericHubApiServiceImpl extends GenericHubApiService {
             throws NotFoundException {
         try {
             LOG.debug("unregister listener called id=" + id);
+            
+            notificationDispatcher.unregisterListener(id);
 
             return Response.status(204).build();
         } catch (Exception ex) {

@@ -8,7 +8,7 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.EventSubscription;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.EventSubscriptionInput;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
 import org.opennms.tmforum.tmf650.api.GenericHubApiService;
-import org.opennms.tmforum.tmf650.impl.GenericHubApiServiceImpl;
+import org.opennms.tmforum.tmf650.hub.impl.GenericHubApiServiceImpl;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
 import org.opennms.tmforum.tmf656.simulator.api.hub.mapper.ServiceProblemGenericEventSubscriptionInputMapper;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemCreateMapper;

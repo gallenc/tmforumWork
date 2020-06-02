@@ -33,7 +33,7 @@ public class JerseyJustStartServerTest extends JerseyTest {
         rc.register(SpringLifecycleListener.class);
         // rc.register(RequestContextFilter.class);
         rc.packages("org.opennms.tmforum.tmf650.api", "org.opennms.tmforum.tmf650.api.model",
-                "org.opennms.tmforum.tmf650.api.rest", "org.opennms.tmforum.tmf650.api.impl");
+                "org.opennms.tmforum.tmf650.api.rest", "org.opennms.tmforum.tmf650.api.impl", "org.opennms.tmforum.tmf650.listener.impl", "org.opennms.tmforum.tmf650.hub.impl");
 
         rc.property("contextConfigLocation", "classpath:spring-simple-rest-test-context.xml");
         
