@@ -4,13 +4,13 @@ import org.opennms.tmforum.swagger.tmf656.swagger.api.*;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.*;
 
 import org.opennms.tmforum.swagger.tmf656.swagger.model.Error;
-import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblem;
-import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemCreate;
-import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblemUpdate;
+import org.opennms.tmforum.tmf650.hub.impl.GenericHubApiServiceImpl;
+import org.opennms.tmforum.tmf650.hub.impl.NotificationDispatcher;
 import org.opennms.tmforum.tmf656.service.FieldFilter;
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemCreateMapper;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemMapper;
+import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemUpdateMapper;
 import org.opennms.tmforum.tmf656.simulator.model.ServiceProblemEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +26,7 @@ import java.util.Optional;
 import org.opennms.tmforum.swagger.tmf656.swagger.api.NotFoundException;
 
 import java.io.InputStream;
+import java.time.OffsetDateTime;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
@@ -37,8 +38,6 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.validation.constraints.*;
 
-@javax.annotation.Generated(value = "org.opennms.tmforum.swagger.patch.JavaJerseyServerCodegen", date = "2020-04-27T17:02:50.919+01:00")
-
 @Named
 public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
     final static Logger LOG = LoggerFactory.getLogger(ServiceProblemApiServiceImpl.class);
@@ -48,7 +47,10 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
                                                               // specified
 
     @Inject
-    ServiceProblemRepository serviceProblemRepository;
+    private ServiceProblemRepository serviceProblemRepository;
+    
+    @Inject
+    NotificationDispatcher notificationDispatcher;
 
     @Override
     @Transactional
@@ -59,6 +61,11 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
             // map swagger dto to jpa entity
             LOG.debug("serviceProblemCreate:" + serviceProblemCreate);
+            
+            // set initial status to Acknowledged
+            serviceProblemCreate.setStatus(ServiceProblemStatus.Acknowledged.toString());
+            serviceProblemCreate.setStatusChangeDate(OffsetDateTime.now());
+            serviceProblemCreate.setStatusChangeReason("initial creation");
 
             ServiceProblemEntity serviceProblemEntity = ServiceProblemCreateMapper.INSTANCE
                     .serviceProblemCreateToServiceProblemEntity(serviceProblemCreate);
@@ -78,6 +85,15 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             serviceProblem.setHref(href);
 
             LOG.debug("created service problem returning serviceProblem:" + serviceProblem);
+            
+            // service problem create event
+            ServiceProblemCreateNotification notification = new ServiceProblemCreateNotification();
+            ServiceProblemCreateEvent event = new ServiceProblemCreateEvent();
+            event.setServiceProblem(serviceProblem);            
+            //TODO  eventRepository.createEvent  save changed event
+            
+            notification.setEvent(event);
+            notificationDispatcher.sendNotification(notification);
 
             return Response.status(Response.Status.CREATED).entity(serviceProblem).build();
 
@@ -106,6 +122,24 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
                         "DELETE /deleteServiceProblem/{id} not found id=" + idStr);
                 return Response.status(Response.Status.NOT_FOUND).entity(apiResponseMessage).build();
             }
+            
+            // state change to cancelled
+            ServiceProblemStateChangeNotification notification = new ServiceProblemStateChangeNotification();
+            ServiceProblemStateChangeEvent event = new ServiceProblemStateChangeEvent();
+            // note delted service problem so not using real service problem 
+            
+            ServiceProblem serviceProblem = new ServiceProblem();
+            serviceProblem.setId(idStr);
+            // set status to Cancelled
+            serviceProblem.setStatus(ServiceProblemStatus.Cancelled.toString());
+            serviceProblem.setStatusChangeDate(OffsetDateTime.now());
+            serviceProblem.setStatusChangeReason("problem deleted");
+            
+            event.setServiceProblem(serviceProblem );           
+            //TODO  eventRepository.createEvent save changed event
+            
+            notification.setEvent(event);
+            notificationDispatcher.sendNotification(notification);
 
             // map jpa entity to swagger dto
             serviceProblemRepository.deleteById(id);
@@ -173,13 +207,66 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
     @Override
     @Transactional
-    public Response patchServiceProblem(String id, ServiceProblemUpdate serviceProblem, SecurityContext securityContext, UriInfo uriInfo)
+    public Response patchServiceProblem(String idStr, ServiceProblemUpdate serviceProblemUpdate, SecurityContext securityContext, UriInfo uriInfo)
             throws NotFoundException {
-        // do some magic!
-        return Response.status(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "x4 method not implemented")).build();
-        // return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK,
-        // "magic!")).build();
+        
+        try {
+            LOG.debug("PATCH /serviceProblem patchServiceProblem  called");
+
+            LOG.debug("update id:"+idStr
+                    + " serviceProblemUpdate:" + serviceProblemUpdate);
+
+            // find original serviceProblem if exists
+            Long id = Long.parseLong(idStr);
+            ApiResponseMessage apiResponseMessage;
+
+            Optional<ServiceProblemEntity> spOptional = serviceProblemRepository.findById(id);
+            if (!spOptional.isPresent()) {
+                LOG.debug("PATCH /serviceProblem patchServiceProblem entity not found id=" + idStr);
+                apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR,
+                        "PATCH /serviceProblem patchServiceProblem entity not found id=" + idStr);
+                return Response.status(Response.Status.NOT_FOUND).entity(apiResponseMessage).build();
+            }
+            
+            ServiceProblemEntity serviceProblemEntity = spOptional.get();
+            LOG.debug("original serviceProblemEntity:" + serviceProblemEntity);
+
+            // update fields which have been posted as not null
+            serviceProblemEntity = ServiceProblemMapper.INSTANCE.serviceProblemUpdateServiceProblemEntity(serviceProblemUpdate, serviceProblemEntity);
+                    
+            LOG.debug("persisting updated serviceProblemEntity:" + serviceProblemEntity);
+
+            // persist jpa entity
+            serviceProblemEntity = serviceProblemRepository.save(serviceProblemEntity);
+
+            // map jpa entity to swagger dto
+            ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
+                    .serviceProblemEntityToServiceProblem(serviceProblemEntity);
+            
+            // add absolute path href
+            String href = uriInfo.getAbsolutePath().toASCIIString()+"/"+idStr;
+            serviceProblem.setHref(href);
+
+            LOG.debug("returning updated serviceProblem:" + serviceProblem);
+            
+            // service problem AttributeValueChange event
+            ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
+            ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
+            event.setServiceProblem(serviceProblem);            
+            //TODO  eventRepository.createEvent  save changed event
+            
+            notification.setEvent(event);
+            notificationDispatcher.sendNotification(notification);
+
+            return Response.status(Response.Status.OK).entity(serviceProblem).build();
+
+        } catch (Exception ex) {
+            LOG.error("PATCH /serviceProblem patchServiceProblem ", ex);
+            ApiResponseMessage apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR,
+                    "PATCH /serviceProblem patchServiceProblem error: " + ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(apiResponseMessage).build();
+        }        
+        
     }
 
     @Override
