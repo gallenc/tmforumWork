@@ -92,7 +92,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <!-- A comma separated list of file patterns to exclude when unpacking the artifact. i.e. **/*.xml,**/*.properties -->
                             <!-- use this to exclude more generated code as project is built -->
-                            <excludes>**/ServiceProblemApiServiceImpl.java,**/HubApiServiceImpl.java</excludes>
+                            <excludes>**/ServiceProblemApiServiceImpl.java,**/HubApiServiceImpl.java,**/ProblemUnacknowledgementApiServiceImpl.java,**/ProblemAcknowledgementApiServiceImpl.java</excludes>
                         </configuration>
                     </execution>
                 </executions>
