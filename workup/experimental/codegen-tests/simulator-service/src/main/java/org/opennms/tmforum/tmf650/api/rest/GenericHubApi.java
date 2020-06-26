@@ -54,7 +54,7 @@ public class GenericHubApi {
 
     @Consumes({ "application/json;charset=utf-8" })
     @Produces({ "application/json;charset=utf-8" })
-    @io.swagger.annotations.ApiOperation(value = "Register a listener", notes = "Sets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.", response = GenericEventSubscription.class, tags = {
+    @io.swagger.annotations.ApiOperation(value = "Register a listener", notes = "(Note - not part of Spec) Sets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.", response = GenericEventSubscription.class, tags = {
             "events subscription", })
     @io.swagger.annotations.ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 201, message = "Subscribed", response = GenericEventSubscription.class),

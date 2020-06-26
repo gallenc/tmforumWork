@@ -45,9 +45,9 @@ public class GenericListenerApiServiceImpl extends GenericListenerApiService {
             return Response.ok().build();
             
         } catch (Exception ex) {
-            LOG.error("POST /registerListener registerListener ", ex);
+            LOG.error("POST /generic-listener listenToGenericNotification ", ex);
             ApiResponseMessage apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR,
-                    "POST /registerListener registerListener error: " + ex.getMessage());
+                    "POST /generic-listener listenToGenericNotification error: " + ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(apiResponseMessage).build();
         }
     }

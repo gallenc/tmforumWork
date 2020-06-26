@@ -56,6 +56,7 @@ public class RestApp extends ResourceConfig {
     // https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Getting-started
 
     // setting package names programatically because we may refactor
+    String packageBaseApi="org.opennms.tmforum.tmf650.api.rest";
     String packageApi = org.opennms.tmforum.swagger.tmf656.swagger.api.StringUtil.class.getPackage().getName();
     String packageModel = org.opennms.tmforum.swagger.tmf656.swagger.model.Any.class.getPackage().getName();
 
@@ -66,7 +67,10 @@ public class RestApp extends ResourceConfig {
 
         //// search in jackson's package "com.fasterxml.jackson"
         
-        packages(packageApi, packageModel, "org.opennms.tmforum.tmf656.simulator.api.impl", "org.opennms.tmforum.rest");
+        packages(packageApi, packageModel, 
+                "org.opennms.tmforum.tmf656.simulator.api.impl",
+                "org.opennms.tmforum.rest",
+                "org.opennms.tmforum.tmf650.api.rest");
         
         //register(JacksonObjectMapperProvider.class);
 
@@ -120,7 +124,7 @@ public class RestApp extends ResourceConfig {
         // swagger is at http://localhost:8080/basePath/swagger.json
         config.setBasePath(basePath);
         // config.setResourcePackage("org.opennms.tmforum.swagger.tmf656.swagger.api");
-        config.setResourcePackage(packageApi);
+        config.setResourcePackage(packageApi+","+packageBaseApi);
         config.setPrettyPrint(true);
         config.setScan(true);
 

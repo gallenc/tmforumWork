@@ -49,7 +49,7 @@ public class GenericListenerApi {
     @Path("/notification")
     @Consumes({ "application/json;charset=utf-8" })
     @Produces({ "application/json;charset=utf-8" })
-    @io.swagger.annotations.ApiOperation(value = "Client listener for generic events", notes = "Example of a client listener for receiving the notification GenericNotification", response = EventSubscription.class, tags = {
+    @io.swagger.annotations.ApiOperation(value = "Client listener for generic events", notes = "NOTE This is not part of the current spec but it defines a listener to listen for any events (GenericEvents) and not just specific event types", response = EventSubscription.class, tags = {
             "notification listeners (client side)", })
     @io.swagger.annotations.ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 201, message = "Notified", response = EventSubscription.class),

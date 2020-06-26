@@ -23,7 +23,9 @@
         base-package="org.opennms.tmforum.tmf656.simulator.api.impl, 
     org.opennms.tmforum.swagger.tmf656.swagger.api.impl,
     org.opennms.tmforum.tmf650.impl,
-    org.opennms.tmforum.tmf650.hub.impl" />
+    org.opennms.tmforum.tmf650.hub.impl,
+    org.opennms.tmforum.tmf650.listener.impl,
+    org.opennms.tmforum.tmf650.api.rest" />
 
 
     <!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->

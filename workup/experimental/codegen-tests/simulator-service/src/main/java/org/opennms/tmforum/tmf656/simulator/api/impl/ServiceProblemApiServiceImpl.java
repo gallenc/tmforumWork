@@ -62,8 +62,8 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             // map swagger dto to jpa entity
             LOG.debug("serviceProblemCreate:" + serviceProblemCreate);
             
-            // set initial status to Acknowledged
-            serviceProblemCreate.setStatus(ServiceProblemStatus.Acknowledged.toString());
+            // set initial status to Submitted
+            serviceProblemCreate.setStatus(ServiceProblemStatus.Submitted.toString());
             serviceProblemCreate.setStatusChangeDate(OffsetDateTime.now());
             serviceProblemCreate.setStatusChangeReason("initial creation");
 
