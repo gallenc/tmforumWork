@@ -86,10 +86,11 @@ public class ProblemUnacknowledgementApiServiceImpl extends ProblemUnacknowledge
                 // map jpa entity to swagger dto
                 ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                         .serviceProblemEntityToServiceProblem(serviceProblemEntity);
-                // add absolute path href
+                
+                // add absolute path href for service problem
                 String idStr = serviceProblem.getId();
-                String href = uriInfo.getAbsolutePath().toASCIIString() + "/" + idStr;
-                serviceProblem.setHref(href);
+                String requestPath = uriInfo.getAbsolutePath().toASCIIString();
+                String href = requestPath.substring(0,requestPath.indexOf("/problemUnacknowledgement"))+"/serviceProblem"+ "/" + idStr;
 
                 // generate acknowledged response
                 ServiceProblemRef unackProblemItem = new ServiceProblemRef();

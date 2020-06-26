@@ -82,9 +82,12 @@ public class ProblemAcknowledgementApiServiceImpl extends ProblemAcknowledgement
                 // map jpa entity to swagger dto
                 ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                         .serviceProblemEntityToServiceProblem(serviceProblemEntity);
-                // add absolute path href
+                
+                // add absolute path href for service problem
                 String idStr = serviceProblem.getId();
-                String href = uriInfo.getAbsolutePath().toASCIIString() + "/" + idStr;
+                String requestPath = uriInfo.getAbsolutePath().toASCIIString();
+                String href = requestPath.substring(0,requestPath.indexOf("/problemAcknowledgement"))+"/serviceProblem"+ "/" + idStr;
+
                 serviceProblem.setHref(href);
 
                 // generate acknowledged response
