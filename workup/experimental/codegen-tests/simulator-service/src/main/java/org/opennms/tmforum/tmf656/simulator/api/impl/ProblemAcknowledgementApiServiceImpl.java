@@ -23,9 +23,11 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.constraints.*;
 
 @javax.inject.Named
+@Transactional
 public class ProblemAcknowledgementApiServiceImpl extends ProblemAcknowledgementApiService {
     final static Logger LOG = LoggerFactory.getLogger(ProblemAcknowledgementApiServiceImpl.class);
 

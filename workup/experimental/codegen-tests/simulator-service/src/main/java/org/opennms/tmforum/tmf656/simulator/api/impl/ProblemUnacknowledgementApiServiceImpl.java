@@ -22,11 +22,13 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "org.opennms.tmforum.swagger.patch.JavaJerseyServerCodegen", date = "2020-06-19T09:47:32.097+01:00")
 
 // NOTE this class has been modified by maven-replacer-plugin from swagger generated class to allow injection
 @javax.inject.Named
+@Transactional
 public class ProblemUnacknowledgementApiServiceImpl extends ProblemUnacknowledgementApiService {
 
     final static Logger LOG = LoggerFactory.getLogger(ProblemUnacknowledgementApiServiceImpl.class);

@@ -22,9 +22,11 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.constraints.*;
 
 @javax.inject.Named
+@Transactional
 public class ProblemUngroupApiServiceImpl extends ProblemUngroupApiService {
     final static Logger LOG = LoggerFactory.getLogger(ProblemGroupApiServiceImpl.class);
 
@@ -44,6 +46,7 @@ public class ProblemUngroupApiServiceImpl extends ProblemUngroupApiService {
             LOG.debug("problemUngroupCreate:" + problemUngroupCreate);
 
             ProblemGroup problemUngroupResponse = new ProblemGroup();
+            problemUngroupResponse.setChildProblem(new ArrayList<ServiceProblemRef>());
 
             if (problemUngroupCreate == null)
                 throw new IllegalArgumentException("problemUngroup cannot be null");

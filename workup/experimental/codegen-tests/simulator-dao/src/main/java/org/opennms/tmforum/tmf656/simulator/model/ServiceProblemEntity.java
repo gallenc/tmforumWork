@@ -10,6 +10,7 @@ import javax.persistence.Convert;
 
 import org.opennms.tmforum.jpa.json.ObjectConverter;
 import org.opennms.tmforum.jpa.json.ObjectListConverter;
+import org.opennms.tmforum.jpa.tmf656.json.ServiceProblemRefListConverter;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.Characteristic;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.EventRef;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ImpactPattern;
@@ -348,7 +349,7 @@ public class ServiceProblemEntity {
         this.originatorParty = originatorParty;
     }
 
-    @Convert(converter = ObjectListConverter.class)
+    @Convert(converter = ServiceProblemRefListConverter.class)
     @Column(length = 1000)
     public List<ServiceProblemRef> getParentProblem() {
         return parentProblem;
@@ -438,7 +439,7 @@ public class ServiceProblemEntity {
         this.underlyingAlarm = underlyingAlarm;
     }
 
-    @Convert(converter = ObjectListConverter.class)
+    @Convert(converter = ServiceProblemRefListConverter.class)
     @Column(length = 1000)
     public List<ServiceProblemRef> getUnderlyingProblem() {
         return underlyingProblem;
