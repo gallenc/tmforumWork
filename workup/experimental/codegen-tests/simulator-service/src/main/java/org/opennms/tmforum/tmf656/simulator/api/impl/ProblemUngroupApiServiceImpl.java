@@ -5,11 +5,14 @@ import org.opennms.tmforum.swagger.tmf656.swagger.model.*;
 
 import org.opennms.tmforum.swagger.tmf656.swagger.model.Error;
 import org.opennms.tmforum.tmf650.hub.impl.NotificationDispatcher;
+import org.opennms.tmforum.tmf650.impl.NewJacksonFeature;
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemMapper;
 import org.opennms.tmforum.tmf656.simulator.model.ServiceProblemEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +103,13 @@ public class ProblemUngroupApiServiceImpl extends ProblemUngroupApiService {
                 } catch (Exception ex) {
                     throw new IllegalArgumentException("cannot parse child problemref id:" + childProblemref.getId());
                 }
+                
+                //TODO FIX THIS  work around for problems with jackson marshalling
+                // see
+                // https://stackoverflow.com/questions/28821715/java-lang-classcastexception-java-util-linkedhashmap-cannot-be-cast-to-com-test
+                parentsUnderlyingProblems = NewJacksonFeature.getObjectMapper().convertValue(parentsUnderlyingProblems,
+                        new TypeReference<List<ServiceProblemRef>>() {
+                        });
 
                 // check and remove child references
                 boolean childRefExists = false;
@@ -178,6 +188,8 @@ public class ProblemUngroupApiServiceImpl extends ProblemUngroupApiService {
             // update parent and send change events
             if (!childUpdateList.isEmpty()) {
                 // persist updated jpa entity
+                // this nudges hibernate to ensure that parent problems are persisted
+                parentProblemEntity.setUnderlyingProblem(parentsUnderlyingProblems);
                 parentProblemEntity = serviceProblemRepository.save(parentProblemEntity);
                 // map jpa entity to swagger dto
                 ServiceProblem parentServiceProblem = ServiceProblemMapper.INSTANCE

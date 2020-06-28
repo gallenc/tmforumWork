@@ -106,7 +106,7 @@ public class ProblemGroupApiServiceImpl extends ProblemGroupApiService {
                     throw new IllegalArgumentException("cannot parse child problemref id:" + childProblemref.getId());
                 }
 
-                // work around for problems with jackson marshalling
+                //TODO FIX THIS  work around for problems with jackson marshalling
                 // see
                 // https://stackoverflow.com/questions/28821715/java-lang-classcastexception-java-util-linkedhashmap-cannot-be-cast-to-com-test
                 parentsUnderlyingProblems = NewJacksonFeature.getObjectMapper().convertValue(parentsUnderlyingProblems,
@@ -181,6 +181,8 @@ public class ProblemGroupApiServiceImpl extends ProblemGroupApiService {
             // update parent and send change events
             if (!childUpdateList.isEmpty()) {
                 // persist updated jpa entity
+                // this nudges hibernate to ensure that parent problems are persisted
+                parentProblemEntity.setUnderlyingProblem(parentsUnderlyingProblems);
                 parentProblemEntity = serviceProblemRepository.save(parentProblemEntity);
                 // map jpa entity to swagger dto
                 ServiceProblem parentServiceProblem = ServiceProblemMapper.INSTANCE
