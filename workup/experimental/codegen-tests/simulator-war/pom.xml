@@ -306,9 +306,24 @@
         <!-- <scope>compile</scope> -->
         <!-- </dependency> -->
 
+        <!-- servelet and jsp api's - provided by jetty -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- java server tag library -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
             <scope>compile</scope>
         </dependency>
 
@@ -441,11 +456,11 @@
             <scope>compile</scope>
         </dependency>
 
-<!--         <dependency> -->
-<!--             <groupId>org.glassfish.jersey.media</groupId> -->
-<!--             <artifactId>jersey-media-json-jackson</artifactId> -->
-<!--             <scope>compile</scope> -->
-<!--         </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.glassfish.jersey.media</groupId> -->
+        <!-- <artifactId>jersey-media-json-jackson</artifactId> -->
+        <!-- <scope>compile</scope> -->
+        <!-- </dependency> -->
 
         <!-- Base64 encoding that works in both JVM and Android -->
         <dependency>

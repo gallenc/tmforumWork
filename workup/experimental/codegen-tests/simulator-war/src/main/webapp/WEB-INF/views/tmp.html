@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<body>
+<div style="height:300px; width:100%; overflow:auto;" >
+<table cellspacing="0" cellpadding="5" border="1" >
+
+	<tbody>
+		<tr>
+			<td>
+				<p>Function Group</p>
+			</td>
+			<td>
+				<p>Function</p>
+			</td>
+			<td>
+				<p>Status</p>
+			</td>
+			<td>
+				<p>Notes</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>events subscription</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Unregister a listener</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td>
+				<p>listeners do not have working filters</p>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Register a listener</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td>
+				<p>listeners do not have working filters</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>notification listeners (client side)</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Client listener for entity
+					ServiceProblemAttributeValueChangeNotification</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Client listener for entity
+					ServiceProblemInformationRequiredNotification</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Client listener for entity
+					ServiceProblemStateChangeNotification</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Client listener for entity ServiceProblemCreateNotification</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Client listener for generic events</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td>
+				<p>Not in standard: listens for any event and not just specifc
+					type</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>problemAcknowledgement</p>
+			</td>
+			<td></td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<p>problemUnacknowledgement</p>
+			</td>
+			<td></td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<p>problemGroup</p>
+			</td>
+			<td></td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<p>problemUngroup</p>
+			</td>
+			<td></td>
+			<td>
+				<p>Not working</p>
+			</td>
+			<td>
+				<p>does not ungroup</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>serviceProblem</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>List or find ServiceProblem objects (GET /serviceProblem)</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td>
+				<p>no filters or criteria searchint</p>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Creates a ServiceProblem (POST /serviceProblem)</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Retrieves a ServiceProblem by ID GET /serviceProblem/{id}</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Deletes a ServiceProblem DELETE /serviceProblem/{id}</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Updates partially a ServiceProblem PATCH /serviceProblem/{id}
+				</p>
+			</td>
+			<td>
+				<p>working</p>
+			</td>
+			<td>
+				<p>simple patch</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>serviceProblemEventRecord</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>List or find ServiceProblemEventRecord objects GET
+					/serviceProblemEventRecord</p>
+			</td>
+			<td>
+				<p>not implemented</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>Retrieves a ServiceProblemEventRecord by ID GET
+					/serviceProblemEventRecord/{id}</p>
+			</td>
+			<td>
+				<p>not implemented</p>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<p>default</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>GET /generic-hub</p>
+			</td>
+			<td></td>
+			<td>
+				<p>Test code not part of standard</p>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>GET /generic-listener</p>
+			</td>
+			<td></td>
+			<td>
+				<p>Test code not part of standard</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>

@@ -12,10 +12,11 @@
 	   https://www.springframework.org/schema/security/spring-security.xsd">
 
     <!-- this allows the dispatcher to handle other content -->
-    <mvc:resources mapping="/static/**" location="/WEB-INF/static/" />
+    <!-- <mvc:resources mapping="/static/**" location="/WEB-INF/static/" /> -->
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
 
     <mvc:default-servlet-handler />
-    
+
     <!-- gives base path for interface NOT WORKING -->
     <bean id="basePath" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/" />
