@@ -83,6 +83,10 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             String idStr=serviceProblem.getId();
             String href = uriInfo.getAbsolutePath().toASCIIString()+"/"+idStr;
             serviceProblem.setHref(href);
+            
+            // persist path href (done this way because we can't persist the href before we know the id.
+            serviceProblemEntity.setHref(href);
+            serviceProblemEntity = serviceProblemRepository.save(serviceProblemEntity);
 
             LOG.debug("created service problem returning serviceProblem:" + serviceProblem);
             

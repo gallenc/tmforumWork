@@ -8,8 +8,10 @@ package org.opennms.tmforum.tmf656.web;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
+import org.opennms.tmforum.tmf656.simulator.model.ServiceProblemEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +106,37 @@ public class ViewController {
 //
 //        return "home";
 //    }
+    
+    @RequestMapping(value = {"/serviceProblemList"}, method = RequestMethod.GET)
+    public String serviceProblemsGet(Model model) {
+        
+        long numberOfProblems = serviceProblemRepository.count();
+        model.addAttribute("numberOfProblems", numberOfProblems);
+        
+        List<ServiceProblemEntity> problemList = serviceProblemRepository.findAll();
+        model.addAttribute("problemList", problemList);
+
+        return "serviceProblemList";
+    }
+    
+    @Transactional
+    @RequestMapping(value = {"/serviceProblemList"}, method = RequestMethod.POST)
+    public String serviceProblemsPost(Model model,
+          @RequestParam(value = "action") String action            
+            ) {
+        
+        if("deleteAll".contentEquals(action)) {
+            serviceProblemRepository.deleteAll();
+        }
+        
+        long numberOfProblems = serviceProblemRepository.count();
+        model.addAttribute("numberOfProblems", numberOfProblems);
+        
+        List<ServiceProblemEntity> problemList = serviceProblemRepository.findAll();
+        model.addAttribute("problemList", problemList);
+        
+        return "serviceProblemList";
+    }
 
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String home(Model model) {

@@ -56,11 +56,10 @@
 
                             <!-- this raw java code works !! -->
                             <li <% if ("home".equals(request.getAttribute("selectedPage"))) {%> class="active"  <% } %> ><a href="${contextPath}/home">Home</a></li> 
-                            <li <% if ("swaggerUI".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="${contextPath}/swaggerUI">Swagger Test Page</a></li>                          
-
+                            <li <% if ("serviceProblemList".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="${contextPath}/serviceProblemList">Service Problems</a></li>                          
                             <li <% if ("about".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% } %> ><a href="${contextPath}/about">About</a></li> 
                             <li <% if ("contact".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="${contextPath}/contact">Contact</a></li>                          
-
+                            <li <% if ("swaggerUI".equals(request.getAttribute("selectedPage"))) {%>  class="active"  <% }%> ><a href="${contextPath}/swaggerUI">Swagger Test Page</a></li>                          
 
                         </ul>
                         <ul class="nav navbar-nav navbar-right">

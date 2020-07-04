@@ -8,7 +8,8 @@
 
 <footer class="footer">
     <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        <p class="text-muted">&copy; <a href="https://www.opennms.com/" target="_blank">OpenNMS Group</a> contributed under the 
+        <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache 2 License</a></p>
     </div>
 </footer>
 
