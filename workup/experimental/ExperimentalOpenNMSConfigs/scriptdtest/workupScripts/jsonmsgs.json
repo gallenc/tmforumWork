@@ -1,0 +1,16 @@
+{
+	"uei": "uei.opennms.org/serviceProblem/update",
+	"source": "ServiceProblemScript",
+	"host": "host",
+	"severity": "MAJOR",
+	"descr": "if ommitted the default description is used from event definition",
+	"logmsg": {
+		"value": "this is hre value of the log message into the log"
+	},
+	"parms": [
+		{
+			"parmName": "url",
+			"value": "http://localhost:8980/opennms/rtc/post/Network+Interfaces"
+		}
+	]
+}

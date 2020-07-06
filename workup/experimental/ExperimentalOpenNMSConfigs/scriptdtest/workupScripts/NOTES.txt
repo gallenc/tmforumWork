@@ -1,0 +1,13 @@
+
+Example Scriptd scripts
+
+Ins event proxy - able to load process in scriptd
+https://wiki.opennms.org/wiki/InsEventProxy
+https://github.com/OpenNMS/opennms/blob/opennms-26.1.1-1/opennms-tools/scriptd-event-proxy/src/main/java/org/opennms/netmgt/scriptd/ins/events/InsServerListener.java
+
+
+
+
+
+only some configurations reloaded https://issues.opennms.org/browse/NMS-8522
+reload config https://docs.opennms.org/opennms/releases/latest/guide-admin/guide-admin.html
