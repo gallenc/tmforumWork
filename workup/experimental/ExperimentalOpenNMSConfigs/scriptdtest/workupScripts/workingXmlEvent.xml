@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event>
+
+    <host>host</host>
+    <severity>SEVERE</severity>
+    <uei>uei.opennms.org/spm/problemupdate</uei>
+    <source>SPMInterface</source>
+    <!-- <time>2020-04-08T04:47:37.331-04:00</time> -->
+     <!--      <descr>this:descrYYY</descr> -->
+    <logmsg>spm interface update.111</logmsg>
+    <parms>
+        <parm>
+            <parmName>this:parmNameXXX</parmName>
+            <value>this:value</value>
+            <type>string</type>
+        </parm>
+    </parms>
+
+</event>

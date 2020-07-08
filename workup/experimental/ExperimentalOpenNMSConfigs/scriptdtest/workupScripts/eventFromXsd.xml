@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<this:events xmlns:this="http://xmlns.opennms.org/xsd/event" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.opennms.org/xsd/event event.xsd ">
+  <this:event uuid="">
+    <this:dbid>1</this:dbid>
+    <this:dist-poller>this:dist-poller</this:dist-poller>
+    <this:creation-time>this:creation-time</this:creation-time>
+    <this:master-station>this:master-station</this:master-station>
+    <this:mask>
+      <this:maskelement>
+        <this:mename>this:mename</this:mename>
+        <this:mevalue>this:mevalue</this:mevalue>
+      </this:maskelement>
+    </this:mask>
+    <this:uei>this:uei</this:uei>
+    <this:source>this:source</this:source>
+    <this:nodeid>0</this:nodeid>
+    <this:time>this:time</this:time>
+    <this:host>this:host</this:host>
+    <this:interface>this:interface</this:interface>
+    <this:snmphost>this:snmphost</this:snmphost>
+    <this:service>this:service</this:service>
+    <this:snmp>
+      <this:id>this:id</this:id>
+      <this:idtext>this:idtext</this:idtext>
+      <this:version>this:version</this:version>
+      <this:specific>0</this:specific>
+      <this:generic>0</this:generic>
+      <this:community>this:community</this:community>
+      <this:time-stamp>0</this:time-stamp>
+    </this:snmp>
+    <this:parms>
+      <this:parm>
+        <this:parmName>this:parmName</this:parmName>
+        <this:value encoding="text" type="string">this:value</this:value>
+      </this:parm>
+    </this:parms>
+    <this:descr>this:descr</this:descr>
+    <this:logmsg dest="logndisplay" notify="true">this:logmsg</this:logmsg>
+    <this:severity>this:severity</this:severity>
+    <this:pathoutage>this:pathoutage</this:pathoutage>
+    <this:correlation path="suppressDuplicates" state="off">
+      <this:cuei>this:cuei</this:cuei>
+      <this:cmin>this:cmin</this:cmin>
+      <this:cmax>this:cmax</this:cmax>
+      <this:ctime>this:ctime</this:ctime>
+    </this:correlation>
+    <this:operinstruct>this:operinstruct</this:operinstruct>
+    <this:autoaction state="on">this:autoaction</this:autoaction>
+    <this:operaction menutext="" state="on">this:operaction</this:operaction>
+    <this:autoacknowledge state="on">this:autoacknowledge</this:autoacknowledge>
+    <this:loggroup>this:loggroup</this:loggroup>
+    <this:tticket state="on">this:tticket</this:tticket>
+    <this:forward mechanism="snmpudp" state="off">this:forward</this:forward>
+    <this:script language="">this:script</this:script>
+    <this:ifIndex>0</this:ifIndex>
+    <this:ifAlias>this:ifAlias</this:ifAlias>
+    <this:mouseovertext>this:mouseovertext</this:mouseovertext>
+    <this:alarm-data alarm-type="1" auto-clean="false" clear-key="uei" reduction-key="" x733-alarm-type="" x733-probable-cause="0">
+      <this:update-field field-name="" update-on-reduction="true"/>
+      <this:managed-object type=""/>
+    </this:alarm-data>
+  </this:event>
+</this:events>
