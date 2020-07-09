@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- scriptd-config.xml revision 1.0 -->
+<scriptd-configuration>
+    <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh"/>
+    <start-script language="beanshell">
+
+        /* does not appear to run on reload event */
+        log = bsf.lookupBean("log");
+        log.debug("Starting Beanshell Script");
+
+
+    </start-script>
+
+    <stop-script language="beanshell">
+        log.debug("Executing Beanshell stop script");
+
+    </stop-script>
+
+    <event-script language="beanshell">
+
+        /* runs on event */
+        event = bsf.lookupBean("event");
+        log.debug("event received:" + event.uei);
+        
+    </event-script>
+
+
+</scriptd-configuration>
+

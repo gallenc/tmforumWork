@@ -1,0 +1,9 @@
+
+/*    <event-script language="beanshell"> */
+
+log = bsf.lookupBean("log");
+log.debug("running on event script");
+event = bsf.lookupBean("event");
+log.debug("event:"+event);
+
+/*    </event-script> */

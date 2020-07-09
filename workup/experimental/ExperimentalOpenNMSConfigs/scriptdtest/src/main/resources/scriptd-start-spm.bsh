@@ -1,0 +1,7 @@
+
+/*    <start-script language="beanshell"> */
+
+log = bsf.lookupBean("log");
+log.debug("running start script");
+
+/*    </start-script"> */

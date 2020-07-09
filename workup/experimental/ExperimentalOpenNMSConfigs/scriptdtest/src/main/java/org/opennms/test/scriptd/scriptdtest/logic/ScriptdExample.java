@@ -1,18 +1,22 @@
-package org.opennms.test.scriptd.scriptdtest;
+package org.opennms.test.scriptd.scriptdtest.logic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.opennms.netmgt.xml.event.Event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import bsh.util.BeanShellBSFEngine;
 
 // see https://www.baeldung.com/java-http-request
 // see https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java-networking-2
@@ -38,6 +42,9 @@ import org.slf4j.LoggerFactory;
 public class ScriptdExample {
 
     static final Logger log = LoggerFactory.getLogger(ScriptdExample.class);
+    
+
+    
     
     String baseUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
     String username= "admin";
@@ -151,7 +158,7 @@ public class ScriptdExample {
 
         log.debug("executing event script");
 
-        // event = bsf.lookupBean("event");
+       // Event event = bsf.lookupBean("event");
 
         // if ((event.uei.equals("uei.opennms.org/internal/alarms/NotificationAlarm"))
         // || (event.uei.equals("uei.opennms.org/internal/alarms/AlarmCleared"))
@@ -228,17 +235,16 @@ public class ScriptdExample {
             return jsonObject;
 
         } catch (IOException | ParseException e) {
-            log.error("problem in script", e);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            log.error("problem in script"+ sw.toString());
         }
         
         return null;
     }
     
-    
-    
-    
-    
-    
+
     
     public JSONObject getServiceProblem(Integer id) {
         JSONParser parser = new JSONParser();
@@ -289,7 +295,10 @@ public class ScriptdExample {
             return jsonObject;
 
         } catch (IOException | ParseException e) {
-            log.error("problem in script", e);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            log.error("problem in script"+ sw.toString());
         }
         
         return null;

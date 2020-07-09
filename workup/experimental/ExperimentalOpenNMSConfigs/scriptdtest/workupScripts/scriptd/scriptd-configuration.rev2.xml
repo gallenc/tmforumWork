@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- scriptd-config.xml revision 1.0 -->
+<scriptd-configuration>
+    <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
+    <start-script language="beanshell">
+
+
+    </start-script>
+
+    <stop-script language="beanshell">
+        log.debug("Executing Beanshell stop script");
+
+    </stop-script>
+
+    <event-script language="beanshell">
+
+
+    </event-script>
+
+
+</scriptd-configuration>
+
