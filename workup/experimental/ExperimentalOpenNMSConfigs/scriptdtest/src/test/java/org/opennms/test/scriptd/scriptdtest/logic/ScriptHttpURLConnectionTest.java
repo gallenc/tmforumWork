@@ -3,17 +3,17 @@ package org.opennms.test.scriptd.scriptdtest.logic;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.opennms.test.scriptd.scriptdtest.logic.ScriptdExample;
+import org.opennms.test.scriptd.scriptdtest.logic.ScriptdHttpURLConnectionExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScriptTest {
-    static final Logger log = LoggerFactory.getLogger(ScriptTest.class);
+public class ScriptHttpURLConnectionTest {
+    static final Logger log = LoggerFactory.getLogger(ScriptHttpURLConnectionTest.class);
 
     @Test
     public void test() {
         log.debug("start of test");
-        ScriptdExample scriptdExample = new ScriptdExample();
+        ScriptdHttpURLConnectionExample scriptdExample = new ScriptdHttpURLConnectionExample();
         
         log.debug("test create service problem");
         scriptdExample.createServiceProblem();

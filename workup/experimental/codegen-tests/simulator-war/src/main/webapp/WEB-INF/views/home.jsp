@@ -28,10 +28,11 @@
 		TMF656 SPM interface.
 	</p>
 	<h1>Usage</h1>
+
 	<p>The primary purpose of this simulator is to allow test calls to
 		be made by external clients to the TMF656 ReST api. The simulator will
-		save all fields from posted service problems and also allow the client to
-		register to receive events on changes of state. However it is also
+		save all fields from posted service problems and also allow the client
+		to register to receive events on changes of state. However it is also
 		possible to demonstrate the capabilities of the API simply by making
 		local test calls using the in-built swagger UI.</p>
 	<p>The full set of features which have been or are not yet
@@ -40,8 +41,14 @@
 		ReST API and create, delete or modify service problems.</p>
 	<p>The Service Problems page shows you the current service problems
 		in the simulator and allows you to delete the whole service problem
-		list.</main>
-
-<js
-p:include page="footer.jsp" />
+		list.
+	<p>The simulator works with http at port 8080 or with https at port 8443 (self signed
+        certificate) for example:
+	<p>https://localhost:8443/tmf656-spm-simulator-war/
+	<p>
+	<p>http://localhost:8080/tmf656-spm-simulator-war/
+	<p>(replace localhost with domain name of server where this is
+		hosted)</p>
+</main>
+<js p:include page="footer.jsp" />
 

@@ -39,9 +39,9 @@ import bsh.util.BeanShellBSFEngine;
 
 //import org.opennms.netmgt.config.DataSourceFactory;
 
-public class ScriptdExample {
+public class ScriptdHttpURLConnectionExample {
 
-    static final Logger log = LoggerFactory.getLogger(ScriptdExample.class);
+    static final Logger log = LoggerFactory.getLogger(ScriptdHttpURLConnectionExample.class);
     
 
     
