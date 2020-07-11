@@ -131,6 +131,36 @@
                 </executions>
             </plugin>
 
+            <!--  generates new self signed certificate -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>genkey</id>
+                        <goals>
+                            <goal>generateKeyPair</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keystore>${project.build.directory}/jetty.keystore</keystore>
+                    <dname>cn=localhost</dname>
+                    <keypass>secret</keypass>
+                    <storepass>secret</storepass>
+                    <alias>jetty9</alias>
+                    <keyalg>RSA</keyalg>
+                </configuration>
+            </plugin>
+
             <!-- this plugin downloads the swagger ui -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
