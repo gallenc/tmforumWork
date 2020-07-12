@@ -41,14 +41,18 @@
 		ReST API and create, delete or modify service problems.</p>
 	<p>The Service Problems page shows you the current service problems
 		in the simulator and allows you to delete the whole service problem
-		list.
-	<p>The simulator works with http at port 8080 or with https at port 8443 (self signed
-        certificate) for example:
-	<p>https://localhost:8443/tmf656-spm-simulator-war/
-	<p>
-	<p>http://localhost:8080/tmf656-spm-simulator-war/
-	<p>(replace localhost with domain name of server where this is
-		hosted)</p>
+		list.</p>
+	<p>The simulator works with http at port 8080 or with https at port
+		8443 (self signed certificate) for example:</p>
+
+    <p>Clear: http://{hostname}:8080/tmf656-spm-simulator-war/</p>
+	<p>Secure: https://{hostname}:8443/tmf656-spm-simulator-war/<p>
+	
+	<p>Replacing {hostname} with domain name of server where the simulator is hosted. e.g.</p>
+	<p>Clear: <a href="http://${host}:8080${path}">http://${host}:8080${path}</a></p>
+	<p>Secure: <a href="https://${host}:8443${path}">https://${host}:8443${path}</a></p>
+
+
 </main>
 <js p:include page="footer.jsp" />
 

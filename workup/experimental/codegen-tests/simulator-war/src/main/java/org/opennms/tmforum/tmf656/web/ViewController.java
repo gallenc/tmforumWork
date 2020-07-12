@@ -5,9 +5,12 @@
  */
 package org.opennms.tmforum.tmf656.web;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
@@ -139,7 +142,15 @@ public class ViewController {
     }
 
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
-    public String home(Model model) {
+    public String home(Model model, HttpServletRequest request) {
+        try {
+            URL requestURL = new URL(request.getRequestURL().toString());
+            String host = requestURL.getHost();
+            String path = requestURL.getPath();
+            model.addAttribute("host", host);
+            model.addAttribute("path", path);
+        } catch (MalformedURLException e) {}
+
         return "home";
     }
     
