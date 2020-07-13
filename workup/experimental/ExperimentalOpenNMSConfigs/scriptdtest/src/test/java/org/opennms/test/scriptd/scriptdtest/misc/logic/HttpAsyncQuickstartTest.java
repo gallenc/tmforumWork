@@ -1,4 +1,4 @@
-package org.opennms.test.scriptd.scriptdtest.logic;
+package org.opennms.test.scriptd.scriptdtest.misc.logic;
 
 import java.io.IOException;
 import java.nio.CharBuffer;

@@ -1,4 +1,4 @@
-package org.opennms.test.scriptd.scriptdtest.logic;
+package org.opennms.test.scriptd.scriptdtest.misc.logic;
 
 import static org.junit.Assert.*;
 
@@ -64,8 +64,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 // lots of random tests
-public class HTTPAsyncClientSimpleGetTest {
-    static final Logger log = LoggerFactory.getLogger(HTTPAsyncClientSimpleGetTest.class);
+public class HTTPAsyncClientSimpleTest {
+    static final Logger log = LoggerFactory.getLogger(HTTPAsyncClientSimpleTest.class);
 
     // tutorials https://github.com/eugenp/tutorials/tree/master/httpclient#readme
     // Now – let's see how to use a SSL Certificate with HttpAsyncClient.

@@ -1,9 +1,9 @@
-package org.opennms.test.scriptd.scriptdtest.logic;
+package org.opennms.test.scriptd.scriptdtest.misc.logic;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.opennms.test.scriptd.scriptdtest.logic.ScriptdHttpURLConnectionExample;
+import org.opennms.test.scriptd.scriptdtest.misc.logic.ScriptdHttpURLConnectionExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
