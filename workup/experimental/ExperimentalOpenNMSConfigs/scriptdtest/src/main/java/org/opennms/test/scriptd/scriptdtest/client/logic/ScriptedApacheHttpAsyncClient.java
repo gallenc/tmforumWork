@@ -50,13 +50,15 @@ public class ScriptedApacheHttpAsyncClient {
      * tutorials https://github.com/eugenp/tutorials/tree/master/httpclient#readme
      * Now – let's see how to use a SSL Certificate with HttpAsyncClient. In the
      * following example – we configure HttpAsyncClient to accept all certificates:
+     * 
+     * NOTE beanshell does not support generics or @Override !!! ( annotations ) or | in Exceptions (basically limited to before java 5
      */
 
     final int BOUND = 20;
 
     CloseableHttpAsyncClient m_client = null;
 
-    BlockingQueue<JSONObject> m_jsonQueue = new LinkedBlockingQueue<>(BOUND);
+    BlockingQueue m_jsonQueue = new LinkedBlockingQueue(BOUND);
 
     Thread m_listener = null;
 
@@ -84,34 +86,41 @@ public class ScriptedApacheHttpAsyncClient {
 
         /* listening for replies */
         m_listener = new Thread(new Runnable() {
+        
+            public void handleMessage(JSONObject msg) {
+              try{
+                 log.debug("method handling reply message: " + msg);
+              } catch (Exception ex) {
+                  StringWriter sw = new StringWriter();
+                  PrintWriter pw = new PrintWriter(sw);
+                  ex.printStackTrace(pw);
+                  log.warn("1st listener thread exception " + sw.toString());
+              }
+            }
 
-            @Override
             public void run() {
                 log.debug("starting listener for responses");
                 try {
-                    JSONObject msg;
-                    boolean stop = false;
+                    
                     /* consuming messages until poison message is received */
-                    while (!stop) {
-                        msg = m_jsonQueue.take();
-
-                        if (msg.get("poison") != null) {
+                    while (true ) {
+                        /* note not casting here because it causes null object in beanshell */
+                        Object  rxmsg =  m_jsonQueue.take();
+                        JSONObject msg = (JSONObject) rxmsg;
+                        if (msg == null){
+                            log.warn("listener message is null");
+                        } else if (msg.get("poison") != null) {
                             log.debug("listener stopping on poison message: " + msg);
-                            stop = true;
+                            throw new InterruptedException("interrupted on poison message");
                         } else {
+                            log.debug("handling reply message: " + msg);
                             handleMessage(msg);
-
                         }
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException ex) {
+                    log.warn("listener thread interrupted " + ex.toString());
                 }
                 log.debug("listener thread closed");
-            }
-
-            public void handleMessage(JSONObject msg) {
-                log.debug("handling reply message: " + msg);
-
             }
 
         });
@@ -201,7 +210,7 @@ public class ScriptedApacheHttpAsyncClient {
     }
 
     public synchronized void startClient() {
-
+        log.debug("Starting scriptedHttpAsyncClient");
         if (m_client != null) {
             log.error("Client already started. Stop client before starting a new one");
             return;
@@ -235,7 +244,7 @@ public class ScriptedApacheHttpAsyncClient {
             /* Start client */
             m_client.start();
 
-        } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException ex) {
+        } catch (Exception ex) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             ex.printStackTrace(pw);
@@ -245,6 +254,7 @@ public class ScriptedApacheHttpAsyncClient {
     }
 
     public synchronized void stopClient() {
+        log.debug("Stopping scriptedHttpAsyncClient");
         try {
             if (m_client != null)
                 m_client.close();
@@ -259,15 +269,21 @@ public class ScriptedApacheHttpAsyncClient {
     }
 
     public void executeRequest(HttpRequestBase request) {
+        log.debug("executing scriptedHttpAsyncClient request");
 
-        m_client.execute(request, new FutureCallback<HttpResponse>() {
+        /* not using typed or anonymous callback because of beanshell */
+        
+        FutureCallback requestCallback = new FutureCallback() {
 
-            public void completed(final HttpResponse response) {
+            public void completed(Object objectRresponse) {
+                
                 BufferedReader in = null;
                 try {
+                    
+                    HttpResponse response = (HttpResponse) objectRresponse;
 
                     int status = response.getStatusLine().getStatusCode();
-                    log.debug(request.getRequestLine() + " response status: " + status);
+                    log.debug(" response status: " + status+ " request: "+request.getRequestLine());
 
                     InputStream responseBody = response.getEntity().getContent();
 
@@ -280,7 +296,7 @@ public class ScriptedApacheHttpAsyncClient {
                     }
                     String content = contentbuff.toString();
 
-                    log.debug(request.getRequestLine() + " Server response : " + content);
+                    log.debug(" reply content status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
 
                     JSONObject message = new JSONObject();
                     message.put("status", status);
@@ -298,11 +314,11 @@ public class ScriptedApacheHttpAsyncClient {
                                 message.put("jsonobject", (JSONObject) item);
                             }
                         } catch (Exception ex) {
-                            log.warn(request.getRequestLine() + " cannot parse server response : " + content);
+                            log.warn("cannot parse server response  status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
                         }
                     }
 
-                    log.debug(request.getRequestLine() + " Response message" + message.toString());
+                    log.debug(" Response message status: " + status+ " request: "+request.getRequestLine() +" message " +message.toString());
 
                     boolean notFull = m_jsonQueue.offer(message);
                     if (!notFull) {
@@ -324,18 +340,21 @@ public class ScriptedApacheHttpAsyncClient {
 
             }
 
-            public void failed(final Exception ex) {
+            public void failed(Exception ex) {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
                 ex.printStackTrace(pw);
-                log.error(request.getRequestLine() + " failed response" + sw.toString());
+                log.error(" failed response. request: "+ request.getRequestLine()+"error:"+ sw.toString());
             }
 
             public void cancelled() {
-                log.error(request.getRequestLine() + " cancelled response");
+                log.error(" cancelled response. request: "+ request.getRequestLine());
             }
 
-        });
+        };
+
+        m_client.execute(request, requestCallback);
+        
     }
 
 }
