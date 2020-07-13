@@ -1,0 +1,9 @@
+
+/*    <start-script language="beanshell"> */
+
+log = bsf.lookupBean("log");
+log.debug("running start script");
+
+source("src/main/resources/scriptedApacheHttpAsyncClient.bsh");
+
+/*    </start-script"> */

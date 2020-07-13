@@ -1,0 +1,7 @@
+
+/*    <stop-script language="beanshell"> */
+
+log = bsf.lookupBean("log");
+log.debug("running stop script");
+
+/*    </stop-script"> */

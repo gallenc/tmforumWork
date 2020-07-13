@@ -1,58 +1,46 @@
-package org.opennms.test.scriptd.scriptdtest.client.logic;
+/* Asynchronous Apache HTTP Client bean shell script for OpenNMS */
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
+    import java.io.BufferedReader;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.io.InputStreamReader;
+    import java.io.PrintWriter;
+    import java.io.StringWriter;
+    import java.io.UnsupportedEncodingException;
+    import java.security.KeyManagementException;
+    import java.security.KeyStoreException;
+    import java.security.NoSuchAlgorithmException;
+    import java.security.cert.X509Certificate;
 
-import javax.net.ssl.SSLContext;
+    import javax.net.ssl.SSLContext;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.concurrent.FutureCallback;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
-import org.apache.http.ssl.SSLContexts;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+    import org.apache.http.HttpResponse;
+    import org.apache.http.auth.AuthScope;
+    import org.apache.http.auth.UsernamePasswordCredentials;
+    import org.apache.http.client.CredentialsProvider;
+    import org.apache.http.client.config.CookieSpecs;
+    import org.apache.http.client.config.RequestConfig;
+    import org.apache.http.client.methods.HttpDelete;
+    import org.apache.http.client.methods.HttpGet;
+    import org.apache.http.client.methods.HttpPatch;
+    import org.apache.http.client.methods.HttpPost;
+    import org.apache.http.client.methods.HttpPut;
+    import org.apache.http.client.methods.HttpRequestBase;
+    import org.apache.http.concurrent.FutureCallback;
+    import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+    import org.apache.http.conn.ssl.TrustStrategy;
+    import org.apache.http.entity.StringEntity;
+    import org.apache.http.impl.client.BasicCredentialsProvider;
+    import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+    import org.apache.http.impl.nio.client.HttpAsyncClients;
+    import org.apache.http.ssl.SSLContexts;
+    import org.json.simple.JSONArray;
+    import org.json.simple.JSONObject;
+    import org.json.simple.parser.JSONParser;
+    import java.util.concurrent.BlockingQueue;
+    import java.util.concurrent.LinkedBlockingQueue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ScriptedApacheHttpAsyncClient {
-    static final Logger log = LoggerFactory.getLogger(ScriptedApacheHttpAsyncClient.class);
-
-    /*
-     * tutorials https://github.com/eugenp/tutorials/tree/master/httpclient#readme
-     * Now – let's see how to use a SSL Certificate with HttpAsyncClient. In the
-     * following example – we configure HttpAsyncClient to accept all certificates:
-     */
-
-    final int BOUND = 20;
+    int BOUND = 20;
 
     CloseableHttpAsyncClient m_client = null;
 

@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.opennms.netmgt.xml.event.Event;
 
 //https://javasourcequery.com/example/org.apache.bsf.lookupBean
-public class TestRunBshScript {
-    static final Logger log = LoggerFactory.getLogger(TestRunBshScript.class);
+public class TestRunBshSpmScript1 {
+    static final Logger log = LoggerFactory.getLogger(TestRunBshSpmScript1.class);
 
     private static BSFManager mgr = new BSFManager();
 
@@ -35,7 +35,7 @@ public class TestRunBshScript {
 
         String startScript = "     log = bsf.lookupBean(\"log\"); \n"
                 + "   log.debug(\"start script logging enabled before importing source\"); \n"
-                + "   source(\"src/main/resources/scriptd-start-script.bsh\"); \n";
+                + "   source(\"src/main/resources/scriptd-start-spm1.bsh\"); \n";
 
         mgr.exec("beanshell", "", 0, 0, startScript);
 
@@ -49,7 +49,7 @@ public class TestRunBshScript {
 
         String stopScript = "     log = bsf.lookupBean(\"log\"); \n" 
                 + "   log.debug(\"running stop script\"); \n"
-                + "   source(\"src/main/resources/scriptd-stop-script.bsh\"); \n";
+                + "   source(\"src/main/resources/scriptd-stop-spm1.bsh\"); \n";
 
         mgr.exec("beanshell", "", 0, 0, stopScript);
         
@@ -70,7 +70,7 @@ public class TestRunBshScript {
 
         String onEventScript = "     log = bsf.lookupBean(\"log\"); \n" 
                 + "   log.debug(\"running onEvent script\"); \n"
-                + "   source(\"src/main/resources/scriptd-event-script.bsh\"); \n";
+                + "   source(\"src/main/resources/scriptd-event-spm1.bsh\"); \n";
 
         mgr.exec("beanshell", "", 0, 0, onEventScript);
 
