@@ -6,4 +6,16 @@ log.debug("running on event script");
 event = bsf.lookupBean("event");
 log.debug("event:"+event);
 
+      
+      log.debug("sending 3 get requests");
+      String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
+      scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem");
+      scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
+      scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem/3");
+
+      log.debug("event script waiting for 20 secs");
+      Thread.sleep(20000); 
+      log.debug("finished waiting");
+      log.debug("end of event script");
+
 /*    </event-script> */

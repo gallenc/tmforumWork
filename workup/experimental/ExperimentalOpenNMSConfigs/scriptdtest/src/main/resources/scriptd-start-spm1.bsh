@@ -8,28 +8,12 @@
       
       scriptedClient = scriptedApacheHttpAsyncClient();
     
-
-      log.debug("top starting listener");
+      log.debug("start script starting listener");
       scriptedClient.startListener();
-      log.debug("top starting client");
+      log.debug("start script starting client");
       scriptedClient.startClient();
-      
-      log.debug("sending 3 get requests");
-      String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
-      scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem");
-      scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
-      scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem/3");
-      
 
-      log.debug("waiting for 20 secs");
-      Thread.sleep(20000); 
-      log.debug("finished waiting");
-      
-      log.debug("top stop listener");
-      scriptedClient.stopListener();
-      log.debug("top stop client");
-      scriptedClient.stopClient();
 
-      
+      log.debug("end of start script");
 
 /*    </start-script"> */
