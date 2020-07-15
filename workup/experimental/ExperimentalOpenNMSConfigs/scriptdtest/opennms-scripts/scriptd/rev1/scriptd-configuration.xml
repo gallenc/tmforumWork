@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!-- scriptd-config.xml revision 1.0 -->
+<scriptd-configuration>
+    <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
+    <start-script language="beanshell">
+      log = bsf.lookupBean("log");
+      log.debug("running start script");
+
+      source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
+      
+      scriptedClient = scriptedApacheHttpAsyncClient();
+    
+      log.debug("start script starting listener");
+      scriptedClient.startListener();
+      log.debug("start script starting client");
+      scriptedClient.startClient();
+
+
+      log.debug("end of start script");
+
+    </start-script>
+
+    <stop-script language="beanshell">
+    
+      log = bsf.lookupBean("log");
+      log.debug("Executing Beanshell stop script");
+        
+      log.debug("stop script stop listener");
+      scriptedClient.stopListener();
+      log.debug("stop script stop client");
+      scriptedClient.stopClient();
+
+    </stop-script>
+
+    <event-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running on event script");
+      event = bsf.lookupBean("event");
+      log.debug("event:"+event);
+      
+      
+      String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
+      scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem");
+
+      log.debug("end of on event script");
+
+    </event-script>
+
+
+</scriptd-configuration>
+

@@ -1,0 +1,355 @@
+/* Scripted Asynchronous Apache HTTP Client BeanShell script for OpenNMS */
+/* Author Craig Gallen                                                   */
+/* version 1.0  July 2020                                                */
+
+    import java.io.BufferedReader;
+    import java.io.IOException;
+    import java.io.InputStream;
+    import java.io.InputStreamReader;
+    import java.io.PrintWriter;
+    import java.io.StringWriter;
+    import java.io.UnsupportedEncodingException;
+    import java.security.KeyManagementException;
+    import java.security.KeyStoreException;
+    import java.security.NoSuchAlgorithmException;
+    import java.security.cert.X509Certificate;
+
+    import javax.net.ssl.SSLContext;
+
+    import org.apache.http.HttpResponse;
+    import org.apache.http.auth.AuthScope;
+    import org.apache.http.auth.UsernamePasswordCredentials;
+    import org.apache.http.client.CredentialsProvider;
+    import org.apache.http.client.config.CookieSpecs;
+    import org.apache.http.client.config.RequestConfig;
+    import org.apache.http.client.methods.HttpDelete;
+    import org.apache.http.client.methods.HttpGet;
+    import org.apache.http.client.methods.HttpPatch;
+    import org.apache.http.client.methods.HttpPost;
+    import org.apache.http.client.methods.HttpPut;
+    import org.apache.http.client.methods.HttpRequestBase;
+    import org.apache.http.concurrent.FutureCallback;
+    import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+    import org.apache.http.conn.ssl.TrustStrategy;
+    import org.apache.http.entity.StringEntity;
+    import org.apache.http.impl.client.BasicCredentialsProvider;
+    import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+    import org.apache.http.impl.nio.client.HttpAsyncClients;
+    import org.apache.http.ssl.SSLContexts;
+    import org.json.simple.JSONArray;
+    import org.json.simple.JSONObject;
+    import org.json.simple.parser.JSONParser;
+    import java.util.concurrent.BlockingQueue;
+    import java.util.concurrent.LinkedBlockingQueue;
+
+scriptedApacheHttpAsyncClient() {
+
+    int BOUND = 20;
+
+    CloseableHttpAsyncClient m_client = null;
+
+    BlockingQueue m_jsonQueue = new LinkedBlockingQueue(BOUND);
+
+    Thread m_listener = null;
+
+    public synchronized void stopListener() {
+
+        /* inject poison to finish listener and empty queue */
+        JSONObject poison = new JSONObject();
+        poison.put("poison", "true");
+
+        /* Pause for 5 seconds to finish transactions */
+       try {
+            m_jsonQueue.offer(poison);
+            Thread.sleep(5000);
+            m_jsonQueue.offer(poison);
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            log.debug("sleep interrupted");
+        }
+
+        m_listener.interrupt();
+        m_listener = null;
+
+    }
+
+    public synchronized void startListener() {
+
+        /* listening for replies */
+        m_listener = new Thread(new Runnable() {
+        
+            public void handleMessage(JSONObject msg) {
+              try{
+                 log.debug("method handling reply message: " + msg);
+              } catch (Exception ex) {
+                  StringWriter sw = new StringWriter();
+                  PrintWriter pw = new PrintWriter(sw);
+                  ex.printStackTrace(pw);
+                  log.warn("1st listener thread exception " + sw.toString());
+              }
+            }
+
+            public void run() {
+                log.debug("starting listener for responses");
+                try {
+                    
+                    /* consuming messages until poison message is received */
+                    while (true ) {
+                        /* note not casting here because it causes null object in beanshell */
+                        Object  rxmsg =  m_jsonQueue.take();
+                        JSONObject msg = (JSONObject) rxmsg;
+                        if (msg == null){
+                            log.warn("listener message is null");
+                        } else if (msg.get("poison") != null) {
+                            log.debug("listener stopping on poison message: " + msg);
+                            throw new InterruptedException("interrupted on poison message");
+                        } else {
+                            log.debug("handling reply message: " + msg);
+                            handleMessage(msg);
+                        }
+                    }
+                } catch (InterruptedException ex) {
+                    log.warn("listener thread interrupted " + ex.toString());
+                }
+                log.debug("listener thread closed");
+            }
+
+        });
+
+        m_listener.start();
+
+    }
+
+    /* asynchronous client code */
+
+    public void getRequest(String url) {
+        if (m_client == null) {
+            log.error("Client not started. call startClient() first");
+            return;
+        }
+        HttpGet request = new HttpGet(url);
+        executeRequest(request);
+    }
+
+    public void deleteRequest(String url) {
+        if (m_client == null) {
+            log.error("Client not started. call startClient() first");
+            return;
+        }
+        HttpDelete request = new HttpDelete(url);
+        executeRequest(request);
+    }
+
+    public void postRequest(String url, String jsonMessage) {
+        if (m_client == null) {
+            log.error("Client not started. call startClient() first");
+            return;
+        }
+        HttpPost request = new HttpPost(url);
+
+        request.setHeader("Content-type", "application/json");
+        request.setHeader("Accept", "application/json");
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(jsonMessage);
+        } catch (UnsupportedEncodingException e1) {
+            log.error("postRequest problem encoding post message", e1);
+            return;
+        }
+        request.setEntity(entity);
+        executeRequest(request);
+    }
+
+    public void putRequest(String url, String jsonMessage) {
+        if (m_client == null) {
+            log.error("Client not started. call startClient() first");
+            return;
+        }
+        HttpPut request = new HttpPut(url);
+
+        request.setHeader("Content-type", "application/json");
+        request.setHeader("Accept", "application/json");
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(jsonMessage);
+        } catch (UnsupportedEncodingException e1) {
+            log.error("putRequest problem encoding post message", e1);
+            return;
+        }
+        request.setEntity(entity);
+        executeRequest(request);
+    }
+
+    public void patchRequest(String url, String jsonMessage) {
+        if (m_client == null) {
+            log.error("Client not started. call startClient() first");
+            return;
+        }
+        HttpPatch request = new HttpPatch(url);
+
+        request.setHeader("Content-type", "application/json");
+        request.setHeader("Accept", "application/json");
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(jsonMessage);
+        } catch (UnsupportedEncodingException e1) {
+            log.error("patchRequest problem encoding post message", e1);
+            return;
+        }
+        request.setEntity(entity);
+        executeRequest(request);
+    }
+
+    public synchronized void startClient() {
+
+        if (m_client != null) {
+            log.error("Client already started. Stop client before starting a new one");
+            return;
+        }
+
+        /* Accept ALL SSL certificates */
+        TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
+            public boolean isTrusted(X509Certificate[] certificate, String authType) {
+                return true;
+            }
+        };
+        SSLContext sslContext;
+        try {
+            sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
+
+            /* set up basic authentication */
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            UsernamePasswordCredentials creds = new UsernamePasswordCredentials("username", "password");
+            provider.setCredentials(AuthScope.ANY, creds);
+
+            /* default request config */
+            RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT)
+                    .setSocketTimeout(1000).setConnectTimeout(1000).setConnectionRequestTimeout(1000).build();
+
+            /* Set Up async client */
+            m_client = HttpAsyncClients.custom()
+                    .setSSLHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
+                    .setSSLContext(sslContext).setDefaultCredentialsProvider(provider)
+                    .setDefaultRequestConfig(requestConfig).build();
+
+            /* Start client */
+            m_client.start();
+
+        } catch (Exception ex) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            log.error("Problem creating client:" + sw.toString());
+        }
+
+    }
+
+    public synchronized void stopClient() {
+        try {
+            if (m_client != null)
+                m_client.close();
+            m_client = null;
+            log.debug("Client closed");
+        } catch (IOException ex) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            log.error("Problem stopping client" + sw.toString());
+        }
+    }
+
+     public void executeRequest(HttpRequestBase request) {
+        log.debug("executing scriptedHttpAsyncClient request");
+
+        /* not using typed or anonymous callback because of beanshell */
+        
+        FutureCallback requestCallback = new FutureCallback() {
+
+            public void completed(Object objectRresponse) {
+                
+                BufferedReader in = null;
+                try {
+                    
+                    HttpResponse response = (HttpResponse) objectRresponse;
+
+                    int status = response.getStatusLine().getStatusCode();
+                    log.debug(" response status: " + status+ " request: "+request.getRequestLine());
+
+                    InputStream responseBody = response.getEntity().getContent();
+
+                    /* read the response of the request and place it in a content String */
+                    in = new BufferedReader(new InputStreamReader(responseBody));
+                    String inputLine;
+                    StringBuffer contentbuff = new StringBuffer();
+                    while ((inputLine = in.readLine()) != null) {
+                        contentbuff.append(inputLine);
+                    }
+                    String content = contentbuff.toString();
+
+                    log.debug(" reply content status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
+
+                    JSONObject message = new JSONObject();
+                    message.put("status", status);
+                    message.put("jsonobject", null);
+                    message.put("jsonarray", null);
+                    message.put("poison", null);
+
+                    if (!content.isEmpty()) {
+                        try {
+                            JSONParser parser = new JSONParser();
+                            Object item = parser.parse(content.toString());
+                            if (item instanceof JSONArray) {
+                                message.put("jsonarray", (JSONArray) item);
+                            } else {
+                                message.put("jsonobject", (JSONObject) item);
+                            }
+                        } catch (Exception ex) {
+                            log.warn("cannot parse server response  status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
+                        }
+                    }
+
+                    log.debug(" Response message status: " + status+ " request: "+request.getRequestLine() +" message " +message.toString());
+
+                    boolean notFull = m_jsonQueue.offer(message);
+                    if (!notFull) {
+                        log.warn("m_jsonQueue is full so discarding message" + message.toString());
+                    }
+
+                } catch (Exception ex) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    ex.printStackTrace(pw);
+                    log.error(request.getRequestLine() + " problem parsing response " + sw.toString());
+                } finally {
+                    if (in != null)
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                        }
+                }
+
+            }
+
+            public void failed(Exception ex) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                ex.printStackTrace(pw);
+                log.error(" failed response. request: "+ request.getRequestLine()+"error:"+ sw.toString());
+            }
+
+            public void cancelled() {
+                log.error(" cancelled response. request: "+ request.getRequestLine());
+            }
+
+        };
+
+        m_client.execute(request, requestCallback);
+        
+    }
+    
+    /* returns this declaration so that its methods can be invoked */
+    return this;
+    
+ }
+
+ 
