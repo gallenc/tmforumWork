@@ -61,6 +61,12 @@ public class ScriptedApacheHttpAsyncClient {
     BlockingQueue m_jsonQueue = new LinkedBlockingQueue(BOUND);
 
     Thread m_listener = null;
+    
+    MessageHandler m_messageHandler = new MessageHandler();
+    
+    public void setMessageHandler(MessageHandler messageHandler) {
+        m_messageHandler = messageHandler;
+    }
 
     public synchronized void stopListener() {
 
@@ -89,7 +95,10 @@ public class ScriptedApacheHttpAsyncClient {
         
             public void handleMessage(JSONObject msg) {
               try{
+                  
                  log.debug("method handling reply message: " + msg);
+                 m_messageHandler.handleReturnMessage(msg);
+                 
               } catch (Exception ex) {
                   StringWriter sw = new StringWriter();
                   PrintWriter pw = new PrintWriter(sw);
@@ -299,6 +308,9 @@ public class ScriptedApacheHttpAsyncClient {
                     log.debug(" reply content status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
 
                     JSONObject message = new JSONObject();
+                    message.put("requestMethod", request.getMethod());
+                    message.put("requestHost", request.getURI().getHost());
+                    message.put("requestPath", request.getURI().getPath());
                     message.put("status", status);
                     message.put("jsonobject", null);
                     message.put("jsonarray", null);
