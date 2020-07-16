@@ -7,9 +7,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
@@ -95,10 +92,8 @@ public class ScriptedApacheHttpAsyncClient {
         
             public void handleMessage(JSONObject msg) {
               try{
-                  
                  log.debug("method handling reply message: " + msg);
                  m_messageHandler.handleReturnMessage(msg);
-                 
               } catch (Exception ex) {
                   StringWriter sw = new StringWriter();
                   PrintWriter pw = new PrintWriter(sw);
@@ -220,6 +215,7 @@ public class ScriptedApacheHttpAsyncClient {
 
     public synchronized void startClient() {
         log.debug("Starting scriptedHttpAsyncClient");
+
         if (m_client != null) {
             log.error("Client already started. Stop client before starting a new one");
             return;
@@ -264,6 +260,7 @@ public class ScriptedApacheHttpAsyncClient {
 
     public synchronized void stopClient() {
         log.debug("Stopping scriptedHttpAsyncClient");
+
         try {
             if (m_client != null)
                 m_client.close();

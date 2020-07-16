@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.opennms.netmgt.xml.event.Event;
 
 //https://javasourcequery.com/example/org.apache.bsf.lookupBean
-public class TestRunBshSpmScript1 {
-    static final Logger log = LoggerFactory.getLogger(TestRunBshSpmScript1.class);
+public class TestRunBshSpm1Script {
+    static final Logger log = LoggerFactory.getLogger(TestRunBshSpm1Script.class);
 
     private static BSFManager mgr = new BSFManager();
 

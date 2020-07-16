@@ -5,14 +5,21 @@
       log.debug("running start script");
 
       source("src/main/resources/scriptedApacheHttpAsyncClient.bsh");
+      scriptedClient = scriptedApacheHttpAsyncClient();      
       
-      scriptedClient = scriptedApacheHttpAsyncClient();
+      source("src/main/resources/scriptedEventSPMForwarder.bsh");
+      spmForwarder = scriptedEventSPMForwarder();
+
+      log.debug("setting scripted client for spmForwarder");
+      spmForwarder.setScriptedClient(scriptedClient);
+      
+      log.debug("setting messageHandler for scriptedClient");
+      scriptedClient.setMessageHandler(spmForwarder);
     
       log.debug("start script starting listener");
       scriptedClient.startListener();
       log.debug("start script starting client");
       scriptedClient.startClient();
-
 
       log.debug("end of start script");
 

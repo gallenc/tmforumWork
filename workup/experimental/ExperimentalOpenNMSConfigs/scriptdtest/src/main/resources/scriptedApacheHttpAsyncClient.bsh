@@ -7,9 +7,6 @@
     import java.io.PrintWriter;
     import java.io.StringWriter;
     import java.io.UnsupportedEncodingException;
-    import java.security.KeyManagementException;
-    import java.security.KeyStoreException;
-    import java.security.NoSuchAlgorithmException;
     import java.security.cert.X509Certificate;
 
     import javax.net.ssl.SSLContext;
@@ -39,6 +36,18 @@
     import org.json.simple.parser.JSONParser;
     import java.util.concurrent.BlockingQueue;
     import java.util.concurrent.LinkedBlockingQueue;
+    
+/* replace this with a real message handler */
+defaultMessageHandler() {
+    
+    public void handleReturnMessage(JSONObject message) {
+        log.debug("default messageHandler handling reply message: " + message);
+    }
+    
+    /* returns this beanshell declaration so that its methods can be invoked */
+    return this;
+}
+
 
 scriptedApacheHttpAsyncClient() {
 
@@ -49,6 +58,12 @@ scriptedApacheHttpAsyncClient() {
     BlockingQueue m_jsonQueue = new LinkedBlockingQueue(BOUND);
 
     Thread m_listener = null;
+    
+    m_messageHandler = defaultMessageHandler();
+    
+    public void setMessageHandler(messageHandler) {
+        m_messageHandler = messageHandler;
+    }
 
     public synchronized void stopListener() {
 
@@ -79,6 +94,7 @@ scriptedApacheHttpAsyncClient() {
             public void handleMessage(JSONObject msg) {
               try{
                  log.debug("method handling reply message: " + msg);
+                 m_messageHandler.handleReturnMessage(msg);
               } catch (Exception ex) {
                   StringWriter sw = new StringWriter();
                   PrintWriter pw = new PrintWriter(sw);
@@ -199,6 +215,7 @@ scriptedApacheHttpAsyncClient() {
     }
 
     public synchronized void startClient() {
+        log.debug("Starting scriptedHttpAsyncClient");
 
         if (m_client != null) {
             log.error("Client already started. Stop client before starting a new one");
@@ -243,6 +260,8 @@ scriptedApacheHttpAsyncClient() {
     }
 
     public synchronized void stopClient() {
+        log.debug("Stopping scriptedHttpAsyncClient");
+        
         try {
             if (m_client != null)
                 m_client.close();
@@ -287,6 +306,9 @@ scriptedApacheHttpAsyncClient() {
                     log.debug(" reply content status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
 
                     JSONObject message = new JSONObject();
+                    message.put("requestMethod", request.getMethod());
+                    message.put("requestHost", request.getURI().getHost());
+                    message.put("requestPath", request.getURI().getPath());
                     message.put("status", status);
                     message.put("jsonobject", null);
                     message.put("jsonarray", null);
@@ -345,7 +367,7 @@ scriptedApacheHttpAsyncClient() {
         
     }
     
-    /* returns this declaration so that its methods can be invoked */
+    /* returns this beanshell declaration so that its methods can be invoked */
     return this;
     
  }

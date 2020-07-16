@@ -1,7 +1,7 @@
-package org.opennms.test.scriptd.scriptdtest.client.logic;
+/* Scripted SPM Event Forwarder */
+/* Version: Craig Gallen */
+/* Author : 1.0 */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opennms.netmgt.xml.event.AlarmData;
@@ -9,15 +9,15 @@ import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
 import org.opennms.netmgt.xml.event.Value;
 
-public class ScriptedEventSPMForwarder extends MessageHandler {
-    static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
+scriptedEventSPMForwarder() {
 
     String[] baseUrls = { "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war" };
 
-    ScriptedApacheHttpAsyncClient m_scriptedClient = null;
+    m_scriptedClient = null;
     
-    public void setScriptedClient(ScriptedApacheHttpAsyncClient scriptedClient) {
+    public void setScriptedClient(scriptedClient) {
         m_scriptedClient = scriptedClient;
+        log.debug("set scriptedClient "+ m_scriptedClient);
     }
     
     public JSONObject createMinimalServiceProblem(
@@ -48,18 +48,17 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             }
             spm.put("affectedService", affectedService);
         }
-
         return spm;
         
     }
 
     public void updateServiceProblem(Event event) {
         try {
-            log.debug("script received event:" + event);
+            log.debug("updateServiceProblem script received event:" + event);
             
             Integer eventId = event.getDbid();
             AlarmData alarmData = event.getAlarmData();
-            String reductionKey = alarmData.getReductionKey();
+            String reductionKey = (alarmData==null) ? null : alarmData.getReductionKey();
             String description = event.getDescr();
             String uei = event.getUei();
             String href = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
@@ -79,9 +78,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 /* create new service problem for each url */
                 for (String baseUrl : baseUrls) {
 
-                    String jsonString = null;
                     try {
-                        JSONObject serviceProblem = createMinimalServiceProblem(
+                    
+                        serviceProblem = createMinimalServiceProblem(
                                 originatingSystem,
                                 category,
                                 priority,
@@ -90,15 +89,14 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                                 correlationId,
                                 affectedServices            
                                 );
-                        jsonString= serviceProblem.toString();
-                        log.debug("sending service problem" + jsonString);
+                        log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
                         String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/";
 
                         /* post http request */
-                        m_scriptedClient.postRequest(url, jsonString);
+                        m_scriptedClient.postRequest(url, serviceProblem.toString());
 
                     } catch (Exception e2) {
-                        log.debug("problem posting new service problem" + jsonString);
+                        log.error("problem posting new service problem ", e2);
                     }
 
                 }
@@ -110,7 +108,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     }
 
-    @Override
+
     public synchronized void handleReturnMessage(JSONObject message) {
         
         log.debug("handleReturnMessage called,  message="+message);
@@ -180,5 +178,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         }
 
     }
+    
+        
+    /* returns this beanshell declaration so that its methods can be invoked */
+    return this;
 
 }

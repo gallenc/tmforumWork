@@ -1,7 +1,18 @@
 
 /*    <stop-script language="beanshell"> */
 
-log = bsf.lookupBean("log");
-log.debug("running stop script");
+      log = bsf.lookupBean("log");
+      log.debug("running stop script");
+
+      log.debug("stop script waiting for 20 secs");
+      Thread.sleep(20000); 
+      log.debug("finished waiting");
+      
+      log.debug("stop script stop listener");
+      scriptedClient.stopListener();
+      log.debug("stop script stop client");
+      scriptedClient.stopClient();
+      
+      log.debug("end of stop script");
 
 /*    </stop-script"> */
