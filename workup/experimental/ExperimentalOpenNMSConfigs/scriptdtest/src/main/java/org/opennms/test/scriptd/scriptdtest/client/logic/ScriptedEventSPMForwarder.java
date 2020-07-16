@@ -8,6 +8,8 @@ import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
 import org.opennms.netmgt.xml.event.Value;
+import org.opennms.netmgt.events.api.model.IAlarmData;
+import org.opennms.netmgt.events.api.model.ImmutableEvent;
 
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
@@ -58,7 +60,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             log.debug("script received event:" + event);
             
             Integer eventId = event.getDbid();
-            AlarmData alarmData = event.getAlarmData();
+            AlarmData alarmData = (AlarmData) event.getAlarmData();
             String reductionKey = alarmData.getReductionKey();
             String description = event.getDescr();
             String uei = event.getUei();
