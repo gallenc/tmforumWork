@@ -62,6 +62,7 @@ scriptedApacheHttpAsyncClient() {
     m_messageHandler = defaultMessageHandler();
     
     public void setMessageHandler(messageHandler) {
+        log.debug("scriptedApacheHttpAsyncClient setMessageHandler "+ messageHandler);
         m_messageHandler = messageHandler;
     }
 

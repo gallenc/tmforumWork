@@ -16,8 +16,8 @@ scriptedEventSPMForwarder() {
     m_scriptedClient = null;
     
     public void setScriptedClient(scriptedClient) {
+        log.debug("scriptedEventSPMForwarder set scriptedClient "+ m_scriptedClient);
         m_scriptedClient = scriptedClient;
-        log.debug("set scriptedClient "+ m_scriptedClient);
     }
     
     public JSONObject createMinimalServiceProblem(
@@ -66,6 +66,7 @@ scriptedEventSPMForwarder() {
 
             /* only create new alarm if href not present */
             if (href == null) {
+                log.debug("updateServiceProblem event has no spmHREF param - creating new service problem");
                 
                 String originatingSystem = "opennms";
                 String category = " equipment";
@@ -100,6 +101,8 @@ scriptedEventSPMForwarder() {
                     }
 
                 }
+            } else {
+               log.debug("updateServiceProblem not creating new service problem as event has spmHREF="+href);
             }
 
         } catch (Exception e) {
