@@ -10,7 +10,7 @@
       source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
       scriptedClient = scriptedApacheHttpAsyncClient();      
       
-      source("src/main/resources/scriptedEventSPMForwarder.bsh");
+      source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
       spmForwarder = scriptedEventSPMForwarder();
 
       log.debug("setting scripted client for spmForwarder");
