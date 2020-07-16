@@ -1,0 +1,189 @@
+/* Scripted SPM Event Forwarder */
+/* Version: Craig Gallen */
+/* Author : 1.0 */
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.opennms.netmgt.xml.event.AlarmData;
+import org.opennms.netmgt.xml.event.Event;
+import org.opennms.netmgt.xml.event.Parm;
+import org.opennms.netmgt.xml.event.Value;
+
+scriptedEventSPMForwarder() {
+
+    String[] baseUrls = { "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war" };
+
+    m_scriptedClient = null;
+    
+    public void setScriptedClient(scriptedClient) {
+        log.debug("scriptedEventSPMForwarder set scriptedClient "+ m_scriptedClient);
+        m_scriptedClient = scriptedClient;
+    }
+    
+    public JSONObject createMinimalServiceProblem(
+            String originatingSystem,
+            String category,
+            String priority,
+            String description,
+            String reason,
+            String correlationId,
+            String[] affectedServices            
+            ) {
+        
+        JSONObject spm = new JSONObject();
+        if(originatingSystem!=null) spm.put("originatingSystem", originatingSystem);
+        if(category!=null) spm.put("category", category);
+        if(priority!=null)  spm.put("priority", priority);
+        if(description!=null) spm.put("description", description);
+        if(reason!=null) spm.put("reason", reason);
+        if(correlationId!=null) spm.put("correlationId", correlationId);
+        
+        if (affectedServices!=null){
+            JSONArray affectedService = new JSONArray();
+            for (String service : affectedServices) {
+                JSONObject jservice = new JSONObject();
+                jservice.put("id",service);
+                jservice.put("href",null);
+                affectedService.add(jservice);
+            }
+            spm.put("affectedService", affectedService);
+        }
+        return spm;
+        
+    }
+
+    public void updateServiceProblem(Event event) {
+        try {
+            log.debug("updateServiceProblem script received event:" + event);
+            
+            Integer eventId = event.getDbid();
+            AlarmData alarmData = event.getAlarmData();
+            String reductionKey = (alarmData==null) ? null : alarmData.getReductionKey();
+            String description = event.getDescr();
+            String uei = event.getUei();
+            String href = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
+            String id = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
+
+            /* only create new alarm if href not present */
+            if (href == null) {
+                log.debug("updateServiceProblem event has no spmHREF param - creating new service problem");
+                
+                String originatingSystem = "opennms";
+                String category = " equipment";
+                String priority = "1";
+                String reason = "service failure";
+                String correlationId = reductionKey;
+                String[] affectedServices = {"XXXXX"};
+
+
+                /* create new service problem for each url */
+                for (String baseUrl : baseUrls) {
+
+                    try {
+                    
+                        serviceProblem = createMinimalServiceProblem(
+                                originatingSystem,
+                                category,
+                                priority,
+                                description,
+                                reason,
+                                correlationId,
+                                affectedServices            
+                                );
+                        log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
+                        String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/";
+
+                        /* post http request */
+                        m_scriptedClient.postRequest(url, serviceProblem.toString());
+
+                    } catch (Exception e2) {
+                        log.error("problem posting new service problem ", e2);
+                    }
+
+                }
+            } else {
+               log.debug("updateServiceProblem not creating new service problem as event has spmHREF="+href);
+            }
+
+        } catch (Exception e) {
+            log.debug("problem creating service problem",e);
+        }
+
+    }
+
+
+    public synchronized void handleReturnMessage(JSONObject message) {
+        
+        log.debug("handleReturnMessage called,  message="+message);
+        
+        String requestMethod = message.get("requestMethod").toString();
+        String requestHost = message.get("requestHost").toString();
+        String requestPath = message.get("requestPath").toString();
+        String status = message.get("status").toString();
+        JSONObject jsonobject = (JSONObject) message.get("jsonobject");
+        JSONArray jsonarray = (JSONArray) message.get("jsonarray");
+
+        /* possible replies */
+        /* POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
+        /* PATCH /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
+        /* DELETE /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
+
+        if ("200".equals(status) || "201".equals(status) || "204".equals(status)) {
+            /* find out what message replied to */
+
+            /*
+             * check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem
+             */
+            if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
+                    && "POST".equals(requestMethod) && jsonobject != null) {
+
+                String id = (String) jsonobject.get("id");
+                String correlationId = (String) jsonobject.get("correlationId");
+                String href = (String) jsonobject.get("href");
+
+                log.debug("create event / update parm in alarm with correlationId=" + correlationId + " parm spmID=" + id);
+
+                Event event = new Event();
+                /* this will add the service problem id to the alarm */
+                Parm parm1 = new Parm();
+                parm1.setParmName("spmID");
+                Value value1 = new Value();
+                value1.setContent(id);
+                parm1.setValue(value1);
+                event.addParm(parm1);
+
+                /* this will add the service problem href to the alarm */
+                Parm parm2 = new Parm();
+                parm2.setParmName("spmHREF");
+                Value value2 = new Value();
+                value2.setContent(href);
+                parm2.setValue(value2);
+                event.addParm(parm2);
+
+                /*
+                 * this will automatically update an alarm with same reduction key
+                 * /correlationId
+                 */
+                AlarmData alarmData = new AlarmData();
+                alarmData.setReductionKey(correlationId);
+                alarmData.setAlarmType(0);
+
+                log.debug("will update alarm or send event:" + event);
+
+            } else {
+                /* just log reply from any other method or request */
+                log.debug("unused reply from SPM interface: " + message.toString());
+            }
+
+        } else {
+            /* create event for error reply */
+            log.debug("Error Reply from SPM interface: " + message.toString());
+        }
+
+    }
+    
+        
+    /* returns this beanshell declaration so that its methods can be invoked */
+    return this;
+
+}
