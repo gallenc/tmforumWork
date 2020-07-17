@@ -4,6 +4,7 @@
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.opennms.netmgt.events.api.model.IEvent;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
@@ -52,12 +53,14 @@ scriptedEventSPMForwarder() {
         
     }
 
-    public void updateServiceProblem(Event event) {
+    public void updateServiceProblem(IEvent ievent) {
+
         try {
-            log.debug("updateServiceProblem script received event:" + event);
+            log.debug("updateServiceProblem script received immutable event:" + ievent);
             
+            Event event = Event.copyFrom(ievent);
             Integer eventId = event.getDbid();
-            AlarmData alarmData = event.getAlarmData();
+            AlarmData alarmData = (AlarmData) event.getAlarmData();
             String reductionKey = (alarmData==null) ? null : alarmData.getReductionKey();
             String description = event.getDescr();
             String uei = event.getUei();
@@ -80,7 +83,7 @@ scriptedEventSPMForwarder() {
                 for (String baseUrl : baseUrls) {
 
                     try {
-                    
+
                         serviceProblem = createMinimalServiceProblem(
                                 originatingSystem,
                                 category,

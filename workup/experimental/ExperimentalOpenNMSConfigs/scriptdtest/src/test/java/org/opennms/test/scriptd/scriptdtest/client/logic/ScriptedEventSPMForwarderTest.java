@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.opennms.netmgt.events.api.model.IEvent;
+import org.opennms.netmgt.events.api.model.ImmutableMapper;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
@@ -68,8 +70,10 @@ public class ScriptedEventSPMForwarderTest {
         value2.setContent("href");
         parm2.setValue(value2);
         event.addParm(parm2);
+        
+        IEvent ievent = ImmutableMapper.fromMutableEvent(event);
 
-        spmForwarder.updateServiceProblem(event);
+        spmForwarder.updateServiceProblem(ievent);
         
         log.debug("Waiting for responses");
         // Pause for 5 seconds
@@ -100,7 +104,9 @@ public class ScriptedEventSPMForwarderTest {
         alarmData.setAlarmType(0);
         event.setAlarmData(alarmData);
         
-        spmForwarder.updateServiceProblem(event);
+        IEvent ievent = ImmutableMapper.fromMutableEvent(event);
+        
+        spmForwarder.updateServiceProblem(ievent);
         
         log.debug("Waiting for responses");
         // Pause for 5 seconds

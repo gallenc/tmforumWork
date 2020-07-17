@@ -51,7 +51,7 @@ public class ScriptedApacheHttpAsyncClient {
      * NOTE beanshell does not support generics or @Override !!! ( annotations ) or | in Exceptions (basically limited to before java 5
      */
 
-    final int BOUND = 20;
+    int BOUND = 20;
 
     CloseableHttpAsyncClient m_client = null;
 
@@ -62,6 +62,7 @@ public class ScriptedApacheHttpAsyncClient {
     MessageHandler m_messageHandler = new MessageHandler();
     
     public void setMessageHandler(MessageHandler messageHandler) {
+        log.debug("scriptedApacheHttpAsyncClient setMessageHandler "+ messageHandler);
         m_messageHandler = messageHandler;
     }
 

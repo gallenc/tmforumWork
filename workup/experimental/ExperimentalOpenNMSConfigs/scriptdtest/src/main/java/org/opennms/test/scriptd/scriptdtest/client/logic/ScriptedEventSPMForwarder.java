@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.opennms.netmgt.events.api.model.IEvent;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
 import org.opennms.netmgt.xml.event.Value;
-import org.opennms.netmgt.events.api.model.IAlarmData;
-import org.opennms.netmgt.events.api.model.ImmutableEvent;
+
 
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
@@ -19,6 +19,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     ScriptedApacheHttpAsyncClient m_scriptedClient = null;
     
     public void setScriptedClient(ScriptedApacheHttpAsyncClient scriptedClient) {
+        log.debug("scriptedEventSPMForwarder set scriptedClient "+ m_scriptedClient);
         m_scriptedClient = scriptedClient;
     }
     
@@ -55,13 +56,15 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         
     }
 
-    public void updateServiceProblem(Event event) {
+    public void updateServiceProblem(IEvent ievent) {
+
         try {
-            log.debug("script received event:" + event);
+            log.debug("updateServiceProblem script received immutable event:" + ievent);
             
+            Event event = Event.copyFrom(ievent);
             Integer eventId = event.getDbid();
             AlarmData alarmData = (AlarmData) event.getAlarmData();
-            String reductionKey = alarmData.getReductionKey();
+            String reductionKey = (alarmData==null) ? null : alarmData.getReductionKey();
             String description = event.getDescr();
             String uei = event.getUei();
             String href = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
@@ -69,6 +72,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
             /* only create new alarm if href not present */
             if (href == null) {
+                log.debug("updateServiceProblem event has no spmHREF param - creating new service problem");
                 
                 String originatingSystem = "opennms";
                 String category = " equipment";
@@ -81,8 +85,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 /* create new service problem for each url */
                 for (String baseUrl : baseUrls) {
 
-                    String jsonString = null;
                     try {
+
                         JSONObject serviceProblem = createMinimalServiceProblem(
                                 originatingSystem,
                                 category,
@@ -92,18 +96,19 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                                 correlationId,
                                 affectedServices            
                                 );
-                        jsonString= serviceProblem.toString();
-                        log.debug("sending service problem" + jsonString);
+                        log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
                         String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/";
 
                         /* post http request */
-                        m_scriptedClient.postRequest(url, jsonString);
+                        m_scriptedClient.postRequest(url, serviceProblem.toString());
 
                     } catch (Exception e2) {
-                        log.debug("problem posting new service problem" + jsonString);
+                        log.error("problem posting new service problem ", e2);
                     }
 
                 }
+            } else {
+                log.debug("updateServiceProblem not creating new service problem as event has spmHREF="+href);
             }
 
         } catch (Exception e) {
