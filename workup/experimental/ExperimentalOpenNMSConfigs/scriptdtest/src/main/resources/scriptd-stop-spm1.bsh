@@ -2,7 +2,7 @@
 /*    <stop-script language="beanshell"> */
 
       log = bsf.lookupBean("log");
-      log.debug("running stop script");
+      log.debug("running beanshell stop script");
 
       log.debug("stop script waiting for 20 secs");
       Thread.sleep(20000); 

@@ -6,22 +6,8 @@
         
         ievent = bsf.lookupBean("event");
         log.debug("script received immutable event:"+ievent);
-        
-        /*copy mutable event from immutable event*/ 
 
-        Event event = Event.copyFrom(ievent);
-
-        spmForwarder.updateServiceProblem(event);
-        
-        log.debug("Waiting for responses");
-        // Pause for 5 seconds
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            log.debug("sleep interrupted");
-        }
-
-        log.debug("Finished Waiting for responses");
+        spmForwarder.updateServiceProblem(ievent);
 
         log.debug("end of event script");
 

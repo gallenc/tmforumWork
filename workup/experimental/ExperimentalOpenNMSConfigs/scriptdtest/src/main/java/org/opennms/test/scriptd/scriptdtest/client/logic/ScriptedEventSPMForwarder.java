@@ -6,7 +6,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opennms.netmgt.events.api.EventIpcManagerFactory;
 import org.opennms.netmgt.events.api.model.IEvent;
-import org.opennms.netmgt.events.api.model.ImmutableMapper;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
@@ -18,6 +17,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     String[] baseUrls = { "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war" };
 
+    String SERVICE_PROBLEM_ALARM="org.opennms.uei.serviceProblemAlarm";
+    String SERVICE_PROBLEM_ALARM_UPDATE="org.opennms.uei.serviceProblemAlarmUpdate";
+    
     ScriptedApacheHttpAsyncClient m_scriptedClient = null;
     
     public void setScriptedClient(ScriptedApacheHttpAsyncClient scriptedClient) {
@@ -59,6 +61,10 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     }
 
     public void updateServiceProblem(IEvent ievent) {
+        
+        if(! SERVICE_PROBLEM_ALARM.equals(ievent.getUei())){
+            return;
+        }
 
         try {
             log.debug("updateServiceProblem script received immutable event:" + ievent);
@@ -151,7 +157,13 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
                 log.debug("create event / update parm in alarm with correlationId=" + correlationId + " parm spmID=" + id);
 
+                String uei =SERVICE_PROBLEM_ALARM_UPDATE;
+                String source = "spm-inteface";
+                
                 Event event = new Event();
+                event.setSource(source);
+                event.setUei(uei);
+                
                 /* this will add the service problem id to the alarm */
                 Parm parm1 = new Parm();
                 parm1.setParmName("spmID");
@@ -180,7 +192,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 
                 try {
                   EventIpcManagerFactory.getIpcManager().sendNow(event);
-                  log.debug("sent event");
+                  log.debug("sent alarm update event through ipcManager");
                 } catch (Throwable t) {
                     log.debug("problem sending event :",t);
                 }

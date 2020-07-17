@@ -2,13 +2,19 @@ package org.opennms.test.scriptd.scriptdtest.client.logic;
 
 import static org.junit.Assert.*;
 
+import java.util.Collection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.opennms.netmgt.events.api.EventIpcManager;
+import org.opennms.netmgt.events.api.EventIpcManagerFactory;
+import org.opennms.netmgt.events.api.EventListener;
+import org.opennms.netmgt.events.api.EventProxyException;
 import org.opennms.netmgt.events.api.model.IEvent;
 import org.opennms.netmgt.events.api.model.ImmutableMapper;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
+import org.opennms.netmgt.xml.event.Log;
 import org.opennms.netmgt.xml.event.Parm;
 import org.opennms.netmgt.xml.event.Value;
 import org.slf4j.Logger;
@@ -17,11 +23,79 @@ import org.slf4j.LoggerFactory;
 public class ScriptedEventSPMForwarderTest {
     static final Logger log = LoggerFactory.getLogger(ApacheHttpAsyncClientTest.class);
 
+    String SERVICE_PROBLEM_ALARM="org.opennms.uei.serviceProblemAlarm";
+    String SERVICE_PROBLEM_ALARM_UPDATE="org.opennms.uei.serviceProblemAlarmUpdate";
+
     ScriptedApacheHttpAsyncClient scriptedClient = null;
     ScriptedEventSPMForwarder spmForwarder = null;
+    
+    EventIpcManagerFactory eventIpcManagerFactory = new EventIpcManagerFactory() {
+    };
+    
+    static EventIpcManager ipcManager;
 
     @Before
     public void before() {
+        
+        ipcManager = new EventIpcManager() {
+
+            @Override
+            public void addEventListener(EventListener listener) {
+            }
+
+            @Override
+            public void addEventListener(EventListener listener, Collection<String> ueis) {
+            }
+
+            @Override
+            public void addEventListener(EventListener listener, String uei) {
+            }
+
+            @Override
+            public void removeEventListener(EventListener listener) {
+            }
+
+            @Override
+            public void removeEventListener(EventListener listener, Collection<String> ueis) {
+            }
+
+            @Override
+            public void removeEventListener(EventListener listener, String uei) {
+            }
+
+            @Override
+            public boolean hasEventListener(String uei) {
+                return false;
+            }
+
+            @Override
+            public void send(Event event) throws EventProxyException {
+                log.debug("****** EventIpcManager spm forwarder sending: "+event);
+            }
+
+            @Override
+            public void send(Log eventLog) throws EventProxyException {
+            }
+
+            @Override
+            public void sendNow(Event event) {
+            }
+
+            @Override
+            public void sendNow(Log eventLog) {
+            }
+
+            @Override
+            public void sendNowSync(Event event) {
+            }
+
+            @Override
+            public void sendNowSync(Log eventLog) {
+            }
+            
+        };
+        
+        EventIpcManagerFactory.setIpcManager(ipcManager);
 
         scriptedClient = new ScriptedApacheHttpAsyncClient();
         spmForwarder = new ScriptedEventSPMForwarder();
@@ -36,19 +110,19 @@ public class ScriptedEventSPMForwarderTest {
 
     @After
     public void after() {
-                
         scriptedClient.stopClient();
         scriptedClient.stopListener();
     }
 
     @Test
     public void sendEventForExistingSpm() {
+
         log.debug("start of ForExistingSpm()");
         Event event = new Event();
 
         event.setDbid(10);
         event.setDescr("this description ");
-        event.setUei("ueistring");
+        event.setUei(SERVICE_PROBLEM_ALARM);
 
         AlarmData alarmData = new AlarmData();
         alarmData.setReductionKey("reductionkey");
@@ -97,7 +171,7 @@ public class ScriptedEventSPMForwarderTest {
 
         event.setDbid(10);
         event.setDescr("this description ");
-        event.setUei("ueistring");
+        event.setUei(SERVICE_PROBLEM_ALARM);
 
         AlarmData alarmData = new AlarmData();
         alarmData.setReductionKey("reductionkey");
