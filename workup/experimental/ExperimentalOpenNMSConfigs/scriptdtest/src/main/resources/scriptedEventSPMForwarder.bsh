@@ -171,7 +171,14 @@ scriptedEventSPMForwarder() {
                 alarmData.setReductionKey(correlationId);
                 alarmData.setAlarmType(0);
 
-                log.debug("will update alarm or send event:" + event);
+                log.debug("sending alarm update event:" + event);
+                
+                try {
+                  EventIpcManagerFactory.getIpcManager().sendNow(event);
+                  log.debug("sent event");
+                } catch (Throwable t) {
+                    log.debug("problem sending event :",t);
+                }
 
             } else {
                 /* just log reply from any other method or request */

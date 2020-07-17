@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.opennms.netmgt.events.api.EventIpcManagerFactory;
 import org.opennms.netmgt.events.api.model.IEvent;
+import org.opennms.netmgt.events.api.model.ImmutableMapper;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
@@ -174,7 +176,14 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 alarmData.setReductionKey(correlationId);
                 alarmData.setAlarmType(0);
 
-                log.debug("will update alarm or send event:" + event);
+                log.debug("sending alarm update event:" + event);
+                
+                try {
+                  EventIpcManagerFactory.getIpcManager().sendNow(event);
+                  log.debug("sent event");
+                } catch (Throwable t) {
+                    log.debug("problem sending event :",t);
+                }
 
             } else {
                 /* just log reply from any other method or request */
