@@ -53,7 +53,9 @@
         
         ievent = bsf.lookupBean("event");
         log.debug("script received immutable event:"+ievent);
-        
+
+        spmForwarder.updateServiceProblem(ievent);
+
         log.debug("end of event script");
 
     </event-script>
