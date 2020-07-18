@@ -105,7 +105,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                                 affectedServices            
                                 );
                         log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
-                        String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/";
+                        String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
 
                         /* post http request */
                         m_scriptedClient.postRequest(url, serviceProblem.toString());

@@ -48,24 +48,24 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
     @Inject
     private ServiceProblemRepository serviceProblemRepository;
-    
+
     @Inject
     NotificationDispatcher notificationDispatcher;
 
     @Override
     @Transactional
-    public Response createServiceProblem(ServiceProblemCreate serviceProblemCreate, SecurityContext securityContext, UriInfo uriInfo)
-            throws NotFoundException {
+    public Response createServiceProblem(ServiceProblemCreate serviceProblemCreate, SecurityContext securityContext,
+            UriInfo uriInfo) throws NotFoundException {
         try {
             LOG.debug("POST /serviceProblem createServiceProblem called");
 
             // map swagger dto to jpa entity
             LOG.debug("serviceProblemCreate:" + serviceProblemCreate);
-            
+
             // set initial creation time
             OffsetDateTime timeRaised = OffsetDateTime.now();
             serviceProblemCreate.setTimeRaised(timeRaised);
-            
+
             // set initial status to Submitted
             serviceProblemCreate.setStatus(ServiceProblemStatus.Submitted.toString());
             serviceProblemCreate.setStatusChangeDate(timeRaised);
@@ -82,25 +82,26 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             // map jpa entity to swagger dto
             ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                     .serviceProblemEntityToServiceProblem(serviceProblemEntity);
-            
-            // add absolute path href 
-            String idStr=serviceProblem.getId();
+
+            // add absolute path href
+            String idStr = serviceProblem.getId();
             String href = uriInfo.getAbsolutePath().toASCIIString();
-            href = (href.endsWith("/")) ? (href+idStr) : (href +"/"+idStr);
+            href = (href.endsWith("/")) ? (href + idStr) : (href + "/" + idStr);
             serviceProblem.setHref(href);
-            
-            // persist path href (done this way because we can't persist the href before we know the id.
+
+            // persist path href (done this way because we can't persist the href before we
+            // know the id.
             serviceProblemEntity.setHref(href);
             serviceProblemEntity = serviceProblemRepository.save(serviceProblemEntity);
 
             LOG.debug("created service problem returning serviceProblem:" + serviceProblem);
-            
+
             // service problem create event
             ServiceProblemCreateNotification notification = new ServiceProblemCreateNotification();
             ServiceProblemCreateEvent event = new ServiceProblemCreateEvent();
-            event.setServiceProblem(serviceProblem);            
-            //TODO  eventRepository.createEvent  save changed event
-            
+            event.setServiceProblem(serviceProblem);
+            // TODO eventRepository.createEvent save changed event
+
             notification.setEvent(event);
             notificationDispatcher.sendNotification(notification);
 
@@ -117,7 +118,8 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
     @Override
     @Transactional
-    public Response deleteServiceProblem(String idStr, SecurityContext securityContext, UriInfo uriInfo) throws NotFoundException {
+    public Response deleteServiceProblem(String idStr, SecurityContext securityContext, UriInfo uriInfo)
+            throws NotFoundException {
 
         try {
             LOG.debug("DELETE /deleteServiceProblem/{id} called id=" + idStr);
@@ -131,15 +133,15 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
                         "DELETE /deleteServiceProblem/{id} not found id=" + idStr);
                 return Response.status(Response.Status.NOT_FOUND).entity(apiResponseMessage).build();
             }
-            
+
             // state change to cancelled
             ServiceProblemStateChangeNotification notification = new ServiceProblemStateChangeNotification();
             ServiceProblemStateChangeEvent event = new ServiceProblemStateChangeEvent();
-            // note delted service problem so not using real service problem 
-            
+            // note delted service problem so not using real service problem
+
             ServiceProblem serviceProblem = new ServiceProblem();
             serviceProblem.setId(idStr);
-            
+
             // set resolution time
             OffsetDateTime resolutionDate = OffsetDateTime.now();
             serviceProblem.setResolutionDate(resolutionDate);
@@ -149,10 +151,10 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             serviceProblem.setStatus(ServiceProblemStatus.Cancelled.toString());
             serviceProblem.setStatusChangeDate(resolutionDate);
             serviceProblem.setStatusChangeReason("problem deleted");
-            
-            event.setServiceProblem(serviceProblem );           
-            //TODO  eventRepository.createEvent save changed event
-            
+
+            event.setServiceProblem(serviceProblem);
+            // TODO eventRepository.createEvent save changed event
+
             notification.setEvent(event);
             notificationDispatcher.sendNotification(notification);
 
@@ -170,8 +172,8 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
     }
 
     @Override
-    public Response listServiceProblem(String fields, Integer offset, Integer limit, SecurityContext securityContext, UriInfo uriInfo)
-            throws NotFoundException {
+    public Response listServiceProblem(String fields, Integer offset, Integer limit, SecurityContext securityContext,
+            UriInfo uriInfo) throws NotFoundException {
 
         try {
             LOG.debug("GET /serviceProblem/ listServiceProblem called offset=" + offset + " limit=" + limit + " fields="
@@ -196,17 +198,17 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             for (ServiceProblemEntity serviceProblemEntity : serviceProblemEntities) {
                 ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                         .serviceProblemEntityToServiceProblem(serviceProblemEntity);
-                
+
                 // add absolute path href
-                String idStr=serviceProblem.getId();
+                String idStr = serviceProblem.getId();
                 String href = uriInfo.getAbsolutePath().toASCIIString();
-                href = (href.endsWith("/")) ? (href+idStr) : (href +"/"+idStr);
+                href = (href.endsWith("/")) ? (href + idStr) : (href + "/" + idStr);
                 serviceProblem.setHref(href);
-                
+
                 FieldFilter<ServiceProblem> fieldFilter = new FieldFilter<ServiceProblem>();
 
                 serviceProblem = fieldFilter.filter(serviceProblem, fields, null);
-                
+
                 serviceProblems.add(serviceProblem);
             }
 
@@ -223,14 +225,13 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
     @Override
     @Transactional
-    public Response patchServiceProblem(String idStr, ServiceProblemUpdate serviceProblemUpdate, SecurityContext securityContext, UriInfo uriInfo)
-            throws NotFoundException {
-        
+    public Response patchServiceProblem(String idStr, ServiceProblemUpdate serviceProblemUpdate,
+            SecurityContext securityContext, UriInfo uriInfo) throws NotFoundException {
+
         try {
             LOG.debug("PATCH /serviceProblem patchServiceProblem  called");
 
-            LOG.debug("update id:"+idStr
-                    + " serviceProblemUpdate:" + serviceProblemUpdate);
+            LOG.debug("update id:" + idStr + " serviceProblemUpdate:" + serviceProblemUpdate);
 
             // find original serviceProblem if exists
             Long id = Long.parseLong(idStr);
@@ -243,17 +244,32 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
                         "PATCH /serviceProblem patchServiceProblem entity not found id=" + idStr);
                 return Response.status(Response.Status.NOT_FOUND).entity(apiResponseMessage).build();
             }
-            
+
             ServiceProblemEntity serviceProblemEntity = spOptional.get();
             LOG.debug("original serviceProblemEntity:" + serviceProblemEntity);
 
-            // update fields which have been posted as not null
-            serviceProblemEntity = ServiceProblemMapper.INSTANCE.serviceProblemUpdateServiceProblemEntity(serviceProblemUpdate, serviceProblemEntity);
-            
             // set time changed
             OffsetDateTime timeChanged = OffsetDateTime.now();
             serviceProblemEntity.setTimeChanged(timeChanged);
-                    
+
+            // check new status
+            String originalStatus = (serviceProblemEntity.getStatus() == null) ? "" : serviceProblemEntity.getStatus();
+            String newStatus = serviceProblemUpdate.getStatus();
+            
+            // update fields which have been posted as not null
+            serviceProblemEntity = ServiceProblemMapper.INSTANCE
+                    .serviceProblemUpdateServiceProblemEntity(serviceProblemUpdate, serviceProblemEntity);
+            
+            // set status change time
+            if ((newStatus!=null ) && (!originalStatus.equals(newStatus))) {
+                LOG.debug("service problem id:" + idStr + " status changed: old status:" + originalStatus
+                        + " new status:" + newStatus);
+                serviceProblemEntity.setStatusChangeDate(timeChanged);
+                if (ServiceProblemStatus.Resolved.equals(newStatus)) {
+                    serviceProblemEntity.setResolutionDate(timeChanged);
+                }
+            }
+
             LOG.debug("persisting updated serviceProblemEntity:" + serviceProblemEntity);
 
             // persist jpa entity
@@ -262,20 +278,20 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             // map jpa entity to swagger dto
             ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                     .serviceProblemEntityToServiceProblem(serviceProblemEntity);
-            
+
             // add absolute path href
             String href = uriInfo.getAbsolutePath().toASCIIString();
-            href = (href.endsWith("/")) ? (href+idStr) : (href +"/"+idStr);
+            href = (href.endsWith("/")) ? (href + idStr) : (href + "/" + idStr);
             serviceProblem.setHref(href);
 
             LOG.debug("returning updated serviceProblem:" + serviceProblem);
-            
+
             // service problem AttributeValueChange event
             ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
             ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
-            event.setServiceProblem(serviceProblem);            
-            //TODO  eventRepository.createEvent  save changed event
-            
+            event.setServiceProblem(serviceProblem);
+            // TODO eventRepository.createEvent save changed event
+
             notification.setEvent(event);
             notificationDispatcher.sendNotification(notification);
 
@@ -286,13 +302,13 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             ApiResponseMessage apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR,
                     "PATCH /serviceProblem patchServiceProblem error: " + ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(apiResponseMessage).build();
-        }        
-        
+        }
+
     }
 
     @Override
-    public Response retrieveServiceProblem(String idStr, String fields, SecurityContext securityContext, UriInfo uriInfo)
-            throws NotFoundException {
+    public Response retrieveServiceProblem(String idStr, String fields, SecurityContext securityContext,
+            UriInfo uriInfo) throws NotFoundException {
 
         try {
             LOG.debug("GET /serviceProblem/id retrieveServiceProblem called id=" + idStr + " fields=" + fields);
@@ -315,7 +331,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             // map jpa entity to swagger dto
             ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                     .serviceProblemEntityToServiceProblem(serviceProblemEntity);
-            
+
             // add absolute path href
             String href = uriInfo.getAbsolutePath().toASCIIString();
             serviceProblem.setHref(href);
@@ -325,7 +341,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             FieldFilter<ServiceProblem> fieldFilter = new FieldFilter<ServiceProblem>();
 
             serviceProblem = fieldFilter.filter(serviceProblem, fields, null);
-            
+
             LOG.debug("field filtered serviceProblem:" + serviceProblem);
 
             return Response.status(Response.Status.CREATED).entity(serviceProblem).build();
