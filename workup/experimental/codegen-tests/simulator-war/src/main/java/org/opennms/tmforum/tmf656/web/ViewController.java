@@ -13,6 +13,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.opennms.tmforum.swagger.tmf656.swagger.model.ResourceRef;
+import org.opennms.tmforum.swagger.tmf656.swagger.model.SLAViolationRef;
+import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceRef;
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
 import org.opennms.tmforum.tmf656.simulator.model.ServiceProblemEntity;
 import org.slf4j.Logger;
@@ -44,71 +47,6 @@ public class ViewController {
     @Autowired(required = true)
     private ServiceProblemRepository serviceProblemRepository = null;
 
-
-//    @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
-//    public String home(Model model,
-//            @RequestParam(value = "symbol", required = false, defaultValue = "") String symbol,
-//            @RequestParam(value = "synonymSymbol", required = false, defaultValue = "") String synonymSymbol,
-//            @RequestParam(value = "scientificNamewithAuthor", required = false, defaultValue = "") String scientificNamewithAuthor,
-//            @RequestParam(value = "commonName", required = false, defaultValue = "") String commonName,
-//            @RequestParam(value = "family", required = false, defaultValue = "") String family,
-//            @RequestParam(value = "page", required = false, defaultValue = "1") String page ) {
-//
-//        LOG.debug("home called");
-//        if (serviceFacade == null) {
-//            throw new RuntimeException("serviceFacade==null and has not been initialised");
-//        }
-//
-//         LOG.debug("getting all families");
-//        List<String> familiesList = serviceFacade.getAllFamilies();
-//        model.addAttribute("familiesList", familiesList);
-//        LOG.debug("getting find like ");
-//
-//        List<Flower> flowerList = null;
-//
-//        Flower searchFlower = new Flower();
-//        searchFlower.setCommonName(commonName);
-//        searchFlower.setSymbol(symbol);
-//        searchFlower.setSynonymSymbol(synonymSymbol);
-//        searchFlower.setFamily(family);
-//        searchFlower.setScientificNamewithAuthor(scientificNamewithAuthor);
-//
-//        LOG.debug("getting find like "+searchFlower);
-//        // get initial flowerlist
-//        flowerList = serviceFacade.findLike(searchFlower);
-//        LOG.debug("found flowers:+"+flowerList.size());
-//         model.addAttribute("resultSize", flowerList.size());
-//
-//        // sort into pages and select page
-//        List<List<Flower>> flowerPages = new ArrayList();
-//        List<Flower> pagelist = new ArrayList();
-//        for (int i = 0; i < flowerList.size(); i++) {
-//            if ((i % 200) == 0) {
-//                //LOG.debug("new arraylist i="+i);
-//                pagelist = new ArrayList();
-//                flowerPages.add(pagelist);
-//            }
-//            Flower f = flowerList.get(i);
-//            pagelist.add(f);
-//            //LOG.debug("pagelist i="+i);
-//        }
-//        
-//        LOG.debug("number of pages: "+flowerPages.size());
-//        model.addAttribute("numpages", flowerPages.size());
-//        
-//        Integer pageNo = Integer.parseInt( page );
-//        model.addAttribute("page", pageNo);
-//        flowerList  = flowerPages.get(pageNo-1);
-//        model.addAttribute("flowerList", flowerList);
-//        
-//        model.addAttribute("family", family);
-//        model.addAttribute("symbol", symbol);
-//        model.addAttribute("synonymSymbol", synonymSymbol);
-//        model.addAttribute("scientificNamewithAuthor", scientificNamewithAuthor);
-//        model.addAttribute("commonName", commonName);
-//
-//        return "home";
-//    }
     
     @RequestMapping(value = {"/serviceProblemList"}, method = RequestMethod.GET)
     public String serviceProblemsGet(Model model) {
@@ -137,7 +75,7 @@ public class ViewController {
         
         List<ServiceProblemEntity> problemList = serviceProblemRepository.findAll();
         model.addAttribute("problemList", problemList);
-        
+
         return "serviceProblemList";
     }
 

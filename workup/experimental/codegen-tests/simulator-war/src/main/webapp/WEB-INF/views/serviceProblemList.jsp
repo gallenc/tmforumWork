@@ -20,8 +20,12 @@
 		<thead>
 			<tr>
 				<th scope="col">id</th>
+				<th scope="col">status</th>
 				<th scope="col">description</th>
 				<th scope="col">priority</th>
+				<th scope="col">affected service</th>
+				<th scope="col">affected resource</th>
+				<th scope="col">affected SLA violation</th>
 				<th scope="col">correlationId</th>
 				<th scope="col">timeRaised</th>
 				<th scope="col">timeChanged</th>
@@ -32,11 +36,40 @@
 			<c:forEach var="problem" items="${problemList}">
 				<tr>
 					<td>${problem.id}</td>
-					<td>${problem.description}</td>
+					<td>${problem.status}</td>
+					<td><small>${problem.description}</small></td>
 					<td>${problem.priority}</td>
-					<td>${problem.correlationId}</td>
-					<td>${problem.timeRaised}</td>
-					<td>${problem.timeChanged}</td>
+					<td><c:if test="${not empty problem.affectedService}">
+							<c:forEach var="ref" items="${problem.affectedService}">
+								<c:if test="${empty ref.href}">${ref.id}</c:if>
+								<c:if test="${not empty ref.href}">
+									<a href="${ref.href}" target="_blank">${ref.id}</a>
+								</c:if>
+								<br>
+							</c:forEach>
+						</c:if></td>
+					<td><c:if test="${not empty problem.affectedResource}">
+							<c:forEach var="ref" items="${problem.affectedResource}">
+								<c:if test="${empty ref.href}">${ref.id}</c:if>
+								<c:if test="${not empty ref.href}">
+									<a href="${ref.href}" target="_blank">${ref.id}</a>
+								</c:if>
+								<br>
+							</c:forEach>
+						</c:if></td>
+
+					<td><c:if test="${not empty problem.associatedSLAViolation}">
+							<c:forEach var="ref" items="${problem.associatedSLAViolation}">
+								<c:if test="${empty ref.href}">${ref.id}</c:if>
+								<c:if test="${not empty ref.href}">
+									<a href="${ref.href}" target="_blank">${ref.id}</a>
+								</c:if>
+								<br>
+							</c:forEach>
+						</c:if></td>
+					<td><small>${problem.correlationId}</small></td>
+					<td><small>${problem.timeRaised}</small></td>
+					<td><small>${problem.timeChanged}<small></td>
 					<td><a href="${problem.href}" target="_blank">raw json</a></td>
 				</tr>
 			</c:forEach>
