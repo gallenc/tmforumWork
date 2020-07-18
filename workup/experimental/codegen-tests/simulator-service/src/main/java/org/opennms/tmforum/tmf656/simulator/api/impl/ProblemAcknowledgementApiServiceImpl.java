@@ -77,6 +77,7 @@ public class ProblemAcknowledgementApiServiceImpl extends ProblemAcknowledgement
                 serviceProblemEntity.setStatus(ServiceProblemStatus.Acknowledged.toString());
                 serviceProblemEntity.setStatusChangeDate(OffsetDateTime.now());
                 serviceProblemEntity.setStatusChangeReason("problem acknowledgement from api user");
+                
                 // persist acknowledged jpa entity
                 serviceProblemEntity = serviceProblemRepository.save(serviceProblemEntity);
 

@@ -27,8 +27,7 @@
 				<th scope="col">affected resource</th>
 				<th scope="col">affected SLA violation</th>
 				<th scope="col">correlationId</th>
-				<th scope="col">timeRaised</th>
-				<th scope="col">timeChanged</th>
+				<th scope="col">time of change</th>
 				<th scope="col">href</th>
 			</tr>
 		</thead>
@@ -68,8 +67,26 @@
 							</c:forEach>
 						</c:if></td>
 					<td><small>${problem.correlationId}</small></td>
-					<td><small>${problem.timeRaised}</small></td>
-					<td><small>${problem.timeChanged}<small></td>
+					<td><small>
+							<table>
+								<tr>
+									<td>raised&nbsp;</td>
+									<td>${problem.timeRaised}</td>
+								</tr>
+								<tr>
+									<td>changed&nbsp;</td>
+									<td>${problem.timeChanged}</td>
+								</tr>
+								<tr>
+									<td>status&nbsp;</td>
+									<td>${problem.statusChangeDate}</td>
+								</tr>
+								<tr>
+									<td>resolved&nbsp;</td>
+									<td>${problem.resolutionDate}</td>
+								</tr>
+							</table>
+					</small></td>
 					<td><a href="${problem.href}" target="_blank">raw json</a></td>
 				</tr>
 			</c:forEach>

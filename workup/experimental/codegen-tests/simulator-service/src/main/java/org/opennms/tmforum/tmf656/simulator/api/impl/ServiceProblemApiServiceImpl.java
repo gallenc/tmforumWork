@@ -62,9 +62,13 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             // map swagger dto to jpa entity
             LOG.debug("serviceProblemCreate:" + serviceProblemCreate);
             
+            // set initial creation time
+            OffsetDateTime timeRaised = OffsetDateTime.now();
+            serviceProblemCreate.setTimeRaised(timeRaised);
+            
             // set initial status to Submitted
             serviceProblemCreate.setStatus(ServiceProblemStatus.Submitted.toString());
-            serviceProblemCreate.setStatusChangeDate(OffsetDateTime.now());
+            serviceProblemCreate.setStatusChangeDate(timeRaised);
             serviceProblemCreate.setStatusChangeReason("initial creation");
 
             ServiceProblemEntity serviceProblemEntity = ServiceProblemCreateMapper.INSTANCE
@@ -135,9 +139,15 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             
             ServiceProblem serviceProblem = new ServiceProblem();
             serviceProblem.setId(idStr);
+            
+            // set resolution time
+            OffsetDateTime resolutionDate = OffsetDateTime.now();
+            serviceProblem.setResolutionDate(resolutionDate);
+            serviceProblem.setTimeChanged(resolutionDate);
+
             // set status to Cancelled
             serviceProblem.setStatus(ServiceProblemStatus.Cancelled.toString());
-            serviceProblem.setStatusChangeDate(OffsetDateTime.now());
+            serviceProblem.setStatusChangeDate(resolutionDate);
             serviceProblem.setStatusChangeReason("problem deleted");
             
             event.setServiceProblem(serviceProblem );           
@@ -239,6 +249,10 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
             // update fields which have been posted as not null
             serviceProblemEntity = ServiceProblemMapper.INSTANCE.serviceProblemUpdateServiceProblemEntity(serviceProblemUpdate, serviceProblemEntity);
+            
+            // set time changed
+            OffsetDateTime timeChanged = OffsetDateTime.now();
+            serviceProblemEntity.setTimeChanged(timeChanged);
                     
             LOG.debug("persisting updated serviceProblemEntity:" + serviceProblemEntity);
 
