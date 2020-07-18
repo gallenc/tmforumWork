@@ -138,7 +138,7 @@ public class TestRunBshSpm1Script {
 
     @Test
     public void testEventHasNoHref() throws BSFException {
-        log.debug("start of testEventHasNoHref test script");
+        log.debug("****** start of testEventHasNoHref test script");
 
         Event event = new Event();
         event.setUei("uei.opennms.org/internal/alarms/AlarmRaised");
@@ -164,12 +164,12 @@ public class TestRunBshSpm1Script {
 
         mgr.exec("beanshell", "", 0, 0, onEventScript);
 
-        log.debug("end of testEventHasNoHref test script");
+        log.debug("****** end of testEventHasNoHref test script");
     }
     
     @Test
     public void testEventHasHref() throws BSFException {
-        log.debug("start of testEventHasHref test script");
+        log.debug("****** start of testEventHasHref test script");
 
         Event event = new Event();
         event.setHost("127.0.0.1");
@@ -209,6 +209,6 @@ public class TestRunBshSpm1Script {
 
         mgr.exec("beanshell", "", 0, 0, onEventScript);
 
-        log.debug("end of testEventHasHref test script");
+        log.debug("****** end of testEventHasHref test script");
     }
 }

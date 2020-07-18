@@ -1,7 +1,17 @@
+/* Scripted SPM Event Forwarder - original class */
+/* Author: Craig Gallen */
+/* Version : 1.0 */
+
 package org.opennms.test.scriptd.scriptdtest.client.logic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opennms.netmgt.events.api.EventIpcManagerFactory;
@@ -11,22 +21,37 @@ import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Parm;
 import org.opennms.netmgt.xml.event.Value;
 
-
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
-
-    String[] baseUrls = { "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war" };
-
-    String SERVICE_PROBLEM_ALARM="org.opennms.uei.serviceProblemAlarm";
-    String SERVICE_PROBLEM_ALARM_UPDATE="org.opennms.uei.serviceProblemAlarmUpdate";
     
+    String SERVICE_PROBLEM_ALARM = "org.opennms.uei.serviceProblemAlarm";
+    String SERVICE_PROBLEM_ALARM_UPDATE = "org.opennms.uei.serviceProblemAlarmUpdate";
+
     ScriptedApacheHttpAsyncClient m_scriptedClient = null;
-    
+
+    List<UrlCredential> m_urlCredentials = new ArrayList();
+
+    public void setUrlCredentials(List<UrlCredential> urlCredentials) {
+        if (urlCredentials == null || urlCredentials.size() == 0) {
+            log.error("UrlCredential[] urlCredentials is null or empty. Cannot send service problem");
+            return;
+        }
+        for(UrlCredential urlCredential : urlCredentials) {
+            String url = urlCredential.getUrl();
+            try {
+                URL u = new URL(url);
+            } catch (MalformedURLException e) {
+                log.error("UrlCredential[] urlCredentials malformed url="+url);
+            }
+        }
+        m_urlCredentials = urlCredentials;
+    }
+
     public void setScriptedClient(ScriptedApacheHttpAsyncClient scriptedClient) {
-        log.debug("scriptedEventSPMForwarder set scriptedClient "+ m_scriptedClient);
+        log.debug("scriptedEventSPMForwarder set scriptedClient " + m_scriptedClient);
         m_scriptedClient = scriptedClient;
     }
-    
+
     public JSONObject createMinimalServiceProblem(
             String originatingSystem,
             String category,
@@ -34,45 +59,51 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             String description,
             String reason,
             String correlationId,
-            String[] affectedServices            
+            String[] affectedServices
             ) {
-        
+
         JSONObject spm = new JSONObject();
-        if(originatingSystem!=null) spm.put("originatingSystem", originatingSystem);
-        if(category!=null) spm.put("category", category);
-        if(priority!=null)  spm.put("priority", priority);
-        if(description!=null) spm.put("description", description);
-        if(reason!=null) spm.put("reason", reason);
-        if(correlationId!=null) spm.put("correlationId", correlationId);
-        
-        if (affectedServices!=null){
+        if (originatingSystem != null)
+            spm.put("originatingSystem", originatingSystem);
+        if (category != null)
+            spm.put("category", category);
+        if (priority != null)
+            spm.put("priority", priority);
+        if (description != null)
+            spm.put("description", description);
+        if (reason != null)
+            spm.put("reason", reason);
+        if (correlationId != null)
+            spm.put("correlationId", correlationId);
+
+        if (affectedServices != null) {
             JSONArray affectedService = new JSONArray();
             for (String service : affectedServices) {
                 JSONObject jservice = new JSONObject();
-                jservice.put("id",service);
-                jservice.put("href",null);
+                jservice.put("id", service);
+                jservice.put("href", null);
                 affectedService.add(jservice);
             }
             spm.put("affectedService", affectedService);
         }
 
         return spm;
-        
+
     }
 
     public void updateServiceProblem(IEvent ievent) {
-        
-        if(! SERVICE_PROBLEM_ALARM.equals(ievent.getUei())){
+
+        if (!SERVICE_PROBLEM_ALARM.equals(ievent.getUei())) {
             return;
         }
 
         try {
             log.debug("updateServiceProblem script received immutable event:" + ievent);
-            
+
             Event event = Event.copyFrom(ievent);
             Integer eventId = event.getDbid();
             AlarmData alarmData = (AlarmData) event.getAlarmData();
-            String reductionKey = (alarmData==null) ? null : alarmData.getReductionKey();
+            String reductionKey = (alarmData == null) ? null : alarmData.getReductionKey();
             String description = event.getDescr();
             String uei = event.getUei();
             String href = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
@@ -81,17 +112,22 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             /* only create new alarm if href not present */
             if (href == null) {
                 log.debug("updateServiceProblem event has no spmHREF param - creating new service problem");
-                
+
                 String originatingSystem = "opennms";
                 String category = " equipment";
                 String priority = "1";
                 String reason = "service failure";
                 String correlationId = reductionKey;
-                String[] affectedServices = {"XXXXX"};
-
+                String[] affectedServices = { "XXXXX" };
 
                 /* create new service problem for each url */
-                for (String baseUrl : baseUrls) {
+                if (m_urlCredentials.size() == 0) {
+                    log.warn("no baseUrls set. Cannot send service problem.");
+                }
+                for(UrlCredential urlCredential : m_urlCredentials) {
+                    String baseUrl = urlCredential.getUrl();
+                    String username = urlCredential.getUsername();
+                    String password = urlCredential.getPassword();
 
                     try {
 
@@ -102,7 +138,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                                 description,
                                 reason,
                                 correlationId,
-                                affectedServices            
+                                affectedServices
                                 );
                         log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
                         String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
@@ -116,20 +152,20 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
                 }
             } else {
-                log.debug("updateServiceProblem not creating new service problem as event has spmHREF="+href);
+                log.debug("updateServiceProblem not creating new service problem as event has spmHREF=" + href);
             }
 
         } catch (Exception e) {
-            log.debug("problem creating service problem",e);
+            log.debug("problem creating service problem", e);
         }
 
     }
 
     @Override
     public synchronized void handleReturnMessage(JSONObject message) {
-        
-        log.debug("handleReturnMessage called,  message="+message);
-        
+
+        log.debug("handleReturnMessage called,  message=" + message);
+
         String requestMethod = message.get("requestMethod").toString();
         String requestHost = message.get("requestHost").toString();
         String requestPath = message.get("requestPath").toString();
@@ -157,13 +193,13 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
                 log.debug("create event / update parm in alarm with correlationId=" + correlationId + " parm spmID=" + id);
 
-                String uei =SERVICE_PROBLEM_ALARM_UPDATE;
+                String uei = SERVICE_PROBLEM_ALARM_UPDATE;
                 String source = "spm-inteface";
-                
+
                 Event event = new Event();
                 event.setSource(source);
                 event.setUei(uei);
-                
+
                 /* this will add the service problem id to the alarm */
                 Parm parm1 = new Parm();
                 parm1.setParmName("spmID");
@@ -189,12 +225,12 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 alarmData.setAlarmType(0);
 
                 log.debug("sending alarm update event:" + event);
-                
+
                 try {
-                  EventIpcManagerFactory.getIpcManager().sendNow(event);
-                  log.debug("sent alarm update event through ipcManager");
+                    EventIpcManagerFactory.getIpcManager().sendNow(event);
+                    log.debug("sent alarm update event through ipcManager");
                 } catch (Throwable t) {
-                    log.debug("problem sending event :",t);
+                    log.debug("problem sending event :", t);
                 }
 
             } else {

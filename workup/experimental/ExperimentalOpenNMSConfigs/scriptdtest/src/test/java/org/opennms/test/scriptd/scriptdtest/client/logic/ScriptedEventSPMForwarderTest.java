@@ -2,7 +2,10 @@ package org.opennms.test.scriptd.scriptdtest.client.logic;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,6 +102,10 @@ public class ScriptedEventSPMForwarderTest {
 
         scriptedClient = new ScriptedApacheHttpAsyncClient();
         spmForwarder = new ScriptedEventSPMForwarder();
+        
+        /* urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
+        List<UrlCredential> urlCredentials = Arrays.asList(new UrlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" ));
+        spmForwarder.setUrlCredentials(urlCredentials);
 
         spmForwarder.setScriptedClient(scriptedClient);
         scriptedClient.setMessageHandler(spmForwarder);

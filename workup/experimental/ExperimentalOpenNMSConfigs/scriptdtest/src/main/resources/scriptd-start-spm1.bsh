@@ -3,19 +3,30 @@
 
       log = bsf.lookupBean("log");
       log.debug("running start script");
+      
+      import java.util.ArrayList;
+      import java.util.List;
 
       source("src/main/resources/scriptedApacheHttpAsyncClient.bsh");
       scriptedClient = scriptedApacheHttpAsyncClient();      
       
       source("src/main/resources/scriptedEventSPMForwarder.bsh");
       spmForwarder = scriptedEventSPMForwarder();
+      
+      /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
+      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
+
+      List urlCredentials = new ArrayList();
+      urlCredentials.add(url1);
+ 
+      spmForwarder.setUrlCredentials(urlCredentials);
 
       log.debug("setting scripted client for spmForwarder");
       spmForwarder.setScriptedClient(scriptedClient);
       
       log.debug("setting messageHandler for scriptedClient");
       scriptedClient.setMessageHandler(spmForwarder);
-    
+
       log.debug("start script starting listener");
       scriptedClient.startListener();
       log.debug("start script starting client");
