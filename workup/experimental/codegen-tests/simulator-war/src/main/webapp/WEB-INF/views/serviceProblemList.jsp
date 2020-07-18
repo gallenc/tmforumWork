@@ -70,19 +70,19 @@
 					<td><small>
 							<table>
 								<tr>
-									<td>raised&nbsp;</td>
+									<td>raised:&nbsp;</td>
 									<td>${problem.timeRaised}</td>
 								</tr>
 								<tr>
-									<td>changed&nbsp;</td>
+									<td>changed:&nbsp;</td>
 									<td>${problem.timeChanged}</td>
 								</tr>
 								<tr>
-									<td>status&nbsp;</td>
+									<td>status:&nbsp;</td>
 									<td>${problem.statusChangeDate}</td>
 								</tr>
 								<tr>
-									<td>resolved&nbsp;</td>
+									<td>resolved:&nbsp;</td>
 									<td>${problem.resolutionDate}</td>
 								</tr>
 							</table>

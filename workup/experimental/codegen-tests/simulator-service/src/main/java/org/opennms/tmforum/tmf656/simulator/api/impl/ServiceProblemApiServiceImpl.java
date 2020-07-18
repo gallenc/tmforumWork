@@ -10,7 +10,6 @@ import org.opennms.tmforum.tmf656.service.FieldFilter;
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemCreateMapper;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemMapper;
-import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemUpdateMapper;
 import org.opennms.tmforum.tmf656.simulator.model.ServiceProblemEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -248,10 +247,6 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             ServiceProblemEntity serviceProblemEntity = spOptional.get();
             LOG.debug("original serviceProblemEntity:" + serviceProblemEntity);
 
-            // set time changed
-            OffsetDateTime timeChanged = OffsetDateTime.now();
-            serviceProblemEntity.setTimeChanged(timeChanged);
-
             // check new status
             String originalStatus = (serviceProblemEntity.getStatus() == null) ? "" : serviceProblemEntity.getStatus();
             String newStatus = serviceProblemUpdate.getStatus();
@@ -260,13 +255,19 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             serviceProblemEntity = ServiceProblemMapper.INSTANCE
                     .serviceProblemUpdateServiceProblemEntity(serviceProblemUpdate, serviceProblemEntity);
             
+            // set time changed
+            OffsetDateTime timeChanged = OffsetDateTime.now();
+            serviceProblemEntity.setTimeChanged(timeChanged);
+            
             // set status change time
             if ((newStatus!=null ) && (!originalStatus.equals(newStatus))) {
                 LOG.debug("service problem id:" + idStr + " status changed: old status:" + originalStatus
                         + " new status:" + newStatus);
                 serviceProblemEntity.setStatusChangeDate(timeChanged);
-                if (ServiceProblemStatus.Resolved.equals(newStatus)) {
+                if (ServiceProblemStatus.Resolved.name().equals(newStatus)) {
                     serviceProblemEntity.setResolutionDate(timeChanged);
+                } else {
+                    serviceProblemEntity.setResolutionDate(null);
                 }
             }
 
