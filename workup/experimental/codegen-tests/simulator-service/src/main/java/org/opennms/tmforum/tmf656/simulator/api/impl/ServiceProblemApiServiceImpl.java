@@ -79,9 +79,10 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
                     .serviceProblemEntityToServiceProblem(serviceProblemEntity);
             
-            // add absolute path href
+            // add absolute path href 
             String idStr=serviceProblem.getId();
-            String href = uriInfo.getAbsolutePath().toASCIIString()+"/"+idStr;
+            String href = uriInfo.getAbsolutePath().toASCIIString();
+            href = (href.endsWith("/")) ? (href+idStr) : (href +"/"+idStr);
             serviceProblem.setHref(href);
             
             // persist path href (done this way because we can't persist the href before we know the id.
@@ -188,7 +189,8 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
                 
                 // add absolute path href
                 String idStr=serviceProblem.getId();
-                String href = uriInfo.getAbsolutePath().toASCIIString()+"/"+idStr;
+                String href = uriInfo.getAbsolutePath().toASCIIString();
+                href = (href.endsWith("/")) ? (href+idStr) : (href +"/"+idStr);
                 serviceProblem.setHref(href);
                 
                 FieldFilter<ServiceProblem> fieldFilter = new FieldFilter<ServiceProblem>();
@@ -248,7 +250,8 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
                     .serviceProblemEntityToServiceProblem(serviceProblemEntity);
             
             // add absolute path href
-            String href = uriInfo.getAbsolutePath().toASCIIString()+"/"+idStr;
+            String href = uriInfo.getAbsolutePath().toASCIIString();
+            href = (href.endsWith("/")) ? (href+idStr) : (href +"/"+idStr);
             serviceProblem.setHref(href);
 
             LOG.debug("returning updated serviceProblem:" + serviceProblem);
