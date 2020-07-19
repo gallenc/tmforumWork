@@ -5,331 +5,6 @@
     },
     "item": [
         {
-            "name": "example",
-            "item": [
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-20",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-14",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-10",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-7",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-13",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-19",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-21",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-22",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-15",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-24",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-11",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-8",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-16",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-23",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-25",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-26",
-                    "name": "retreivematching"
-                }
-            ]
-        },
-        {
             "name": "opennms-api",
             "item": [
                 {
@@ -348,69 +23,11 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<event>\n\n    <host>host</host>\n    <severity>SEVERE</severity>\n    <uei>uei.opennms.org/spm/problemupdate</uei>\n    <source>SPMInterface</source>\n    <!-- <time>2020-04-08T04:47:37.331-04:00</time> -->\n     <!--      <descr>this:descrYYY</descr> -->\n    <logmsg>spm interface update.111</logmsg>\n    <parms>\n        <parm>\n            <parmName>this:parmNameXXX</parmName>\n            <value>this:value</value>\n            <type>string</type>\n        </parm>\n    </parms>\n\n</event>"
+                            "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<event>\n\n    <host>host</host>\n    <severity>SEVERE</severity>\n    <uei>org.opennms.uei.serviceProblemAlarm</uei>\n    <source>SPMInterface</source>\n    <description>Hello first problem</description>\n    <!-- <time>2020-04-08T04:47:37.331-04:00</time> -->\n     <!--      <descr>this:descrYYY</descr> -->\n    <logmsg>spm interface update.111</logmsg>\n    <parms>\n        <parm>\n            <parmName>this:parmNameXXX</parmName>\n            <value>this:value</value>\n            <type>string</type>\n        </parm>\n    </parms>\n\n</event>"
                         }
                     },
                     "id": "rester-35",
-                    "name": "event-create-xml"
-                },
-                {
-                    "request": {
-                        "url": "http://192.168.92.131:8980/opennms/rest/events",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ]
-                    },
-                    "id": "rester-33",
-                    "name": "events"
-                },
-                {
-                    "request": {
-                        "url": "http://192.168.92.131:8980/opennms/rest/events",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Eventd\"\n\t\t}\n\t]\n}"
-                        }
-                    },
-                    "id": "rester-36",
-                    "name": "reloadEventdConfig"
-                },
-                {
-                    "request": {
-                        "url": "http://192.168.92.131:8980/opennms/rest/events",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Scriptd\"\n\t\t}\n\t]\n}"
-                        }
-                    },
-                    "id": "rester-37",
-                    "name": "reloadScriptdConfig"
+                    "name": "create-event-xml"
                 },
                 {
                     "request": {
@@ -432,52 +49,25 @@
                         }
                     },
                     "id": "rester-34",
-                    "name": "serviceproblemupdate"
-                }
-            ]
-        },
-        {
-            "name": "testDoorlock",
-            "item": [
+                    "name": "exampleNewEvent"
+                },
                 {
                     "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                        "method": "POST",
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "GET",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/x-www-form-urlencoded"
-                            },
                             {
                                 "key": "Accept",
                                 "value": "application/json"
                             }
                         ]
                     },
-                    "id": "rester-17",
-                    "name": "createKeyCard"
+                    "id": "rester-33",
+                    "name": "getEvents"
                 },
                 {
                     "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/x-www-form-urlencoded"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ]
-                    },
-                    "id": "rester-27",
-                    "name": "createKeyCard"
-                },
-                {
-                    "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
                         "method": "POST",
                         "header": [
                             {
@@ -491,15 +81,15 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Alarmd\"\n\t\t}\n\t]\n}"
                         }
                     },
-                    "id": "rester-18",
-                    "name": "openDoor"
+                    "id": "rester-38",
+                    "name": "reloadAlarmdConfigEvent"
                 },
                 {
                     "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
                         "method": "POST",
                         "header": [
                             {
@@ -513,11 +103,165 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"BSFNBI\"\n\t\t}\n\t]\n}"
                         }
                     },
-                    "id": "rester-28",
-                    "name": "openDoor"
+                    "id": "rester-39",
+                    "name": "reloadBSFAlarmForwarderConfigEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Eventd\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-36",
+                    "name": "reloadEventdConfigEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Scriptd\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-37",
+                    "name": "reloadScriptdConfigEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceOperationalStatusChanged\",\n\t\n    \"severity\" : \"Indeterminate\",\n\n\t\"parms\": [\n\t\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\n\t\t\t\t{\n\t\t\t\"parmName\": \"prevSeverityLabel\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\n\t\t\t{\n\t\t\t\"parmName\": \"newSeverityLabel\",\n\t\t\t\"value\": \"test Root cause\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-42",
+                    "name": "serviceOperationalStatusChangedEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceProblem\",\n\t\n    \"severity\" : \"Major\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\t\n\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t\t{\n\t\t\t\"parmName\": \"rootCause\",\n\t\t\t\"value\": \"test Root cause\"\n\t\t}\n\t\t\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-43",
+                    "name": "serviceProblemEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceProblem\",\n\t\n    \"severity\" : \"Major\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\t\n\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t\t{\n\t\t\t\"parmName\": \"rootCause\",\n\t\t\t\"value\": \"test Root cause\"\n\t\t},\t{\n\t\t\t\"parmName\": \"spmHREF\",\n\t\t\t\"value\": \"http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/1\"\n\t\t},\t{\n\t\t\t\"parmName\": \"spmID\",\n\t\t\t\"value\": \"1\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-40",
+                    "name": "serviceProblemEventHref"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceProblemReply\",\n\t\n    \"severity\" : \"Indeterminate\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"spmHREF\",\n\t\t\t\"value\": \"http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/1\"\n\t\t},\n\t\t{\n\t\t\t\"parmName\": \"spmID\",\n\t\t\t\"value\": \"1\"\n\t\t}\n\t\t\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-45",
+                    "name": "serviceProblemReplyEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceProblemResolved\",\n\t\n    \"severity\" : \"Indeterminate\",\n\n\t\"parms\": [\n\t\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-44",
+                    "name": "serviceProblemResolvedEvent"
                 }
             ]
         },

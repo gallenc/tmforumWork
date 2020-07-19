@@ -233,14 +233,14 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 value2.setContent(href);
                 parm2.setValue(value2);
                 event.addParm(parm2);
-
-                /*
-                 * this will automatically update an alarm with same reductionKey
-                 * or correlationId
-                 */
-                AlarmData alarmData = new AlarmData();
-                alarmData.setReductionKey(correlationId);
-                alarmData.setAlarmType(1);
+                
+                /* this will add the service problem correlationId to the alarm */
+                Parm parm3 = new Parm();
+                parm3.setParmName("spmCorrelationId");
+                Value value3 = new Value();
+                value3.setContent(correlationId);
+                parm3.setValue(value3);
+                event.addParm(parm3);
 
                 log.debug("sending alarm update event:" + event);
 

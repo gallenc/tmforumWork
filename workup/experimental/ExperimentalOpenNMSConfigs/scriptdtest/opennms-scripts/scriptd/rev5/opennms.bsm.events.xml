@@ -61,7 +61,7 @@
        <event-label>Business Service Monitoring: Service Problem Created Reply</event-label>
        <descr>&lt;p>Business Service Monitoring: Service Problem Created Reply spmID= %parm[spmID]% &lt;/p>
        &lt;p> &lt;a href="%parm[spmHREF]%" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
-       &lt;p> reduction-key=%reduction-key% &lt;/p>
+       &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
        </descr>
        <logmsg dest="logndisplay">Business Service Monitoring: Service Problem Created Reply spmID= %parm[spmID]%
        </logmsg>
@@ -71,6 +71,7 @@
            <update-field field-name="logmsg" update-on-reduction="false"/>
            <update-field field-name="event-label" update-on-reduction="false"/>
            <update-field field-name="descr" update-on-reduction="false"/>
+           <update-field field-name="severity" update-on-reduction="false"/>
        </alarm-data>
        -->
    </event>
