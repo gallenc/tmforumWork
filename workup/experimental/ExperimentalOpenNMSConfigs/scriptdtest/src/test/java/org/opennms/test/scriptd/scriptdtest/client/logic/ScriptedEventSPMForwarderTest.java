@@ -15,6 +15,7 @@ import org.opennms.netmgt.events.api.EventListener;
 import org.opennms.netmgt.events.api.EventProxyException;
 import org.opennms.netmgt.events.api.model.IEvent;
 import org.opennms.netmgt.events.api.model.ImmutableMapper;
+import org.opennms.netmgt.model.events.EventBuilder;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Log;
@@ -26,8 +27,13 @@ import org.slf4j.LoggerFactory;
 public class ScriptedEventSPMForwarderTest {
     static final Logger log = LoggerFactory.getLogger(ApacheHttpAsyncClientTest.class);
 
-    String SERVICE_PROBLEM_ALARM="org.opennms.uei.serviceProblemAlarm";
-    String SERVICE_PROBLEM_ALARM_UPDATE="org.opennms.uei.serviceProblemAlarmUpdate";
+    /* Standard OpenNMS BSM events */
+    String SERVICE_PROBLEM = "uei.opennms.org/bsm/serviceProblem";
+    String SERVICE_OPERATIONAL_STATUS_CHANGED = "uei.opennms.org/bsm/serviceOperationalStatusChanged";
+    String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
+            
+    /* New Service Problem Reply Event */
+    String SERVICE_PROBLEM_REPLY = "uei.opennms.org/bsm/serviceProblemReply";
 
     ScriptedApacheHttpAsyncClient scriptedClient = null;
     ScriptedEventSPMForwarder spmForwarder = null;
@@ -122,39 +128,45 @@ public class ScriptedEventSPMForwarderTest {
     }
 
     @Test
-    public void sendEventForExistingSpm() {
+    public void testEventHasHrefExistingSpm() {
+        
+        // build event with spm params
 
-        log.debug("start of ForExistingSpm()");
+        log.debug("****** start of testEventHasHrefExistingSpm");
+        
+        String source = "service problem interface";
+        String description = "this description";
+        
+        // cant use builder to set dbId
         Event event = new Event();
-
         event.setDbid(10);
-        event.setDescr("this description ");
-        event.setUei(SERVICE_PROBLEM_ALARM);
+        
+        EventBuilder eventBuilder = new EventBuilder(event);
+        eventBuilder.setDescription(description);
+        eventBuilder.setSource(source);
+        eventBuilder.setUei(SERVICE_PROBLEM);
 
         AlarmData alarmData = new AlarmData();
         alarmData.setReductionKey("reductionkey");
-        alarmData.setAlarmType(0);
-        event.setAlarmData(alarmData);
+        alarmData.setAlarmType(1);
+        eventBuilder.setAlarmData(alarmData);
+        
+        eventBuilder.addParam("businessServiceName", "business service 1");
+        eventBuilder.addParam("businessServiceId", "1");
+        eventBuilder.addParam("rootCause", "test Root cause");
 
         /* this will add the service problem id to the alarm */
-        Parm parm1 = new Parm();
-        parm1.setParmName("spmID");
-        Value value1 = new Value();
-        value1.setContent("1");
-        parm1.setValue(value1);
-        event.addParm(parm1);
-
+        eventBuilder.addParam("spmID", "1");
+        
         /* this will add the service problem href to the alarm */
-        Parm parm2 = new Parm();
-        parm2.setParmName("spmHREF");
-        Value value2 = new Value();
-        value2.setContent("href");
-        parm2.setValue(value2);
-        event.addParm(parm2);
+        eventBuilder.addParam("spmHREF", "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/1");
+
+        event = eventBuilder.getEvent();
+        log.debug("Sending event:" +event.toString());
         
         IEvent ievent = ImmutableMapper.fromMutableEvent(event);
 
-        spmForwarder.updateServiceProblem(ievent);
+        spmForwarder.handleEvent(ievent);
         
         log.debug("Waiting for responses");
         // Pause for 5 seconds
@@ -169,25 +181,39 @@ public class ScriptedEventSPMForwarderTest {
         log.debug("end of ForExistingSpm()");
     }
     
-    
     @Test
-    public void sendEventforNewSPM() {
-        // no params
-        log.debug("start of sendEventforNewSPM()");
+    public void testEventHasNoHrefNewSpm() {
+        log.debug("****** start of testEventHasNoHrefNewSpm test script");
+        
+        // build event with no spm params
+        
+        String source = "service problem interface";
+        String description = "this description";
+        
+        // cant use builder to set dbId
         Event event = new Event();
-
         event.setDbid(10);
-        event.setDescr("this description ");
-        event.setUei(SERVICE_PROBLEM_ALARM);
+        
+        EventBuilder eventBuilder = new EventBuilder(event);
+        eventBuilder.setDescription(description);
+        eventBuilder.setSource(source);
+        eventBuilder.setUei(SERVICE_PROBLEM);
 
         AlarmData alarmData = new AlarmData();
         alarmData.setReductionKey("reductionkey");
-        alarmData.setAlarmType(0);
-        event.setAlarmData(alarmData);
+        alarmData.setAlarmType(1);
+        eventBuilder.setAlarmData(alarmData);
+        
+        eventBuilder.addParam("businessServiceName", "business service 1");
+        eventBuilder.addParam("businessServiceId", "1");
+        eventBuilder.addParam("rootCause", "test Root cause");
+
+        event = eventBuilder.getEvent();
+        log.debug("Sending event:" +event.toString());
         
         IEvent ievent = ImmutableMapper.fromMutableEvent(event);
-        
-        spmForwarder.updateServiceProblem(ievent);
+
+        spmForwarder.handleEvent(ievent);
         
         log.debug("Waiting for responses");
         // Pause for 5 seconds
@@ -199,7 +225,8 @@ public class ScriptedEventSPMForwarderTest {
 
         log.debug("Finished Waiting for responses");
 
-        log.debug("end of sendEventforNewSPM()");
+        log.debug("****** end of testEventHasNoHrefNewSpm");
+        
     }
 
 }

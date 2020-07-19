@@ -5,155 +5,11 @@
     },
     "item": [
         {
-            "name": "example",
+            "name": "opennms-api",
             "item": [
                 {
                     "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-20",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-14",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-10",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-7",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-13",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-19",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-21",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrieve?id=1",
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ]
-                    },
-                    "id": "rester-22",
-                    "name": "retreive"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
                         "method": "POST",
                         "header": [
                             {
@@ -167,764 +23,29 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
+                            "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<event>\n\n    <host>host</host>\n    <severity>SEVERE</severity>\n    <uei>org.opennms.uei.serviceProblemAlarm</uei>\n    <source>SPMInterface</source>\n    <description>Hello first problem</description>\n    <!-- <time>2020-04-08T04:47:37.331-04:00</time> -->\n     <!--      <descr>this:descrYYY</descr> -->\n    <logmsg>spm interface update.111</logmsg>\n    <parms>\n        <parm>\n            <parmName>this:parmNameXXX</parmName>\n            <value>this:value</value>\n            <type>string</type>\n        </parm>\n    </parms>\n\n</event>"
                         }
                     },
-                    "id": "rester-15",
-                    "name": "retreivematching"
+                    "id": "rester-35",
+                    "name": "create-event-xml"
                 },
                 {
                     "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "GET",
                         "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-24",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-11",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-8",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-16",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-23",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-25",
-                    "name": "retreivematching"
-                },
-                {
-                    "request": {
-                        "url": "localhost:8680/rest/example/retrievematching",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/xml"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/xml"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "<entity>\n     \n     <field_A>abcd</field_A>\n\n</entity>"
-                        }
-                    },
-                    "id": "rester-26",
-                    "name": "retreivematching"
-                }
-            ]
-        },
-        {
-            "name": "testDoorlock",
-            "item": [
-                {
-                    "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/x-www-form-urlencoded"
-                            },
                             {
                                 "key": "Accept",
                                 "value": "application/json"
                             }
                         ]
                     },
-                    "id": "rester-17",
-                    "name": "createKeyCard",
-                    "response": [
-                        {
-                            "id": "rester-70",
-                            "name": "2020-04-14T11:20:05.872Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 172,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "328"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:20:06 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":null,\"keyCard\":{\"roomNo\":\"12\",\"encodedKey\":\"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\"validFrom\":\"14-04-2020 00:05:57\",\"validTo\":\"15-04-2020 00:06:58\"}}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-69",
-                            "name": "2020-04-14T11:17:48.014Z openDoor",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
-                                }
-                            },
-                            "responseTime": 101,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "63"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:17:48 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":true,\"keyCard\":null}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-68",
-                            "name": "2020-04-14T11:17:39.247Z openDoor",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/11/",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
-                                }
-                            },
-                            "responseTime": 144,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "64"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:17:39 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":false,\"keyCard\":null}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-67",
-                            "name": "2020-04-14T11:17:27.009Z openDoor",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n        \"roomNo\": \"11\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
-                                }
-                            },
-                            "responseTime": 143,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "64"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:17:27 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":false,\"keyCard\":null}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-66",
-                            "name": "2020-04-14T11:17:06.471Z openDoor",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
-                                }
-                            },
-                            "responseTime": 300,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "63"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:17:06 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":true,\"keyCard\":null}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-65",
-                            "name": "2020-04-14T11:11:10.626Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 231,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "328"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:11:10 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":null,\"keyCard\":{\"roomNo\":\"12\",\"encodedKey\":\"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\"validFrom\":\"14-04-2020 00:05:57\",\"validTo\":\"15-04-2020 00:06:58\"}}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-64",
-                            "name": "2020-04-14T11:07:05.722Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=16-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/xml"
-                                    }
-                                ]
-                            },
-                            "responseTime": 453,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/xml"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "415"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:07:06 GMT"
-                                }
-                            ],
-                            "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><replyMessage><code>200</code><keyCard><roomNo>12</roomNo><encodedKey>oLHpCnx+Qlg5R46POxPlUi+fa1GsZxNbMBaTs/CWfnzZcb+uEBKj113NJnyIipgtLFlMaUWJ7HBPlVQu/l+IVZjvfYnGdYu0A2LIEIQOTu7gPjuZ/IX7DxnDGdbjoOhHiihC6ZL8vjRrn0vGDWLlEmRQcKDoZiFzjirl7q2XwLw=</encodedKey><validFrom>14-04-2020 00:05:57</validFrom><validTo>16-04-2020 00:06:58</validTo></keyCard></replyMessage>",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-63",
-                            "name": "2020-04-14T11:05:48.447Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=16-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 216,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "328"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:05:48 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":null,\"keyCard\":{\"roomNo\":\"12\",\"encodedKey\":\"oLHpCnx+Qlg5R46POxPlUi+fa1GsZxNbMBaTs/CWfnzZcb+uEBKj113NJnyIipgtLFlMaUWJ7HBPlVQu/l+IVZjvfYnGdYu0A2LIEIQOTu7gPjuZ/IX7DxnDGdbjoOhHiihC6ZL8vjRrn0vGDWLlEmRQcKDoZiFzjirl7q2XwLw=\",\"validFrom\":\"14-04-2020 00:05:57\",\"validTo\":\"16-04-2020 00:06:58\"}}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-62",
-                            "name": "2020-04-14T11:02:27.681Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 9584,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "328"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:02:37 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":null,\"keyCard\":{\"roomNo\":\"12\",\"encodedKey\":\"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\"validFrom\":\"14-04-2020 00:05:57\",\"validTo\":\"15-04-2020 00:06:58\"}}",
-                            "status": "OK",
-                            "code": 200
-                        },
-                        {
-                            "id": "rester-61",
-                            "name": "2020-04-14T10:59:01.749Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 8134,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "112"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 10:59:09 GMT"
-                                },
-                                {
-                                    "key": "Connection",
-                                    "value": "close"
-                                }
-                            ],
-                            "body": "{\"code\":500,\"debugMessage\":\"error calling /createKeyCard problem encoding card:\",\"unlocked\":null,\"keyCard\":null}",
-                            "status": "Internal Server Error",
-                            "code": 500
-                        },
-                        {
-                            "id": "rester-60",
-                            "name": "2020-04-14T10:32:06.604Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 8193,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "112"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 10:32:14 GMT"
-                                },
-                                {
-                                    "key": "Connection",
-                                    "value": "close"
-                                }
-                            ],
-                            "body": "{\"code\":500,\"debugMessage\":\"error calling /createKeyCard problem encoding card:\",\"unlocked\":null,\"keyCard\":null}",
-                            "status": "Internal Server Error",
-                            "code": 500
-                        },
-                        {
-                            "id": "rester-59",
-                            "name": "2020-04-14T10:20:54.402Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 7628,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "112"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 10:21:02 GMT"
-                                },
-                                {
-                                    "key": "Connection",
-                                    "value": "close"
-                                }
-                            ],
-                            "body": "{\"code\":500,\"debugMessage\":\"error calling /createKeyCard problem encoding card:\",\"unlocked\":null,\"keyCard\":null}",
-                            "status": "Internal Server Error",
-                            "code": 500
-                        },
-                        {
-                            "id": "rester-58",
-                            "name": "2020-04-14T10:14:07.266Z createKeyCard",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/x-www-form-urlencoded"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ]
-                            },
-                            "responseTime": 9172,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "112"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 10:14:16 GMT"
-                                },
-                                {
-                                    "key": "Connection",
-                                    "value": "close"
-                                }
-                            ],
-                            "body": "{\"code\":500,\"debugMessage\":\"error calling /createKeyCard problem encoding card:\",\"unlocked\":null,\"keyCard\":null}",
-                            "status": "Internal Server Error",
-                            "code": 500
-                        }
-                    ]
+                    "id": "rester-33",
+                    "name": "getEvents"
                 },
                 {
                     "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/createKeyCard/?roomNo=12&validFrom=14-04-2020 00:05:57&validTo=15-04-2020 00:06:58",
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/x-www-form-urlencoded"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ]
-                    },
-                    "id": "rester-27",
-                    "name": "createKeyCard"
-                },
-                {
-                    "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
                         "method": "POST",
                         "header": [
                             {
@@ -938,61 +59,15 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/serviceProblem/update\",\n\t\"source\": \"ServiceProblemScript\",\n\t\"host\": \"host\",\n\t\"severity\": \"MAJOR\",\n\t\"descr\": \"if ommitted the default description is used from event definition\",\n\t\"logmsg\": {\n\t\t\"value\": \"this is hre value of the log message into the log\"\n\t},\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"url\",\n\t\t\t\"value\": \"http://localhost:8980/opennms/rtc/post/Network+Interfaces\"\n\t\t}\n\t]\n}"
                         }
                     },
-                    "id": "rester-18",
-                    "name": "openDoor",
-                    "response": [
-                        {
-                            "id": "rester-71",
-                            "name": "2020-04-14T11:20:19.832Z openDoor",
-                            "originalRequest": {
-                                "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
-                                }
-                            },
-                            "responseTime": 180,
-                            "header": [
-                                {
-                                    "key": "Server",
-                                    "value": "Apache-Coyote/1.1"
-                                },
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                },
-                                {
-                                    "key": "Content-Length",
-                                    "value": "63"
-                                },
-                                {
-                                    "key": "Date",
-                                    "value": "Tue, 14 Apr 2020 11:20:20 GMT"
-                                }
-                            ],
-                            "body": "{\"code\":200,\"debugMessage\":null,\"unlocked\":true,\"keyCard\":null}",
-                            "status": "OK",
-                            "code": 200
-                        }
-                    ]
+                    "id": "rester-34",
+                    "name": "randomnewProblemEvent"
                 },
                 {
                     "request": {
-                        "url": "http://localhost:8084/doorlock/rest/doorlock/openDoor/12/",
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
                         "method": "POST",
                         "header": [
                             {
@@ -1006,11 +81,165 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n        \"roomNo\": \"12\",\n        \"encodedKey\": \"rlHYuEC9LGxZxzBepvNqODGCJcDfnn+JZ9d7VypgeNCO3R2/lwgsZyjxLjC1PIRWnW0uYR9gRYhS2hmdyyaR2oiDE3BN7Qw52ck98QfSMMNBOtH3G91b6MeU0aWZLpvJtQTsxgOXP+EpF8UTh9q8ciFWKyABA+2T4D9di1OqchI=\",\n        \"validFrom\": \"14-04-2020 00:05:57\",\n        \"validTo\": \"15-04-2020 00:06:58\"\n}"
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Alarmd\"\n\t\t}\n\t]\n}"
                         }
                     },
-                    "id": "rester-28",
-                    "name": "openDoor"
+                    "id": "rester-38",
+                    "name": "reloadAlarmdConfigEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"BSFNBI\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-39",
+                    "name": "reloadBSFAlarmForwarderConfigEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Eventd\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-36",
+                    "name": "reloadEventdConfigEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/internal/reloadDaemonConfig\",\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"daemonName\",\n\t\t\t\"value\": \"Scriptd\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-37",
+                    "name": "reloadScriptdConfigEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceOperationalStatusChanged\",\n\t\n    \"severity\" : \"Indeterminate\"\n\n\t\"parms\": [\n\t\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\n\t\t\t\t{\n\t\t\t\"parmName\": \"prevSeverityLabel\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\n\t\t\t{\n\t\t\t\"parmName\": \"newSeverityLabel\",\n\t\t\t\"value\": \"test Root cause\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-42",
+                    "name": "serviceOperationalStatusChangedEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceProblem\",\n\t\n    \"severity\" : \"Major\"\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\t\n\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t\t{\n\t\t\t\"parmName\": \"rootCause\",\n\t\t\t\"value\": \"test Root cause\"\n\t\t}\n\t\t\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-43",
+                    "name": "serviceProblemEvent"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceProblem\",\n\t\n    \"severity\" : \"Major\"\n\n\t\"parms\": [\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t},\t\n\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t\t{\n\t\t\t\"parmName\": \"rootCause\",\n\t\t\t\"value\": \"test Root cause\"\n\t\t},\t{\n\t\t\t\"parmName\": \"spmHREF\",\n\t\t\t\"value\": \"http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/1\"\n\t\t},\t{\n\t\t\t\"parmName\": \"spmID\",\n\t\t\t\"value\": \"1\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-40",
+                    "name": "serviceProblemEventHref"
+                },
+                {
+                    "request": {
+                        "url": "http://192.168.92.131:8980/opennms/rest/events",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n\t\"uei\": \"uei.opennms.org/bsm/serviceProblemResolved\",\n\t\n    \"severity\" : \"Indeterminate\"\n\n\t\"parms\": [\n\t\t\t{\n\t\t\t\"parmName\": \"businessServiceId\",\n\t\t\t\"value\": \"ServiceIdxxx\"\n\t\t},\n\t\t{\n\t\t\t\"parmName\": \"businessServiceName\",\n\t\t\t\"value\": \"test Service Problem\"\n\t\t}\n\t]\n}"
+                        }
+                    },
+                    "id": "rester-44",
+                    "name": "serviceProblemResolvedEvent"
                 }
             ]
         },
@@ -1041,7 +270,73 @@
                         }
                     },
                     "id": "rester-29",
-                    "name": "serviceProblem"
+                    "name": "createServiceProblem"
+                },
+                {
+                    "request": {
+                        "url": "http://localhost:8080/tmf656-spm-simulator-war-0.0.1-SNAPSHOT/tmf-api/serviceProblemManagement/v3/serviceProblem/1/",
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept-Charset",
+                                "value": "utf-8"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ]
+                    },
+                    "id": "rester-30",
+                    "name": "getServiceProblem"
+                },
+                {
+                    "request": {
+                        "url": "http://localhost:8080/tmf656-spm-simulator-war-0.0.1-SNAPSHOT/tmf-api/serviceProblemManagement/v3/serviceProblem/1",
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept-Charset",
+                                "value": "utf-8"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ]
+                    },
+                    "id": "rester-31",
+                    "name": "patchServiceProblem"
+                },
+                {
+                    "request": {
+                        "url": "http://localhost:8080/tmf656-spm-simulator-war-0.0.1-SNAPSHOT/tmf-api/serviceProblemManagement/v3/serviceProblem/1",
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept-Charset",
+                                "value": "utf-8"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ]
+                    },
+                    "id": "rester-32",
+                    "name": "patchServiceProblem"
                 }
             ]
         }

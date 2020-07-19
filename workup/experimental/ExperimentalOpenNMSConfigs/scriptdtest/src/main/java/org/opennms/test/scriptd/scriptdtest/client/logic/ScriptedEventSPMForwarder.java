@@ -24,8 +24,13 @@ import org.opennms.netmgt.xml.event.Value;
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
     
-    String SERVICE_PROBLEM_ALARM = "org.opennms.uei.serviceProblemAlarm";
-    String SERVICE_PROBLEM_ALARM_UPDATE = "org.opennms.uei.serviceProblemAlarmUpdate";
+    /* Standard OpenNMS BSM events */
+    String SERVICE_PROBLEM = "uei.opennms.org/bsm/serviceProblem";
+    String SERVICE_OPERATIONAL_STATUS_CHANGED = "uei.opennms.org/bsm/serviceOperationalStatusChanged";
+    String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
+            
+    /* New Service Problem Reply Event */
+    String SERVICE_PROBLEM_REPLY = "uei.opennms.org/bsm/serviceProblemReply";
 
     ScriptedApacheHttpAsyncClient m_scriptedClient = null;
 
@@ -91,9 +96,22 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     }
 
-    public void updateServiceProblem(IEvent ievent) {
+    public void handleEvent(IEvent ievent) {
+      if(SERVICE_PROBLEM.equals(ievent.getUei())) {
+          log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent);
+          updateServiceProblem(ievent);
+          
+      } else if(SERVICE_OPERATIONAL_STATUS_CHANGED.equals(ievent.getUei())) {
+          log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent);
+          
+      } else if(SERVICE_PROBLEM_RESOLVED.equals(ievent.getUei())) {
+          log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent);
+      } 
 
-        if (!SERVICE_PROBLEM_ALARM.equals(ievent.getUei())) {
+    }
+
+   public void updateServiceProblem(IEvent ievent) {
+        if (!SERVICE_PROBLEM.equals(ievent.getUei())) {
             return;
         }
 
@@ -193,9 +211,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
                 log.debug("create event / update parm in alarm with correlationId=" + correlationId + " parm spmID=" + id);
 
-                String uei = SERVICE_PROBLEM_ALARM_UPDATE;
+                String uei = SERVICE_PROBLEM_REPLY;
                 String source = "spm-inteface";
-
+                
                 Event event = new Event();
                 event.setSource(source);
                 event.setUei(uei);
@@ -217,12 +235,12 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 event.addParm(parm2);
 
                 /*
-                 * this will automatically update an alarm with same reduction key
-                 * /correlationId
+                 * this will automatically update an alarm with same reductionKey
+                 * or correlationId
                  */
                 AlarmData alarmData = new AlarmData();
                 alarmData.setReductionKey(correlationId);
-                alarmData.setAlarmType(0);
+                alarmData.setAlarmType(1);
 
                 log.debug("sending alarm update event:" + event);
 

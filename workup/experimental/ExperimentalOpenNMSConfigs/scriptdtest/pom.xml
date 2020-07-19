@@ -34,6 +34,9 @@
 
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>2.11.1</log4j.version>
+        
+        <!-- <opennms-version>26.1.2</opennms-version> -->
+        <opennms-version>26.0.0-SNAPSHOT</opennms-version>
     </properties>
 
     <dependencies>
@@ -83,8 +86,13 @@
         <dependency>
             <groupId>org.opennms.features.events</groupId>
             <artifactId>org.opennms.features.events.api</artifactId>
-            <!-- <version>26.1.2</version> -->
-            <version>26.0.0-SNAPSHOT</version>
+            <version>${opennms-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.opennms</groupId>
+            <artifactId>opennms-model</artifactId>
+            <version>${opennms-version}</version>
         </dependency>
 
         <!-- BeanShell scripting language -->
