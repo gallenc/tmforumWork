@@ -63,8 +63,9 @@
         log.debug("running on event script");
         
         ievent = bsf.lookupBean("event");
-
-        spmForwarder.handleEvent(ievent);
+        node = bsf.lookupBean("node");
+        
+        spmForwarder.handleEvent(ievent, node);
 
         log.debug("end of event script");
 

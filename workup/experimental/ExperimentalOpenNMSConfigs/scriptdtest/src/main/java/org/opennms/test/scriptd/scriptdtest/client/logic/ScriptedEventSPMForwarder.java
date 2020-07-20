@@ -16,10 +16,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opennms.netmgt.events.api.EventIpcManagerFactory;
 import org.opennms.netmgt.events.api.model.IEvent;
+import org.opennms.netmgt.model.OnmsNode;
+import org.opennms.netmgt.model.events.EventBuilder;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
-import org.opennms.netmgt.xml.event.Parm;
-import org.opennms.netmgt.xml.event.Value;
 
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
@@ -96,16 +96,17 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     }
 
-    public void handleEvent(IEvent ievent) {
+    public void handleEvent(IEvent ievent, OnmsNode node) {
       if(SERVICE_PROBLEM.equals(ievent.getUei())) {
-          log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent);
+          log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent + " node:"+node);
           updateServiceProblem(ievent);
           
       } else if(SERVICE_OPERATIONAL_STATUS_CHANGED.equals(ievent.getUei())) {
-          log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent);
+          log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:"+node);
           
       } else if(SERVICE_PROBLEM_RESOLVED.equals(ievent.getUei())) {
-          log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent);
+          log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:"+node);
+
       } 
 
     }
@@ -208,45 +209,23 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 String id = (String) jsonobject.get("id");
                 String correlationId = (String) jsonobject.get("correlationId");
                 String href = (String) jsonobject.get("href");
-
-                log.debug("create event / update parm in alarm with correlationId=" + correlationId + " parm spmID=" + id);
-
                 String uei = SERVICE_PROBLEM_REPLY;
                 String source = "spm-inteface";
-                
-                Event event = new Event();
-                event.setSource(source);
-                event.setUei(uei);
 
-                /* this will add the service problem id to the alarm */
-                Parm parm1 = new Parm();
-                parm1.setParmName("spmID");
-                Value value1 = new Value();
-                value1.setContent(id);
-                parm1.setValue(value1);
-                event.addParm(parm1);
+                EventBuilder eventBuilder = new EventBuilder(uei,source);
+                /* this will add the initial correlation id to the event */
+                eventBuilder.addParam("spmCorrelationId", correlationId);
+                /* this will add the service problem id to the event */
+                eventBuilder.addParam("spmID", id);
+                /* this will add the service problem href to the event */
+                eventBuilder.addParam("spmHREF", href);
 
-                /* this will add the service problem href to the alarm */
-                Parm parm2 = new Parm();
-                parm2.setParmName("spmHREF");
-                Value value2 = new Value();
-                value2.setContent(href);
-                parm2.setValue(value2);
-                event.addParm(parm2);
-                
-                /* this will add the service problem correlationId to the alarm */
-                Parm parm3 = new Parm();
-                parm3.setParmName("spmCorrelationId");
-                Value value3 = new Value();
-                value3.setContent(correlationId);
-                parm3.setValue(value3);
-                event.addParm(parm3);
-
-                log.debug("sending alarm update event:" + event);
+                Event event = eventBuilder.getEvent();
+                log.debug("Sending event spmID="+id+" event:" +event.toString());
 
                 try {
                     EventIpcManagerFactory.getIpcManager().sendNow(event);
-                    log.debug("sent alarm update event through ipcManager");
+                    log.debug("sent SERVICE_PROBLEM_REPLY event through ipcManager");
                 } catch (Throwable t) {
                     log.debug("problem sending event :", t);
                 }

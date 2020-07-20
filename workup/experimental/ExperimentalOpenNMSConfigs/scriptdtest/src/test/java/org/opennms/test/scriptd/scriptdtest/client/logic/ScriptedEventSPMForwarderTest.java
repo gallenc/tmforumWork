@@ -15,6 +15,7 @@ import org.opennms.netmgt.events.api.EventListener;
 import org.opennms.netmgt.events.api.EventProxyException;
 import org.opennms.netmgt.events.api.model.IEvent;
 import org.opennms.netmgt.events.api.model.ImmutableMapper;
+import org.opennms.netmgt.model.OnmsNode;
 import org.opennms.netmgt.model.events.EventBuilder;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
@@ -166,7 +167,8 @@ public class ScriptedEventSPMForwarderTest {
         
         IEvent ievent = ImmutableMapper.fromMutableEvent(event);
 
-        spmForwarder.handleEvent(ievent);
+        OnmsNode node = null;
+        spmForwarder.handleEvent(ievent, node);
         
         log.debug("Waiting for responses");
         // Pause for 5 seconds
@@ -213,7 +215,8 @@ public class ScriptedEventSPMForwarderTest {
         
         IEvent ievent = ImmutableMapper.fromMutableEvent(event);
 
-        spmForwarder.handleEvent(ievent);
+        OnmsNode node = null;
+        spmForwarder.handleEvent(ievent, node);
         
         log.debug("Waiting for responses");
         // Pause for 5 seconds
