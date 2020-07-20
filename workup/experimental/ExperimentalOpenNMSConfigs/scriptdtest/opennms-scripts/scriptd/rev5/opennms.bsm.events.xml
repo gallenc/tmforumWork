@@ -20,6 +20,9 @@
       <severity>Indeterminate</severity>
        <alarm-data reduction-key="%uei%:%parm[businessServiceId]%" alarm-type="1" auto-clean="false">
            <update-field field-name="severity" update-on-reduction="true"/>
+           <update-field field-name="logmsg" update-on-reduction="true"/>
+           <update-field field-name="event-label" update-on-reduction="false"/>
+           <update-field field-name="descr" update-on-reduction="false"/>
        </alarm-data>
    </event>
    <event>
@@ -60,19 +63,17 @@
        <uei>uei.opennms.org/bsm/serviceProblemReply</uei>
        <event-label>Business Service Monitoring: Service Problem Created Reply</event-label>
        <descr>&lt;p>Business Service Monitoring: Service Problem Created Reply spmID= %parm[spmID]% &lt;/p>
-       &lt;p> &lt;a href="%parm[spmHREF]%" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+       &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
        &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
        </descr>
-       <logmsg dest="logndisplay">Business Service Monitoring: Service Problem Created Reply spmID= %parm[spmID]%
+       <logmsg dest="logndisplay">%parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > Related Service Problem ID = %parm[spmID]%&lt;/a>
        </logmsg>
        <severity>Indeterminate</severity>
-        <!-- 
-       <alarm-data reduction-key="uei.opennms.org/bsm/serviceProblem:%parm[businessServiceId]%" alarm-type="2" >
+         <alarm-data reduction-key="%parm[spmCorrelationId]%" alarm-type="3" >
            <update-field field-name="logmsg" update-on-reduction="false"/>
            <update-field field-name="event-label" update-on-reduction="false"/>
            <update-field field-name="descr" update-on-reduction="false"/>
-           <update-field field-name="severity" update-on-reduction="false"/>
+           <update-field field-name="operinstruct" update-on-reduction="true"/>
        </alarm-data>
-       -->
    </event>
 </events>

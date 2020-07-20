@@ -20,6 +20,7 @@ import org.opennms.netmgt.model.OnmsNode;
 import org.opennms.netmgt.model.events.EventBuilder;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
+import org.opennms.netmgt.xml.event.Logmsg;
 
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
@@ -124,7 +125,14 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             AlarmData alarmData = (AlarmData) event.getAlarmData();
             String reductionKey = (alarmData == null) ? null : alarmData.getReductionKey();
             String description = event.getDescr();
+            Logmsg logmsg = event.getLogmsg();
+            String logmsgStr=  (logmsg == null) ? null : logmsg.getContent();
             String uei = event.getUei();
+            String businessServiceName = (event.getParm("businessServiceName") == null) ? "Undefined" : event.getParm("businessServiceName").getValue().getContent();
+            String businessServiceId = (event.getParm("businessServiceId") == null) ? null : event.getParm("businessServiceId").getValue().getContent();
+            String rootCause = (event.getParm("rootCause") == null) ? null : event.getParm("rootCause").getValue().getContent();
+            
+            /* may be in messages after reply update */
             String href = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
             String id = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
 
@@ -135,9 +143,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 String originatingSystem = "opennms";
                 String category = " equipment";
                 String priority = "1";
-                String reason = "service failure";
+                String reason = logmsgStr;
                 String correlationId = reductionKey;
-                String[] affectedServices = { "XXXXX" };
+                String[] affectedServices = { businessServiceName };
 
                 /* create new service problem for each url */
                 if (m_urlCredentials.size() == 0) {
@@ -211,6 +219,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 String href = (String) jsonobject.get("href");
                 String uei = SERVICE_PROBLEM_REPLY;
                 String source = "spm-inteface";
+                String reason = (String) jsonobject.get("reason");
 
                 EventBuilder eventBuilder = new EventBuilder(uei,source);
                 /* this will add the initial correlation id to the event */
@@ -219,6 +228,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 eventBuilder.addParam("spmID", id);
                 /* this will add the service problem href to the event */
                 eventBuilder.addParam("spmHREF", href);
+                /* this will add the service problem reason to the event */
+                eventBuilder.addParam("spmReason", reason);
 
                 Event event = eventBuilder.getEvent();
                 log.debug("Sending event spmID="+id+" event:" +event.toString());
