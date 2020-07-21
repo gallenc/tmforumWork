@@ -16,6 +16,7 @@ import org.opennms.netmgt.model.OnmsNode;
 import org.opennms.netmgt.model.events.EventBuilder;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
+import org.opennms.netmgt.xml.event.Logmsg;
 
 urlCredential(String url, String username, String password) {
     public String getUrl() {
