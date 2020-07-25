@@ -1,3 +1,7 @@
+/* Asynchronous Apache HTTP Client which is used as basis for bean shell script  */
+/* Author: Craig Gallen */
+/* Version : 1.0 */
+
 package org.opennms.test.scriptd.scriptdtest.client.logic;
 
 import java.io.BufferedReader;
@@ -316,8 +320,7 @@ public class ScriptedApacheHttpAsyncClient {
                     }
                     String content = contentbuff.toString();
 
-                    log.debug(" reply content status: " + status + " request: " + request.getRequestLine() + " content "
-                            + content);
+                    log.debug(" reply content status: " + status + " request: " + request.getRequestLine() + " content: "+ content);
 
                     JSONObject message = new JSONObject();
                     message.put("requestMethod", request.getMethod());
@@ -338,13 +341,11 @@ public class ScriptedApacheHttpAsyncClient {
                                 message.put("jsonobject", (JSONObject) item);
                             }
                         } catch (Exception ex) {
-                            log.warn("cannot parse server response  status: " + status + " request: "
-                                    + request.getRequestLine() + " content " + content);
+                            log.warn("cannot parse server response  status: " + status + " request: "+ request.getRequestLine() + " content " + content);
                         }
                     }
 
-                    log.debug(" Response message status: " + status + " request: " + request.getRequestLine()
-                            + " message " + message.toString());
+                    log.debug(" Response message status: " + status + " request: " + request.getRequestLine() + " message " + message.toString());
 
                     boolean notFull = m_jsonQueue.offer(message);
                     if (!notFull) {

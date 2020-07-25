@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!-- scriptd-config.xml revision 4.0 -->
+<scriptd-configuration>
+    <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
+    <start-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running start script");
+      
+      import java.util.ArrayList;
+      import java.util.List;
+
+      source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
+      scriptedClient = scriptedApacheHttpAsyncClient();      
+      
+      source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
+      spmForwarder = scriptedEventSPMForwarder();
+
+      /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
+      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
+
+      List urlCredentials = new ArrayList();
+      urlCredentials.add(url1);
+ 
+      spmForwarder.setUrlCredentials(urlCredentials);
+
+      log.debug("setting scripted client for spmForwarder");
+      spmForwarder.setScriptedClient(scriptedClient);
+      
+      log.debug("setting messageHandler for scriptedClient");
+      scriptedClient.setMessageHandler(spmForwarder);
+    
+      log.debug("start script starting listener");
+      scriptedClient.startListener();
+      log.debug("start script starting client");
+      scriptedClient.startClient();
+
+      log.debug("end of start script");
+
+    </start-script>
+
+    <stop-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running beanshell stop script");
+
+      log.debug("stop script waiting for 20 secs");
+      Thread.sleep(20000); 
+      log.debug("finished waiting");
+      
+      log.debug("stop script stop listener");
+      scriptedClient.stopListener();
+      log.debug("stop script stop client");
+      scriptedClient.stopClient();
+      
+      log.debug("end of stop script");
+
+    </stop-script>
+
+    <event-script language="beanshell">
+
+        log = bsf.lookupBean("log");
+        log.debug("running on event script");
+        
+        ievent = bsf.lookupBean("event");
+        node = bsf.lookupBean("node");
+        
+        spmForwarder.handleEvent(ievent, node);
+
+        log.debug("end of event script");
+
+    </event-script>
+
+
+</scriptd-configuration>
+

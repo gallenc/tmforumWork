@@ -19,6 +19,7 @@ import org.opennms.netmgt.events.api.EventListener;
 import org.opennms.netmgt.events.api.EventProxyException;
 import org.opennms.netmgt.events.api.model.IEvent;
 import org.opennms.netmgt.events.api.model.ImmutableMapper;
+import org.opennms.netmgt.model.OnmsNode;
 import org.opennms.netmgt.model.events.EventBuilder;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
@@ -117,6 +118,9 @@ public class TestRunBshSpm1Script {
         BSFManager.registerScriptingEngine("beanshell", "bsh.util.BeanShellBSFEngine", extensions);
         beanshellEngine = mgr.loadScriptingEngine("beanshell");
         mgr.registerBean("log", log);
+        
+        OnmsNode node = null;
+        mgr.registerBean("node", node);
 
         String startScript = "     log = bsf.lookupBean(\"log\"); \n"
                 + "   log.debug(\"start script logging enabled before importing source\"); \n"
