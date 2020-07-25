@@ -145,6 +145,13 @@ public class TestRunBshSpm1Script {
         log.debug("executed stop script");
 
     }
+    
+    @Test
+    public void testEventServerSpm() throws BSFException {
+        log.debug("run server script");
+        
+        log.debug("end run server script");
+    }
 
 
     @Test

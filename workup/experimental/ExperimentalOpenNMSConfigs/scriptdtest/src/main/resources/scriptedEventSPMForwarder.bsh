@@ -205,10 +205,10 @@ scriptedEventSPMForwarder() {
         
         log.debug("handleReturnMessage called,  message="+message);
         
-        String requestMethod = message.get("requestMethod").toString();
-        String requestHost = message.get("requestHost").toString();
-        String requestPath = message.get("requestPath").toString();
-        String status = message.get("status").toString();
+        String requestMethod = (String) message.get("requestMethod");
+        String requestHost = (String) message.get("requestHost");
+        String requestPath = (String) message.get("requestPath");
+        String status = (String) message.get("status");
         JSONObject jsonobject = (JSONObject) message.get("jsonobject");
         JSONArray jsonarray = (JSONArray) message.get("jsonarray");
 

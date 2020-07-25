@@ -13,6 +13,9 @@
       log.debug("stop script stop client");
       scriptedClient.stopClient();
       
+      log.debug("start script stop http server");
+      scriptedHttpServer.stop();
+      
       log.debug("end of stop script");
 
 /*    </stop-script"> */

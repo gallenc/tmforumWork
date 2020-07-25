@@ -1,7 +1,6 @@
-/* Asynchronous Apache HTTP Server Original code for bean shell script for OpenNMS */
+/* Asynchronous Apache HTTP Server bean shell script for OpenNMS */
 /* Author: Craig Gallen */
 /* Version : 1.0 */
-package org.opennms.test.scriptd.scriptdtest.client.logic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,85 +42,70 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScriptedApacheHttpServer {
-    static final Logger log = LoggerFactory.getLogger(ScriptedApacheHttpServer.class);
 
-        private int port = 8081;
-        // String baseUrl;
-        private String m_keyStoreFileLocation;
-        private SSLContext m_sslContext = null;
-        private HttpServer m_server;
-        private BlockingQueue m_jsonQueue = null;
-        private String[] m_allowedTargets = null;
+scriptedApacheHttpServer(int port, BlockingQueue m_jsonQueue, String[] m_allowedTargets, String m_keyStoreFileLocation) {
 
-        public ScriptedApacheHttpServer(int port, BlockingQueue jsonQueue, String[] allowedTargets, String keyStoreFileLocation) {
-            super();
-            this.port = port;
-            this.m_keyStoreFileLocation = m_keyStoreFileLocation;
-            this.m_jsonQueue = jsonQueue;
-            this.m_allowedTargets = allowedTargets;
-        }
+    private SSLContext m_sslContext = null;
+    private HttpServer m_server;
 
-        public void start() {
+    public void start() {
 
-            try {
+        try {
 
-                if (m_keyStoreFileLocation != null) {
+            if (m_keyStoreFileLocation != null) {
 
-                    /* Initialize SSL context only if there is a keyStoreFile */
-                    URL url = ScriptedApacheHttpServer.class.getResource("/my.keystore");
-                    if (url == null) {
-                        System.out.println("Keystore not found");
-                        System.exit(1);
-                    }
-                    m_sslContext = SSLContexts.custom()
-                            .loadKeyMaterial(url, "secret".toCharArray(), "secret".toCharArray()).build();
+                /* Initialize SSL context only if there is a keyStoreFile */
+                URL url = ScriptedApacheHttpServer.class.getResource("/my.keystore");
+                if (url == null) {
+                    System.out.println("Keystore not found");
+                    System.exit(1);
                 }
+                m_sslContext = SSLContexts.custom()
+                        .loadKeyMaterial(url, "secret".toCharArray(), "secret".toCharArray()).build();
+            }
 
-                SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(15000).setTcpNoDelay(true).build();
+            SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(15000).setTcpNoDelay(true).build();
 
-                m_server = ServerBootstrap.bootstrap().setListenerPort(port).setServerInfo("Test/1.1")
-                        .setSocketConfig(socketConfig).setSslContext(m_sslContext)
-                        .setExceptionLogger(new ExceptionLogger() {
+            m_server = ServerBootstrap.bootstrap().setListenerPort(port).setServerInfo("Test/1.1")
+                    .setSocketConfig(socketConfig).setSslContext(m_sslContext)
+                    .setExceptionLogger(new ExceptionLogger() {
 
-                            public void log(final Exception ex) {
-                                if (ex instanceof SocketTimeoutException) {
-                                    log.error("Connection timed out", ex);
-                                } else if (ex instanceof ConnectionClosedException) {
-                                    log.error(ex.getMessage());
-                                } else {
-                                    log.error("exception in http server" + ex);
-                                }
+                        log(Exception ex) {
+                            if (ex instanceof SocketTimeoutException) {
+                                log.error("Connection timed out http server: ", ex);
+                            } else if (ex instanceof ConnectionClosedException) {
+                                log.error("Connection closed in http server: ", ex);
+                            } else {
+                                log.error("Exception in http server: ", ex);
                             }
+                        }
 
-                        }).registerHandler("*", new JsonRequestHandler(m_jsonQueue, m_allowedTargets)).create();
+                    }).registerHandler("*", (HttpRequestHandler) jsonRequestHandler(m_jsonQueue, allowedTargets)).create();
 
-                m_server.start();
+            m_server.start();
 
-            } catch (Exception ex) {
-                log.error("problem starting server", ex);
-            }
+        } catch (Exception ex) {
+            log.error("problem starting server", ex);
         }
+    }
 
-        public void stop() {
-            if (m_server != null) {
-                m_server.shutdown(5, TimeUnit.SECONDS);
-            }
+    public void stop() {
+        if (m_server != null) {
+            m_server.shutdown(5, TimeUnit.SECONDS);
         }
-        
-        private class JsonRequestHandler implements HttpRequestHandler {
+    }
+    
 
-            List allowedTargetsList = new ArrayList();
+    /* returns this beanshell declaration so that its methods can be invoked */
+    return this;
 
-            private BlockingQueue m_jsonQueue = null;
+}
 
-            public JsonRequestHandler(BlockingQueue jsonQueue, String[] allowedTargets) {
-                super();
-                m_jsonQueue = jsonQueue;
-                allowedTargetsList = Arrays.asList(allowedTargets);
-            }
+jsonRequestHandler(BlockingQueue m_jsonQueue, String[] allowedTargets) {
 
-            public void handle(final HttpRequest request, final HttpResponse response, final HttpContext context)
+            List allowedTargetsList = Arrays.asList(allowedTargets);
+
+            handle(HttpRequest request, HttpResponse response, HttpContext context)
                     throws HttpException, IOException {
 
                 BufferedReader in = null;
@@ -244,11 +228,11 @@ public class ScriptedApacheHttpServer {
                     errorMessage.put("status", status);
                 return errorMessage.toString();
             }
+            
+            /* returns this beanshell declaration so that its methods can be invoked */
+            return this;
 
         }
 
-        
-        /* returns this beanshell declaration so that its methods can be invoked */
-       //  return this;
 
-}
+
