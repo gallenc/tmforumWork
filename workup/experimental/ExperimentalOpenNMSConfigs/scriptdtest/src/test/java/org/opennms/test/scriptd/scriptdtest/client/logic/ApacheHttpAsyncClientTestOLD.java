@@ -23,6 +23,10 @@ import org.slf4j.LoggerFactory;
 
 public class ApacheHttpAsyncClientTestOLD {
     static final Logger log = LoggerFactory.getLogger(ApacheHttpAsyncClientTestOLD.class);
+    
+    final String TEST_USERNAME = "username";
+    
+    final String TEST_PASSWORD = "password";
 
     final String baseHTTPSUrl = "https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-spm-simulator-war";
 
@@ -115,17 +119,17 @@ public class ApacheHttpAsyncClientTestOLD {
         /* get http request */
         HttpRequestBase request = new HttpGet(baseHTTPUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
 
-        scriptedClient.executeRequest(request);
+        scriptedClient.executeRequest(request, TEST_USERNAME, TEST_PASSWORD);
 
         /* get https request */
         request = new HttpGet(baseHTTPSUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
 
-        scriptedClient.executeRequest(request);
+        scriptedClient.executeRequest(request, TEST_USERNAME, TEST_PASSWORD);
 
         /* get http ALL SERVICE PROBLEMS request */
         request = new HttpGet(baseHTTPUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem");
 
-        scriptedClient.executeRequest(request);
+        scriptedClient.executeRequest(request, TEST_USERNAME, TEST_PASSWORD);
 
         log.debug("Waiting for responses");
         // Pause for 10 seconds
@@ -171,7 +175,7 @@ public class ApacheHttpAsyncClientTestOLD {
         }
         request.setEntity(entity);
 
-        scriptedClient.executeRequest(request);
+        scriptedClient.executeRequest(request, TEST_USERNAME, TEST_PASSWORD);
 
         log.debug("Waiting for responses");
         /* Pause for 10 seconds */

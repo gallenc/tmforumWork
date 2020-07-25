@@ -23,12 +23,14 @@ import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.ssl.SSLContexts;
 import org.json.simple.JSONArray;
@@ -48,7 +50,8 @@ public class ScriptedApacheHttpAsyncClient {
      * Now – let's see how to use a SSL Certificate with HttpAsyncClient. In the
      * following example – we configure HttpAsyncClient to accept all certificates:
      * 
-     * NOTE beanshell does not support generics or @Override !!! ( annotations ) or | in Exceptions (basically limited to before java 5
+     * NOTE beanshell does not support generics or @Override !!! ( annotations ) or
+     * | in Exceptions (basically limited to before java 5
      */
 
     int BOUND = 20;
@@ -58,11 +61,17 @@ public class ScriptedApacheHttpAsyncClient {
     BlockingQueue m_jsonQueue = new LinkedBlockingQueue(BOUND);
 
     Thread m_listener = null;
-    
+
     MessageHandler m_messageHandler = new MessageHandler();
     
+    CredentialsProvider m_defaultCredentialsProvider=null;
+
+    public void setDefaultCredentialsProvider(CredentialsProvider defaultCredentialsProvider) {
+        this.m_defaultCredentialsProvider = defaultCredentialsProvider;
+    }
+
     public void setMessageHandler(MessageHandler messageHandler) {
-        log.debug("scriptedApacheHttpAsyncClient setMessageHandler "+ messageHandler);
+        log.debug("scriptedApacheHttpAsyncClient setMessageHandler " + messageHandler);
         m_messageHandler = messageHandler;
     }
 
@@ -90,29 +99,29 @@ public class ScriptedApacheHttpAsyncClient {
 
         /* listening for replies */
         m_listener = new Thread(new Runnable() {
-        
+
             public void handleMessage(JSONObject msg) {
-              try{
-                 log.debug("method handling reply message: " + msg);
-                 m_messageHandler.handleReturnMessage(msg);
-              } catch (Exception ex) {
-                  StringWriter sw = new StringWriter();
-                  PrintWriter pw = new PrintWriter(sw);
-                  ex.printStackTrace(pw);
-                  log.warn("1st listener thread exception " + sw.toString());
-              }
+                try {
+                    log.debug("method handling reply message: " + msg);
+                    m_messageHandler.handleReturnMessage(msg);
+                } catch (Exception ex) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    ex.printStackTrace(pw);
+                    log.warn("1st listener thread exception " + sw.toString());
+                }
             }
 
             public void run() {
                 log.debug("starting listener for responses");
                 try {
-                    
+
                     /* consuming messages until poison message is received */
-                    while (true ) {
+                    while (true) {
                         /* note not casting here because it causes null object in beanshell */
-                        Object  rxmsg =  m_jsonQueue.take();
+                        Object rxmsg = m_jsonQueue.take();
                         JSONObject msg = (JSONObject) rxmsg;
-                        if (msg == null){
+                        if (msg == null) {
                             log.warn("listener message is null");
                         } else if (msg.get("poison") != null) {
                             log.debug("listener stopping on poison message: " + msg);
@@ -136,25 +145,25 @@ public class ScriptedApacheHttpAsyncClient {
 
     /* asynchronous client code */
 
-    public void getRequest(String url) {
+    public void getRequest(String url, String username, String password) {
         if (m_client == null) {
             log.error("Client not started. call startClient() first");
             return;
         }
         HttpGet request = new HttpGet(url);
-        executeRequest(request);
+        executeRequest(request, username, password);
     }
 
-    public void deleteRequest(String url) {
+    public void deleteRequest(String url, String username, String password) {
         if (m_client == null) {
             log.error("Client not started. call startClient() first");
             return;
         }
         HttpDelete request = new HttpDelete(url);
-        executeRequest(request);
+        executeRequest(request, username, password);
     }
 
-    public void postRequest(String url, String jsonMessage) {
+    public void postRequest(String url, String jsonMessage, String username, String password) {
         if (m_client == null) {
             log.error("Client not started. call startClient() first");
             return;
@@ -171,14 +180,15 @@ public class ScriptedApacheHttpAsyncClient {
             return;
         }
         request.setEntity(entity);
-        executeRequest(request);
+        executeRequest(request, username, password);
     }
 
-    public void putRequest(String url, String jsonMessage) {
+    public void putRequest(String url, String jsonMessage, String username, String password) {
         if (m_client == null) {
             log.error("Client not started. call startClient() first");
             return;
         }
+    
         HttpPut request = new HttpPut(url);
 
         request.setHeader("Content-type", "application/json");
@@ -191,10 +201,10 @@ public class ScriptedApacheHttpAsyncClient {
             return;
         }
         request.setEntity(entity);
-        executeRequest(request);
+        executeRequest(request, username, password);
     }
 
-    public void patchRequest(String url, String jsonMessage) {
+    public void patchRequest(String url, String jsonMessage, String username, String password) {
         if (m_client == null) {
             log.error("Client not started. call startClient() first");
             return;
@@ -211,7 +221,7 @@ public class ScriptedApacheHttpAsyncClient {
             return;
         }
         request.setEntity(entity);
-        executeRequest(request);
+        executeRequest(request, username, password);
     }
 
     public synchronized void startClient() {
@@ -230,22 +240,25 @@ public class ScriptedApacheHttpAsyncClient {
         };
         SSLContext sslContext;
         try {
+            /* set up ssl context */
             sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
-
-            /* set up basic authentication */
-            CredentialsProvider provider = new BasicCredentialsProvider();
-            UsernamePasswordCredentials creds = new UsernamePasswordCredentials("username", "password");
-            provider.setCredentials(AuthScope.ANY, creds);
 
             /* default request config */
             RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT)
                     .setSocketTimeout(1000).setConnectTimeout(1000).setConnectionRequestTimeout(1000).build();
 
             /* Set Up async client */
-            m_client = HttpAsyncClients.custom()
+            HttpAsyncClientBuilder clientBuilder = HttpAsyncClients.custom()
                     .setSSLHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
-                    .setSSLContext(sslContext).setDefaultCredentialsProvider(provider)
-                    .setDefaultRequestConfig(requestConfig).build();
+                    .setSSLContext(sslContext)
+                    .setDefaultRequestConfig(requestConfig);
+            
+            /* set default credentials provider if present. */
+            if(m_defaultCredentialsProvider!=null) {
+                clientBuilder.setDefaultCredentialsProvider(m_defaultCredentialsProvider);
+            }
+            
+            m_client= clientBuilder.build();
 
             /* Start client */
             m_client.start();
@@ -275,22 +288,22 @@ public class ScriptedApacheHttpAsyncClient {
         }
     }
 
-    public void executeRequest(HttpRequestBase request) {
+    public void executeRequest(HttpRequestBase request, String username, String password) {
         log.debug("executing scriptedHttpAsyncClient request");
 
         /* not using typed or anonymous callback because of beanshell */
-        
+
         FutureCallback requestCallback = new FutureCallback() {
 
             public void completed(Object objectRresponse) {
-                
+
                 BufferedReader in = null;
                 try {
-                    
+
                     HttpResponse response = (HttpResponse) objectRresponse;
 
                     int status = response.getStatusLine().getStatusCode();
-                    log.debug(" response status: " + status+ " request: "+request.getRequestLine());
+                    log.debug(" response status: " + status + " request: " + request.getRequestLine());
 
                     InputStream responseBody = response.getEntity().getContent();
 
@@ -303,7 +316,8 @@ public class ScriptedApacheHttpAsyncClient {
                     }
                     String content = contentbuff.toString();
 
-                    log.debug(" reply content status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
+                    log.debug(" reply content status: " + status + " request: " + request.getRequestLine() + " content "
+                            + content);
 
                     JSONObject message = new JSONObject();
                     message.put("requestMethod", request.getMethod());
@@ -324,11 +338,13 @@ public class ScriptedApacheHttpAsyncClient {
                                 message.put("jsonobject", (JSONObject) item);
                             }
                         } catch (Exception ex) {
-                            log.warn("cannot parse server response  status: " + status+ " request: "+request.getRequestLine() +" content "+ content);
+                            log.warn("cannot parse server response  status: " + status + " request: "
+                                    + request.getRequestLine() + " content " + content);
                         }
                     }
 
-                    log.debug(" Response message status: " + status+ " request: "+request.getRequestLine() +" message " +message.toString());
+                    log.debug(" Response message status: " + status + " request: " + request.getRequestLine()
+                            + " message " + message.toString());
 
                     boolean notFull = m_jsonQueue.offer(message);
                     if (!notFull) {
@@ -354,17 +370,31 @@ public class ScriptedApacheHttpAsyncClient {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
                 ex.printStackTrace(pw);
-                log.error(" failed response. request: "+ request.getRequestLine()+"error:"+ sw.toString());
+                log.error(" failed response. request: " + request.getRequestLine() + "error:" + sw.toString());
             }
 
             public void cancelled() {
-                log.error(" cancelled response. request: "+ request.getRequestLine());
+                log.error(" cancelled response. request: " + request.getRequestLine());
             }
 
         };
 
-        m_client.execute(request, requestCallback);
-        
+        if (username != null && ! username.isEmpty()) {
+            
+            /* set up basic authentication specifically for this request if username specified */
+            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password);
+            credentialsProvider.setCredentials(AuthScope.ANY, creds); 
+            HttpClientContext context = HttpClientContext.create();
+            context.setCredentialsProvider(credentialsProvider);
+
+            m_client.execute(request, context, requestCallback);
+            
+        } else {
+            /* dont use basic authentication for this request if username is null */
+            m_client.execute(request, requestCallback);
+        }
+
     }
 
 }

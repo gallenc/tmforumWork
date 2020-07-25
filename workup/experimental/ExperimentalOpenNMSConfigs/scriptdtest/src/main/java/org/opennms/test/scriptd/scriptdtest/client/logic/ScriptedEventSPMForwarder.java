@@ -151,6 +151,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 if (m_urlCredentials.size() == 0) {
                     log.warn("no baseUrls set. Cannot send service problem.");
                 }
+                
+                /* send message to all registered spm servers */
                 for(UrlCredential urlCredential : m_urlCredentials) {
                     String baseUrl = urlCredential.getUrl();
                     String username = urlCredential.getUsername();
@@ -171,7 +173,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                         String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
 
                         /* post http request */
-                        m_scriptedClient.postRequest(url, serviceProblem.toString());
+                        m_scriptedClient.postRequest(url, serviceProblem.toString(), username, password);
 
                     } catch (Exception e2) {
                         log.error("problem posting new service problem ", e2);

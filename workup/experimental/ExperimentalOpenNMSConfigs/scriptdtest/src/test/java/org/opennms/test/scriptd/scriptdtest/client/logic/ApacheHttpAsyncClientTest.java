@@ -23,6 +23,10 @@ import org.slf4j.LoggerFactory;
 
 public class ApacheHttpAsyncClientTest {
     static final Logger log = LoggerFactory.getLogger(ApacheHttpAsyncClientTest.class);
+    
+    final String TEST_USERNAME = "username";
+    
+    final String TEST_PASSWORD = "password";
 
     final String baseHTTPSUrl = "https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-spm-simulator-war";
 
@@ -132,13 +136,13 @@ public class ApacheHttpAsyncClientTest {
         log.debug("start of getServiceProblemsTest()");
 
         /* get http request */
-        scriptedClient.getRequest(baseHTTPUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
+        scriptedClient.getRequest(baseHTTPUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2", TEST_USERNAME, TEST_PASSWORD);
 
         /* get https request */
-        scriptedClient.getRequest(baseHTTPSUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
+        scriptedClient.getRequest(baseHTTPSUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem/2", TEST_USERNAME, TEST_PASSWORD);
 
         /* get http ALL SERVICE PROBLEMS request */
-        scriptedClient.getRequest(baseHTTPSUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem");
+        scriptedClient.getRequest(baseHTTPSUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem", TEST_USERNAME, TEST_PASSWORD);
 
         log.debug("Waiting for responses");
         // Pause for 10 seconds
@@ -157,7 +161,7 @@ public class ApacheHttpAsyncClientTest {
         log.debug("start of deleteServiceProblemsTest()");
 
         /* get http request */
-        scriptedClient.deleteRequest(baseHTTPUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/1");
+        scriptedClient.deleteRequest(baseHTTPUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/1", TEST_USERNAME, TEST_PASSWORD);
 
         log.debug("Waiting for responses");
         // Pause for 10 seconds
@@ -193,7 +197,7 @@ public class ApacheHttpAsyncClientTest {
         String url = baseHTTPUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/";
         
         /* post http request */
-        scriptedClient.postRequest(url, jsonString);
+        scriptedClient.postRequest(url, jsonString, TEST_USERNAME, TEST_PASSWORD);
         
         log.debug("Waiting for responses");
         /* Pause for 10 seconds */
@@ -243,7 +247,7 @@ public class ApacheHttpAsyncClientTest {
                 + " jsonString :"+jsonString);
 
         /* post http request */
-        scriptedClient.patchRequest(url, jsonString);
+        scriptedClient.patchRequest(url, jsonString, TEST_USERNAME, TEST_PASSWORD);
         
         log.debug("Waiting for responses");
         /* Pause for 10 seconds */
