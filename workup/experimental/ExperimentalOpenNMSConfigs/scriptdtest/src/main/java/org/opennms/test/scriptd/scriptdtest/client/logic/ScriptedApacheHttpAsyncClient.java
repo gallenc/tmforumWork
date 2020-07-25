@@ -78,6 +78,10 @@ public class ScriptedApacheHttpAsyncClient {
         log.debug("scriptedApacheHttpAsyncClient setMessageHandler " + messageHandler);
         m_messageHandler = messageHandler;
     }
+    
+    public BlockingQueue getjsonQueue() {
+        return m_jsonQueue;
+    }
 
     public synchronized void stopListener() {
 
