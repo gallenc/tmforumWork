@@ -24,14 +24,26 @@ import org.opennms.netmgt.xml.event.Logmsg;
 
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
-    
+
     /* Standard OpenNMS BSM events */
-    String SERVICE_PROBLEM = "uei.opennms.org/bsm/serviceProblem";
-    String SERVICE_OPERATIONAL_STATUS_CHANGED = "uei.opennms.org/bsm/serviceOperationalStatusChanged";
-    String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
-            
-    /* New Service Problem Reply Event */
-    String SERVICE_PROBLEM_REPLY = "uei.opennms.org/bsm/serviceProblemReply";
+    static final String SERVICE_PROBLEM = "uei.opennms.org/bsm/serviceProblem";
+    static final String SERVICE_OPERATIONAL_STATUS_CHANGED = "uei.opennms.org/bsm/serviceOperationalStatusChanged";
+    static final String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
+
+    /* New OpenNMS Service Problem Reply Event */
+    static final String SERVICE_PROBLEM_REPLY_UEI = "uei.opennms.org/bsm/serviceProblemReply";
+
+    /* New OpenNMS Service Problem Events */
+    static final String SERVICE_PROBLEM_UEI = "uei.opennms.org/spm/serviceProblem";
+    static final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI = "uei.opennms.org/spm/serviceProblemAttributeValueChange";
+    static final String SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI = "uei.opennms.org/spm/serviceProblemInformationRequired";
+    static final String SERVICE_PROBLEM_STATE_CHANGE_UEI = "uei.opennms.org/spm/serviceProblemStateChange";
+
+    /* TMF SPM Service Problem event types */
+    static final String SERVICE_PROBLEM_CREATE_NOTIFICATION = "serviceProblemCreateNotification";
+    static final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION = "serviceProblemAttributeValueChangeNotification";
+    static final String SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION = "serviceProblemInformationRequiredNotification";
+    static final String SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION = "serviceProblemStateChangeNotification";
 
     ScriptedApacheHttpAsyncClient m_scriptedClient = null;
 
@@ -42,12 +54,12 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             log.error("UrlCredential[] urlCredentials is null or empty. Cannot send service problem");
             return;
         }
-        for(UrlCredential urlCredential : urlCredentials) {
+        for (UrlCredential urlCredential : urlCredentials) {
             String url = urlCredential.getUrl();
             try {
                 URL u = new URL(url);
             } catch (MalformedURLException e) {
-                log.error("UrlCredential[] urlCredentials malformed url="+url);
+                log.error("UrlCredential[] urlCredentials malformed url=" + url);
             }
         }
         m_urlCredentials = urlCredentials;
@@ -58,15 +70,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         m_scriptedClient = scriptedClient;
     }
 
-    public JSONObject createMinimalServiceProblem(
-            String originatingSystem,
-            String category,
-            String priority,
-            String description,
-            String reason,
-            String correlationId,
-            String[] affectedServices
-            ) {
+    public JSONObject createMinimalServiceProblem(String originatingSystem, String category, String priority,
+            String description, String reason, String correlationId, String[] affectedServices) {
 
         JSONObject spm = new JSONObject();
         if (originatingSystem != null)
@@ -97,22 +102,45 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     }
 
-    public void handleEvent(IEvent ievent, OnmsNode node) {
-      if(SERVICE_PROBLEM.equals(ievent.getUei())) {
-          log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent + " node:"+node);
-          updateServiceProblem(ievent);
-          
-      } else if(SERVICE_OPERATIONAL_STATUS_CHANGED.equals(ievent.getUei())) {
-          log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:"+node);
-          
-      } else if(SERVICE_PROBLEM_RESOLVED.equals(ievent.getUei())) {
-          log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:"+node);
+    public Event onmsEventFromServiceProblem(String uei, JSONObject serviceProblem) {
 
-      } 
+        String id = (String) serviceProblem.get("id");
+        String correlationId = (String) serviceProblem.get("correlationId");
+        String href = (String) serviceProblem.get("href");
+        String source = "spm-interface";
+        String reason = (String) serviceProblem.get("reason");
+
+        EventBuilder eventBuilder = new EventBuilder(uei, source);
+        /* this will add the initial correlation id to the event */
+        eventBuilder.addParam("spmCorrelationId", correlationId);
+        /* this will add the service problem id to the event */
+        eventBuilder.addParam("spmID", id);
+        /* this will add the service problem href to the event */
+        eventBuilder.addParam("spmHREF", href);
+        /* this will add the service problem reason to the event */
+        eventBuilder.addParam("spmReason", reason);
+
+        Event event = eventBuilder.getEvent();
+        return event;
+    }
+
+    public void handleEvent(IEvent ievent, OnmsNode node) {
+        if (SERVICE_PROBLEM.equals(ievent.getUei())) {
+            log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent + " node:" + node);
+            updateServiceProblem(ievent);
+
+        } else if (SERVICE_OPERATIONAL_STATUS_CHANGED.equals(ievent.getUei())) {
+            log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:" + node);
+
+        } else if (SERVICE_PROBLEM_RESOLVED.equals(ievent.getUei())) {
+            log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
+
+        }
 
     }
 
-   public void updateServiceProblem(IEvent ievent) {
+    public void updateServiceProblem(IEvent ievent) {
+
         if (!SERVICE_PROBLEM.equals(ievent.getUei())) {
             return;
         }
@@ -126,12 +154,12 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             String reductionKey = (alarmData == null) ? null : alarmData.getReductionKey();
             String description = event.getDescr();
             Logmsg logmsg = event.getLogmsg();
-            String logmsgStr=  (logmsg == null) ? null : logmsg.getContent();
+            String logmsgStr = (logmsg == null) ? null : logmsg.getContent();
             String uei = event.getUei();
             String businessServiceName = (event.getParm("businessServiceName") == null) ? "Undefined" : event.getParm("businessServiceName").getValue().getContent();
             String businessServiceId = (event.getParm("businessServiceId") == null) ? null : event.getParm("businessServiceId").getValue().getContent();
             String rootCause = (event.getParm("rootCause") == null) ? null : event.getParm("rootCause").getValue().getContent();
-            
+
             /* may be in messages after reply update */
             String href = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
             String id = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
@@ -151,24 +179,17 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 if (m_urlCredentials.size() == 0) {
                     log.warn("no baseUrls set. Cannot send service problem.");
                 }
-                
+
                 /* send message to all registered spm servers */
-                for(UrlCredential urlCredential : m_urlCredentials) {
+                for (UrlCredential urlCredential : m_urlCredentials) {
                     String baseUrl = urlCredential.getUrl();
                     String username = urlCredential.getUsername();
                     String password = urlCredential.getPassword();
 
                     try {
 
-                        JSONObject serviceProblem = createMinimalServiceProblem(
-                                originatingSystem,
-                                category,
-                                priority,
-                                description,
-                                reason,
-                                correlationId,
-                                affectedServices
-                                );
+                        JSONObject serviceProblem = createMinimalServiceProblem(originatingSystem, category, priority,
+                                description, reason, correlationId, affectedServices);
                         log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
                         String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
 
@@ -191,10 +212,11 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     }
 
     @Override
-    public synchronized void handleReturnMessage(JSONObject message) {
+    public synchronized void handleIncomingMessage(JSONObject message) {
 
-        log.debug("handleReturnMessage called,  message=" + message);
+        log.debug("handleIncomingMessage called,  message=" + message);
 
+        String messageSource = (String) message.get("messageSource");
         String requestMethod = (String) message.get("requestMethod");
         String requestHost = (String) message.get("requestHost");
         String requestPath = (String) message.get("requestPath");
@@ -202,57 +224,120 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         JSONObject jsonobject = (JSONObject) message.get("jsonobject");
         JSONArray jsonarray = (JSONArray) message.get("jsonarray");
 
-        /* possible replies */
-        /* POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
-        /* PATCH /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
-        /* DELETE /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
+        /* check if message comes as reply from a push message from asyncClyent */
+        if ("asyncClient".equals(messageSource)) {
 
-        if ("200".equals(status) || "201".equals(status) || "204".equals(status)) {
-            /* find out what message replied to */
+            /* possible spm sent messages */
+            /* POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
+            /* PATCH /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
+            /* DELETE /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
 
-            /*
-             * check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem
-             */
-            if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
-                    && "POST".equals(requestMethod) && jsonobject != null) {
+            if ("200".equals(status) || "201".equals(status) || "204".equals(status)) {
+                /* find out what message replied to */
 
-                String id = (String) jsonobject.get("id");
-                String correlationId = (String) jsonobject.get("correlationId");
-                String href = (String) jsonobject.get("href");
-                String uei = SERVICE_PROBLEM_REPLY;
-                String source = "spm-inteface";
-                String reason = (String) jsonobject.get("reason");
+                /*
+                 * check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem
+                 */
+                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
+                        && "POST".equals(requestMethod) && jsonobject != null) {
 
-                EventBuilder eventBuilder = new EventBuilder(uei,source);
-                /* this will add the initial correlation id to the event */
-                eventBuilder.addParam("spmCorrelationId", correlationId);
-                /* this will add the service problem id to the event */
-                eventBuilder.addParam("spmID", id);
-                /* this will add the service problem href to the event */
-                eventBuilder.addParam("spmHREF", href);
-                /* this will add the service problem reason to the event */
-                eventBuilder.addParam("spmReason", reason);
+                    String uei = SERVICE_PROBLEM_REPLY_UEI;
+                    Event event = onmsEventFromServiceProblem(uei, jsonobject);
+                    log.debug("Persisting event to OpenNMS:" + event.toString());
 
-                Event event = eventBuilder.getEvent();
-                log.debug("Sending event spmID="+id+" event:" +event.toString());
+                    try {
+                        EventIpcManagerFactory.getIpcManager().sendNow(event);
+                        log.debug("sent SERVICE_PROBLEM_REPLY event through ipcManager");
+                    } catch (Throwable t) {
+                        log.debug("problem sending event to OpenNMS:", t);
+                    }
 
-                try {
-                    EventIpcManagerFactory.getIpcManager().sendNow(event);
-                    log.debug("sent SERVICE_PROBLEM_REPLY event through ipcManager");
-                } catch (Throwable t) {
-                    log.debug("problem sending event :", t);
+                } else {
+                    /* just log reply from any other method or request */
+                    log.debug("Unused reply from SPM interface: " + message.toString());
                 }
 
             } else {
-                /* just log reply from any other method or request */
-                log.debug("unused reply from SPM interface: " + message.toString());
+                /* create event for error reply */
+                log.debug("Error Reply from SPM interface: " + message.toString());
+            }
+
+            /* check if message comes as input from httpServer */
+        } else if ("httpServer".equals(messageSource)) {
+
+            log.debug("Http server received message: " + message.toString());
+            String spmEventType = null;
+            JSONObject spmServiceProblem = null;
+            String spmServiceProblemId = null;
+            if (jsonobject != null) {
+                spmEventType = (String) jsonobject.get("eventType");
+                JSONObject spmEvent = (JSONObject) jsonobject.get("event");
+                spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
+                spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
+            }
+            if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
+                log.debug("cannot parse message as SPM event. Message: " + message.toString());
+            } else {
+                String uei = null;
+                Event event = onmsEventFromServiceProblem(uei, jsonobject);
+                
+                switch (spmEventType) {
+                /* TMF SPM Service Problem event types */
+                case SERVICE_PROBLEM_CREATE_NOTIFICATION :
+                    uei = SERVICE_PROBLEM_UEI;
+                    log.debug("Persisting event to OpenNMS:" + event.toString());
+                    try {
+                        EventIpcManagerFactory.getIpcManager().sendNow(event);
+                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+                    } catch (Throwable t) {
+                        log.debug("problem sending event to OpenNMS:", t);
+                    }
+                    break;
+                case SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION :
+                    uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
+                    log.debug("Persisting event to OpenNMS:" + event.toString());
+                    try {
+                        EventIpcManagerFactory.getIpcManager().sendNow(event);
+                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+                    } catch (Throwable t) {
+                        log.debug("problem sending event to OpenNMS:", t);
+                    }
+                    break;
+                case SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION :
+                    uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
+                    log.debug("Persisting event to OpenNMS:" + event.toString());
+                    try {
+                        EventIpcManagerFactory.getIpcManager().sendNow(event);
+                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+                    } catch (Throwable t) {
+                        log.debug("problem sending event to OpenNMS:", t);
+                    }
+                    break;
+                case SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION :
+                    uei = SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI;
+                    event = onmsEventFromServiceProblem(uei, jsonobject);
+                    log.debug("Persisting event to OpenNMS:" + event.toString());
+                    try {
+                        EventIpcManagerFactory.getIpcManager().sendNow(event);
+                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+                    } catch (Throwable t) {
+                        log.debug("problem sending event to OpenNMS:", t);
+                    }
+                    break;
+                default:
+                    log.debug("unknown SPM event type. spmEventType: " + spmEventType);
+                }
             }
 
         } else {
-            /* create event for error reply */
-            log.debug("Error Reply from SPM interface: " + message.toString());
+            /* unknown message source */
+            log.debug("message received from unknown internal source:" + messageSource + " message: "
+                    + message.toString());
         }
 
     }
+    
+    /* returns this beanshell declaration so that its methods can be invoked */
+    /* return this; */
 
 }

@@ -25,12 +25,21 @@ Both http and https URLs can be used.
       url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
 ```
 For the reply events, you need to set up the incoming HTTP server.
-The port is set by changing the following line. Make sure your chosen port is opened in the firewall and doesn't clash with any other service
+The port is set by changing the following line. 
 
 ```
       int port=8981;
 ```
-The scripted http server handles all incoming messages by mapping them into a message but you must indicate the allowed target url's. 
+
+Make sure your chosen port is opened in the firewall and doesn't clash with any other service.
+
+```
+sudo firewall-cmd --zone=public --add-port=8981/tcp --permanent
+sudo firewall-cmd --reload
+sudo firewall-cmd --list-all
+```
+The scripted http server handles all incoming requests to allowed urls by mapping them into a json message which is queued for processing. 
+You must indicate the allowed target url's to which messages can be sent.
 Do this by adding to or changing the allowedTargets array.
 If you are running https, you need to give the absolute path to the key store in keyStoreFileLocation. 
 If this is not set, https requests will not respond.

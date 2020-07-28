@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 public class MessageHandler {
     static final Logger log = LoggerFactory.getLogger(MessageHandler.class);
     
-    public void handleReturnMessage(JSONObject message) {
+    public void handleIncomingMessage(JSONObject message) {
         log.debug("MessageHandler handling reply message: " + message);
     }
 

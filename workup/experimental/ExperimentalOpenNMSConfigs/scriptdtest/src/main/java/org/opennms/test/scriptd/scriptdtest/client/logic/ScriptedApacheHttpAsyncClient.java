@@ -111,7 +111,7 @@ public class ScriptedApacheHttpAsyncClient {
             public void handleMessage(JSONObject msg) {
                 try {
                     log.debug("method handling reply message: " + msg);
-                    m_messageHandler.handleReturnMessage(msg);
+                    m_messageHandler.handleIncomingMessage(msg);
                 } catch (Exception ex) {
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
@@ -327,6 +327,7 @@ public class ScriptedApacheHttpAsyncClient {
                     log.debug(" reply content status: " + status + " request: " + request.getRequestLine() + " content: "+ content);
 
                     JSONObject message = new JSONObject();
+                    message.put("messageSource", "asyncClient");
                     message.put("requestMethod", request.getMethod());
                     message.put("requestHost", request.getURI().getHost());
                     message.put("requestPath", request.getURI().getPath());

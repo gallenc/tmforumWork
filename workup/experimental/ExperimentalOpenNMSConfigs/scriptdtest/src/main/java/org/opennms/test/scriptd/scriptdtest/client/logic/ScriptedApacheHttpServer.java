@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 public class ScriptedApacheHttpServer {
     static final Logger log = LoggerFactory.getLogger(ScriptedApacheHttpServer.class);
 
-        private int port = 8081;
+        private int port = 8681;
         // String baseUrl;
         private String m_keyStoreFileLocation;
         private SSLContext m_sslContext = null;
@@ -84,13 +84,13 @@ public class ScriptedApacheHttpServer {
                         .setSocketConfig(socketConfig).setSslContext(m_sslContext)
                         .setExceptionLogger(new ExceptionLogger() {
 
-                            public void log(final Exception ex) {
+                            public void log(Exception ex) {
                                 if (ex instanceof SocketTimeoutException) {
-                                    log.error("Connection timed out", ex);
+                                log.error("Connection timed out http server: ", ex.toString());
                                 } else if (ex instanceof ConnectionClosedException) {
-                                    log.error(ex.getMessage());
+                                log.error("Connection closed in http server: ", ex.toString());
                                 } else {
-                                    log.error("exception in http server" + ex);
+                                log.error("Exception in http server: ", ex.toString());
                                 }
                             }
 
@@ -131,7 +131,7 @@ public class ScriptedApacheHttpServer {
                     String content = null;
 
                     if (!allowedTargetsList.contains(target)) {
-                        String reason = "target "+target + " not in allowedTargetsList - http server request: " + request.getRequestLine() + "";
+                        String reason = "target "+target + " not in scriptedHttpServer allowedTargetsList - http server request: " + request.getRequestLine() + "";
                         log.warn(reason);
                         response.setStatusCode(HttpStatus.SC_BAD_REQUEST);
                         String status = Integer.toString(HttpStatus.SC_BAD_REQUEST);
@@ -159,6 +159,7 @@ public class ScriptedApacheHttpServer {
                     log.debug("http server request: " + request.getRequestLine() + " content: " + content);
 
                     JSONObject message = new JSONObject();
+                    message.put("messageSource", "httpServer");
                     message.put("requestMethod", method);
                     message.put("requestHost", null);
                     message.put("requestPath", target);
