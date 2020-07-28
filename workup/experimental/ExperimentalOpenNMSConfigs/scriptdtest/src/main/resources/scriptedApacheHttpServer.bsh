@@ -115,7 +115,7 @@ jsonRequestHandler(BlockingQueue m_jsonQueue, String[] allowedTargets) {
                     String content = null;
 
                     if (!allowedTargetsList.contains(target)) {
-                        String reason = "target "+target + " not in allowedTargetsList - http server request: " + request.getRequestLine() + "";
+                        String reason = "target "+target + " not in scriptedHttpClient allowedTargetsList - http server request: " + request.getRequestLine() + "";
                         log.warn(reason);
                         response.setStatusCode(HttpStatus.SC_BAD_REQUEST);
                         String status = Integer.toString(HttpStatus.SC_BAD_REQUEST);

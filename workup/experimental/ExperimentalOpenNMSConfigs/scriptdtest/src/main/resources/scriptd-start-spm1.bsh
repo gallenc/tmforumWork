@@ -27,13 +27,13 @@
       log.debug("setting messageHandler for scriptedClient");
       scriptedClient.setMessageHandler(spmForwarder);
       
-      /* setting up http server for allowed target urls on port 8081 with no https/SSL key file */
+      /* setting up http server for allowed target urls on port 8981 with no https/SSL key file */
          
       source("src/main/resources/scriptedApacheHttpServer.bsh");
       
-      int port=8081;
+      int port=8981;
 
-      String[] allowedTargets = {"/",
+      String[] allowedTargets = {
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
