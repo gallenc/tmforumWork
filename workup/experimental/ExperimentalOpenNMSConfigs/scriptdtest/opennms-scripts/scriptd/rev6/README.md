@@ -30,7 +30,7 @@ The port is set by changing the following line. Make sure your chosen port is op
 ```
       int port=8981;
 ```
-The http server handles all incoming messages the same way but you must indicate the allowed target url's. 
+The scripted http server handles all incoming messages by mapping them into a message but you must indicate the allowed target url's. 
 Do this by adding to or changing the allowedTargets array.
 If you are running https, you need to give the absolute path to the key store in keyStoreFileLocation. 
 If this is not set, https requests will not respond.
