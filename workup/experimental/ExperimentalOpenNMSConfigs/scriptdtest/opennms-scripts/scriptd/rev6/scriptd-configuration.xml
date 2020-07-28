@@ -30,10 +30,33 @@
       log.debug("setting messageHandler for scriptedClient");
       scriptedClient.setMessageHandler(spmForwarder);
     
-      log.debug("start script starting listener");
+      /* setting up http server for allowed target urls on port 8081 with no https/SSL key file */
+         
+      source("/opt/opennms/etc/scriptedApacheHttpServer.bsh");
+      
+      int port=8081;
+
+      String[] allowedTargets = {"/",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3//listener/serviceProblemStateChangeNotification",
+                "/generic-listener/notification"
+                };
+
+      String keyStoreFileLocation = null;
+      
+      jsonQueue = scriptedClient.getjsonQueue();
+      
+      scriptedHttpServer = scriptedApacheHttpServer(port, jsonQueue, allowedTargets, keyStoreFileLocation);
+
+      log.debug("start script starting message listener");
       scriptedClient.startListener();
-      log.debug("start script starting client");
+      log.debug("start script starting spm client");
       scriptedClient.startClient();
+
+      log.debug("start script starting spm notification listening http server");
+      scriptedHttpServer.start();
 
       log.debug("end of start script");
 
@@ -46,12 +69,15 @@
 
       log.debug("stop script waiting for 20 secs");
       Thread.sleep(20000); 
-      log.debug("finished waiting");
-      
+      log.debug("stop script finished waiting");
+
       log.debug("stop script stop listener");
       scriptedClient.stopListener();
       log.debug("stop script stop client");
       scriptedClient.stopClient();
+
+      log.debug("stop script stop http server");
+      scriptedHttpServer.stop();
       
       log.debug("end of stop script");
 
@@ -67,7 +93,7 @@
         
         spmForwarder.handleEvent(ievent, node);
 
-        log.debug("end of event script");
+        log.debug("end of on event script");
 
     </event-script>
 

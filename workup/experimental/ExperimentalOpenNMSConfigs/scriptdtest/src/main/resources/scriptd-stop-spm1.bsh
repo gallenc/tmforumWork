@@ -6,14 +6,14 @@
 
       log.debug("stop script waiting for 20 secs");
       Thread.sleep(20000); 
-      log.debug("finished waiting");
+      log.debug("stop script finished waiting");
       
       log.debug("stop script stop listener");
       scriptedClient.stopListener();
       log.debug("stop script stop client");
       scriptedClient.stopClient();
       
-      log.debug("start script stop http server");
+      log.debug("stop script  stop http server");
       scriptedHttpServer.stop();
       
       log.debug("end of stop script");

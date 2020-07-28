@@ -8,11 +8,12 @@ copy the files in this folder (as root)  to the following locations, replacing o
 sudo cp scriptd-configuration.xml /opt/opennms/etc/
 sudo cp scriptedApacheHttpAsyncClient.bsh /opt/opennms/etc/
 sudo cp scriptedEventSPMForwarder.bsh /opt/opennms/etc/
+sudo cp scriptedApacheHttpServer.bsh /opt/opennms/etc/
 sudo cp opennms.bsm.events.xml /opt/opennms/etc/events/
 
 ```
 
-## setting usernames / passwords and urls
+## setting usernames / passwords and urls for connecting to SPM server
 
 To use basic authentication, usernames and passwords should be set in the scriptd-configuration.xml file by changing the variables "username", "password".
 if username is null or empty (i.e "") then no basic authentication is used for the given url.
@@ -23,14 +24,29 @@ Both http and https URLs can be used.
 /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
       url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
 ```
-
+For the reply events, you need to set up the incoming HTTP server.
+The port is set by changing the line. Make syre your chosen port is opened in the firewall and doesn't clash with any other service
 
 ```
-UsernamePasswordCredentials creds = new UsernamePasswordCredentials("username", "password");
+      int port=8081;
+```
+The http server handles all incoming messages the same way but you must indicate the allowed target url's. 
+Do this by adding to or changing the allowedTargets array.
+If you are running https, you need to give the absolute path to the key store in keyStoreFileLocation. 
+If this is not set, https requests will not respond.
+```
+      String[] allowedTargets = {"/",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3//listener/serviceProblemStateChangeNotification",
+                "/generic-listener/notification"
+                };
+      String keyStoreFileLocation = null;
 ```
 
-Once you have set the URL and usernames and passwords then Restart OpenNMS. 
-Wait for OpenNMS to stop properly before restarting
+Once you have set the the above settings then Restart OpenNMS. 
+Wait for OpenNMS to stop properly before restarting.
 ```
 \opt\opennms\bin\opennms stop
 \opt\opennms\bin\opennms start

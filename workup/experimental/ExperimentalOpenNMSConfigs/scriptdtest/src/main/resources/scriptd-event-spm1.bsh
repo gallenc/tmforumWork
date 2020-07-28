@@ -9,6 +9,6 @@
         
         spmForwarder.handleEvent(ievent, node);
 
-        log.debug("end of event script");
+        log.debug("end of on event script");
 
 /*    </event-script> */

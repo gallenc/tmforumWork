@@ -76,6 +76,10 @@ scriptedApacheHttpAsyncClient() {
         m_messageHandler = messageHandler;
     }
 
+    public BlockingQueue getjsonQueue() {
+        return m_jsonQueue;
+    }
+    
     public synchronized void stopListener() {
 
         /* inject poison to finish listener and empty queue */

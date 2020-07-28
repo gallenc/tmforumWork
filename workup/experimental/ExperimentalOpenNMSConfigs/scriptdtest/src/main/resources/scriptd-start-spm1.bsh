@@ -27,12 +27,12 @@
       log.debug("setting messageHandler for scriptedClient");
       scriptedClient.setMessageHandler(spmForwarder);
       
-      /* setting up http server for allowed target urls on port 8081 */
+      /* setting up http server for allowed target urls on port 8081 with no https/SSL key file */
          
       source("src/main/resources/scriptedApacheHttpServer.bsh");
       
       int port=8081;
-      jsonQueue = scriptedClient.getjsonQueue();
+
       String[] allowedTargets = {"/",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
@@ -41,6 +41,8 @@
                 "/generic-listener/notification"
                 };
       String keyStoreFileLocation = null;
+      
+      jsonQueue = scriptedClient.getjsonQueue();
       
       scriptedHttpServer = scriptedApacheHttpServer(port, jsonQueue, allowedTargets, keyStoreFileLocation);
 
