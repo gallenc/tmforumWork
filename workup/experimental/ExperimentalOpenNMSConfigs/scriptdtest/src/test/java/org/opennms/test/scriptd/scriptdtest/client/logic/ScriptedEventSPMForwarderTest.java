@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
+import org.apache.bsf.BSFException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +40,7 @@ public class ScriptedEventSPMForwarderTest {
 
     ScriptedApacheHttpAsyncClient scriptedClient = null;
     ScriptedEventSPMForwarder spmForwarder = null;
+    ScriptedApacheHttpServer server = null;
     
     EventIpcManagerFactory eventIpcManagerFactory = new EventIpcManagerFactory() {
     };
@@ -116,16 +119,56 @@ public class ScriptedEventSPMForwarderTest {
 
         spmForwarder.setScriptedClient(scriptedClient);
         scriptedClient.setMessageHandler(spmForwarder);
+        
+        log.debug("configuraing scripted http server");
+        int port = 8981;
+        BlockingQueue jsonQueue = scriptedClient.getjsonQueue();
+        String keyStoreFileLocation = null;
 
+        String[] allowedTargets = {"/",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3//listener/serviceProblemStateChangeNotification",
+                "/generic-listener/notification"
+                };
+
+        server = new ScriptedApacheHttpServer(port, jsonQueue, allowedTargets, keyStoreFileLocation);
+
+        log.debug("starting message listener");
         scriptedClient.startListener();
+        
+        log.debug("starting scripted http server");
+        server.start();
+
+        log.debug("starting async client");
         scriptedClient.startClient();
 
     }
 
     @After
     public void after() {
+        log.debug("stopping scripted http server");
+        server.stop();
+        log.debug("stopping async client");
         scriptedClient.stopClient();
+        log.debug("stopping message listener");
         scriptedClient.stopListener();
+    }
+    
+    //@Test // uncomment if testing server only
+    public void testEventServerSpm() throws BSFException {
+        log.debug("run testEventServerSpm test");
+        
+        log.debug("server started waiting 30 secs for for requests  ");
+        // Pause for 30 seconds
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            log.debug("sleep interupted");
+        }
+        
+        log.debug("end run testEventServerSpm test");
     }
 
     @Test

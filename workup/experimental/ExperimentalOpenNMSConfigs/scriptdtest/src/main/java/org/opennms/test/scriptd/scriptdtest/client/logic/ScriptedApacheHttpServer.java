@@ -57,12 +57,14 @@ public class ScriptedApacheHttpServer {
         public ScriptedApacheHttpServer(int port, BlockingQueue jsonQueue, String[] allowedTargets, String keyStoreFileLocation) {
             super();
             this.port = port;
-            this.m_keyStoreFileLocation = m_keyStoreFileLocation;
+            this.m_keyStoreFileLocation = keyStoreFileLocation;
             this.m_jsonQueue = jsonQueue;
             this.m_allowedTargets = allowedTargets;
         }
 
         public void start() {
+            log.info("starting scripted http server on port:"+port);
+            if(m_keyStoreFileLocation!=null) log.info("scripted http server using keyStoreFileLocation:"+m_keyStoreFileLocation);
 
             try {
 
@@ -86,11 +88,11 @@ public class ScriptedApacheHttpServer {
 
                             public void log(Exception ex) {
                                 if (ex instanceof SocketTimeoutException) {
-                                log.error("Connection timed out http server: ", ex.toString());
+                                log.error("Connection timed out http server: "+ ex.toString());
                                 } else if (ex instanceof ConnectionClosedException) {
-                                log.error("Connection closed in http server: ", ex.toString());
+                                log.error("Connection closed in http server: "+ ex.toString());
                                 } else {
-                                log.error("Exception in http server: ", ex.toString());
+                                log.error("Exception in http server: "+ ex.toString());
                                 }
                             }
 
@@ -104,6 +106,7 @@ public class ScriptedApacheHttpServer {
         }
 
         public void stop() {
+            log.info("stopping scripted http server");
             if (m_server != null) {
                 m_server.shutdown(5, TimeUnit.SECONDS);
             }
@@ -125,9 +128,11 @@ public class ScriptedApacheHttpServer {
                     throws HttpException, IOException {
 
                 BufferedReader in = null;
+                InputStream responseBody = null;
                 try {
                     String method = request.getRequestLine().getMethod().toUpperCase(Locale.ROOT);
                     String target = request.getRequestLine().getUri();
+
                     String content = null;
 
                     if (!allowedTargetsList.contains(target)) {
@@ -144,8 +149,10 @@ public class ScriptedApacheHttpServer {
                     }
 
                     if (request instanceof HttpEntityEnclosingRequest) {
-                        HttpEntity entity = ((HttpEntityEnclosingRequest) request).getEntity();
-                        InputStream responseBody = entity.getContent();
+                        log.debug("getting content from request");
+                        HttpEntityEnclosingRequest enclosingRequest = (HttpEntityEnclosingRequest) request;
+                        HttpEntity entity = enclosingRequest.getEntity();
+                        responseBody = entity.getContent();
                         /* read the body of the request and place it in a content String */
                         in = new BufferedReader(new InputStreamReader(responseBody));
                         String inputLine;
@@ -227,6 +234,7 @@ public class ScriptedApacheHttpServer {
                     if (in != null)
                         try {
                             in.close();
+                            responseBody.close();
                         } catch (IOException e) {
                         }
                 }

@@ -276,7 +276,11 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
             }
             if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
-                log.debug("cannot parse message as SPM event. Message: " + message.toString());
+                log.debug("cannot recognise message as SPM event."
+                        + " spmEventType: "+spmEventType
+                        + " spmServiceProblemId: "+spmServiceProblemId
+                        + " spmServiceProblem: "+spmServiceProblem
+                        + " Message: " + message.toString());
             } else {
                 String uei = null;
                 Event event = onmsEventFromServiceProblem(uei, jsonobject);
@@ -298,7 +302,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+                        log.debug("sent SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION event through ipcManager");
                     } catch (Throwable t) {
                         log.debug("problem sending event to OpenNMS:", t);
                     }
@@ -308,7 +312,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+                        log.debug("sent SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION event through ipcManager");
                     } catch (Throwable t) {
                         log.debug("problem sending event to OpenNMS:", t);
                     }
@@ -319,7 +323,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+                        log.debug("sent SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION event through ipcManager");
                     } catch (Throwable t) {
                         log.debug("problem sending event to OpenNMS:", t);
                     }

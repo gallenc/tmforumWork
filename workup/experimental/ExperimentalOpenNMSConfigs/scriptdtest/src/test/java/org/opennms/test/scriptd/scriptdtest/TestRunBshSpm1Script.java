@@ -148,9 +148,17 @@ public class TestRunBshSpm1Script {
     
     @Test
     public void testEventServerSpm() throws BSFException {
-        log.debug("run server script");
+        log.debug("run testEventServerSpm test");
         
-        log.debug("end run server script");
+        log.debug("server started waiting 30 secs for for requests  ");
+        // Pause for 30 seconds
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            log.debug("sleep interupted");
+        }
+        
+        log.debug("end run testEventServerSpm test");
     }
 
 

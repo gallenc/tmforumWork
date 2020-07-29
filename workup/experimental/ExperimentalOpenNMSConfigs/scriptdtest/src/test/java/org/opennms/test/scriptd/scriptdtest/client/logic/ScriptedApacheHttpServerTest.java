@@ -95,7 +95,7 @@ public class ScriptedApacheHttpServerTest {
     @Test
     public void test() {
         log.debug("starting server test");
-        int port = 8081;
+        int port = 8981;
         BlockingQueue jsonQueue = null;
         String keyStoreFileLocation = null;
 
@@ -111,7 +111,7 @@ public class ScriptedApacheHttpServerTest {
 
         log.debug("starting server   ");
         server.start();
-        log.debug("server started waiting 20 secs for for requests  ");
+        log.debug("server started waiting 30 secs for for requests  ");
         // Pause for 30 seconds
         try {
             Thread.sleep(30000);
