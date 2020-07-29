@@ -49,6 +49,8 @@ scriptedApacheHttpServer(int port, BlockingQueue m_jsonQueue, String[] m_allowed
     private HttpServer m_server;
 
     public void start() {
+        log.info("starting scripted http server on port:"+port);
+        if(m_keyStoreFileLocation!=null) log.info("scripted http server using keyStoreFileLocation:"+m_keyStoreFileLocation);
 
         try {
 
@@ -72,11 +74,11 @@ scriptedApacheHttpServer(int port, BlockingQueue m_jsonQueue, String[] m_allowed
 
                         log(Exception ex) {
                             if (ex instanceof SocketTimeoutException) {
-                                log.error("Connection timed out http server: ", ex.toString());
+                                log.error("Connection timed out http server: "+ ex.toString());
                             } else if (ex instanceof ConnectionClosedException) {
-                                log.error("Connection closed in http server: ", ex.toString());
+                                log.error("Connection closed in http server: "+ ex.toString());
                             } else {
-                                log.error("Exception in http server: ", ex.toString());
+                                log.error("Exception in http server: "+ ex.toString());
                             }
                         }
 
@@ -90,6 +92,7 @@ scriptedApacheHttpServer(int port, BlockingQueue m_jsonQueue, String[] m_allowed
     }
 
     public void stop() {
+        log.info("stopping scripted http server");
         if (m_server != null) {
             m_server.shutdown(5, TimeUnit.SECONDS);
         }
@@ -109,10 +112,13 @@ jsonRequestHandler(BlockingQueue m_jsonQueue, String[] allowedTargets) {
                     throws HttpException, IOException {
 
                 BufferedReader in = null;
+                InputStream responseBody = null;
                 try {
                     String method = request.getRequestLine().getMethod().toUpperCase(Locale.ROOT);
                     String target = request.getRequestLine().getUri();
-                    String content = null;
+                    
+                    /* note bug in beanshell we cannot use String content = null;*/
+                    content = null;
 
                     if (!allowedTargetsList.contains(target)) {
                         String reason = "target "+target + " not in scriptedHttpServer allowedTargetsList - http server request: " + request.getRequestLine() + "";
@@ -128,8 +134,10 @@ jsonRequestHandler(BlockingQueue m_jsonQueue, String[] allowedTargets) {
                     }
 
                     if (request instanceof HttpEntityEnclosingRequest) {
-                        HttpEntity entity = ((HttpEntityEnclosingRequest) request).getEntity();
-                        InputStream responseBody = entity.getContent();
+                        log.debug("getting content from request");
+                        HttpEntityEnclosingRequest enclosingRequest = (HttpEntityEnclosingRequest) request;
+                        HttpEntity entity = enclosingRequest.getEntity();
+                        responseBody = entity.getContent();
                         /* read the body of the request and place it in a content String */
                         in = new BufferedReader(new InputStreamReader(responseBody));
                         String inputLine;
@@ -211,6 +219,7 @@ jsonRequestHandler(BlockingQueue m_jsonQueue, String[] allowedTargets) {
                     if (in != null)
                         try {
                             in.close();
+                            responseBody.close();
                         } catch (IOException e) {
                         }
                 }
