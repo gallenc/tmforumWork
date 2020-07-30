@@ -121,6 +121,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         eventBuilder.addParam("spmReason", reason);
 
         Event event = eventBuilder.getEvent();
+        
+        log.debug("onmsEventFromServiceProblem id:"+id+" correlationId:"+correlationId+" href:"+href+" source:"+source+" reason:"+reason+ " TO EVENT:"+event);
+
         return event;
     }
 
@@ -283,12 +286,13 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                         + " Message: " + message.toString());
             } else {
                 String uei = null;
-                Event event = onmsEventFromServiceProblem(uei, jsonobject);
+                Event event = null;
                 
                 switch (spmEventType) {
                 /* TMF SPM Service Problem event types */
                 case SERVICE_PROBLEM_CREATE_NOTIFICATION :
                     uei = SERVICE_PROBLEM_UEI;
+                    event = onmsEventFromServiceProblem(uei, jsonobject);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
@@ -299,6 +303,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     break;
                 case SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION :
                     uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
+                    event = onmsEventFromServiceProblem(uei, jsonobject);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
@@ -309,6 +314,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     break;
                 case SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION :
                     uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
+                    event = onmsEventFromServiceProblem(uei, jsonobject);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
