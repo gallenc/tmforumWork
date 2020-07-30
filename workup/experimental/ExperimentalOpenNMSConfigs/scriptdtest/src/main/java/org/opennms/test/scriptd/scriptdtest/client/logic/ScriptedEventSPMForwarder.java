@@ -292,7 +292,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 /* TMF SPM Service Problem event types */
                 case SERVICE_PROBLEM_CREATE_NOTIFICATION :
                     uei = SERVICE_PROBLEM_UEI;
-                    event = onmsEventFromServiceProblem(uei, jsonobject);
+                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
@@ -303,7 +303,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     break;
                 case SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION :
                     uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
-                    event = onmsEventFromServiceProblem(uei, jsonobject);
+                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
@@ -314,7 +314,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     break;
                 case SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION :
                     uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
-                    event = onmsEventFromServiceProblem(uei, jsonobject);
+                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
@@ -325,7 +325,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     break;
                 case SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION :
                     uei = SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI;
-                    event = onmsEventFromServiceProblem(uei, jsonobject);
+                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
