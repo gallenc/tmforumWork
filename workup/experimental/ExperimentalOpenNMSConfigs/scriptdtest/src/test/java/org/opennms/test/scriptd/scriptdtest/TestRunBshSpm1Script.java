@@ -39,7 +39,7 @@ public class TestRunBshSpm1Script {
     String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
             
     /* New Service Problem Reply Event */
-    String SERVICE_PROBLEM_REPLY = "uei.opennms.org/bsm/serviceProblemReply";
+    String SERVICE_PROBLEM_REPLY = "uei.opennms.org/tmf656spm/serviceProblemReply";
     
     private static BSFManager mgr = new BSFManager();
 
@@ -146,7 +146,7 @@ public class TestRunBshSpm1Script {
 
     }
     
-    @Test
+    // uncomment if you just want to run a server test @Test
     public void testEventServerSpm() throws BSFException {
         log.debug("run testEventServerSpm test");
         

@@ -16,6 +16,9 @@
       source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
       spmForwarder = scriptedEventSPMForwarder();
 
+      /* set name of this originating system in sent spm calls */
+      spmForwarder.setThisOriginatingSystem("testOpenNMS");
+      
       /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
       url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
 

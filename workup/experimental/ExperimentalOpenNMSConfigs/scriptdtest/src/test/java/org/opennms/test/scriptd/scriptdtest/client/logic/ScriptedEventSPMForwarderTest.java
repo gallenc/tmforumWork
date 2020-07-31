@@ -36,7 +36,7 @@ public class ScriptedEventSPMForwarderTest {
     String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
             
     /* New Service Problem Reply Event */
-    String SERVICE_PROBLEM_REPLY = "uei.opennms.org/bsm/serviceProblemReply";
+    String SERVICE_PROBLEM_REPLY = "uei.opennms.org/tmf656spm/serviceProblemReply";
 
     ScriptedApacheHttpAsyncClient scriptedClient = null;
     ScriptedEventSPMForwarder spmForwarder = null;
@@ -112,6 +112,9 @@ public class ScriptedEventSPMForwarderTest {
 
         scriptedClient = new ScriptedApacheHttpAsyncClient();
         spmForwarder = new ScriptedEventSPMForwarder();
+        
+        /* set name of this originating system in sent spm calls */
+        spmForwarder.setThisOriginatingSystem("testOpenNMS");
         
         /* urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
         List<UrlCredential> urlCredentials = Arrays.asList(new UrlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" ));

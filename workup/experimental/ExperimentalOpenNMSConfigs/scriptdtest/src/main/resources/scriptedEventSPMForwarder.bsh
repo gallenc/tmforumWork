@@ -41,13 +41,13 @@ scriptedEventSPMForwarder() {
     final String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
 
     /* New OpenNMS Service Problem Reply Event */
-    final String SERVICE_PROBLEM_REPLY_UEI = "uei.opennms.org/bsm/serviceProblemReply";
+    final String SERVICE_PROBLEM_REPLY_UEI = "uei.opennms.org/tmf656spm/serviceProblemReply";
 
     /* New OpenNMS Service Problem Events */
-    final String SERVICE_PROBLEM_UEI = "uei.opennms.org/spm/serviceProblem";
-    final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI = "uei.opennms.org/spm/serviceProblemAttributeValueChange";
-    final String SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI = "uei.opennms.org/spm/serviceProblemInformationRequired";
-    final String SERVICE_PROBLEM_STATE_CHANGE_UEI = "uei.opennms.org/spm/serviceProblemStateChange";
+    final String SERVICE_PROBLEM_UEI = "uei.opennms.org/tmf656spm/serviceProblem";
+    final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI = "uei.opennms.org/tmf656spm/serviceProblemAttributeValueChange";
+    final String SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI = "uei.opennms.org/tmf656spm/serviceProblemInformationRequired";
+    final String SERVICE_PROBLEM_STATE_CHANGE_UEI = "uei.opennms.org/tmf656spm/serviceProblemStateChange";
 
     /* TMF SPM Service Problem event types */
     final String SERVICE_PROBLEM_CREATE_NOTIFICATION = "serviceProblemCreateNotification";
@@ -58,6 +58,8 @@ scriptedEventSPMForwarder() {
     m_scriptedClient = null;
     
     m_urlCredentials = null;
+    
+    private String m_thisOriginatingSystem="opennms-notset";
 
     public void setUrlCredentials(List urlCredentials) {
         if (urlCredentials == null || urlCredentials.size() == 0) {
@@ -73,6 +75,10 @@ scriptedEventSPMForwarder() {
             }
         }
         m_urlCredentials = urlCredentials;
+    }
+
+    public void setThisOriginatingSystem(String thisOriginatingSystem) {
+        this.m_thisOriginatingSystem = thisOriginatingSystem;
     }
 
     public void setScriptedClient(scriptedClient) {
@@ -118,8 +124,31 @@ scriptedEventSPMForwarder() {
         String href = (String) serviceProblem.get("href");
         String source = "spm-interface";
         String reason = (String) serviceProblem.get("reason");
+        String originatingSystem = (String) serviceProblem.get("originatingSystem");
+        String status = (String) serviceProblem.get("status");
+        String priority = ( serviceProblem.get("priority")==null )? null : serviceProblem.get("priority").toString();
 
         EventBuilder eventBuilder = new EventBuilder(uei, source);
+        
+        JSONArray affectedService = (JSONArray) serviceProblem.get("affectedService");
+        if(affectedService!=null) {
+            String spmAffectedServicesJson = affectedService.toString();
+            StringBuilder spmAffectedServicesHtml = new StringBuilder();
+            for (Object svc :affectedService) {
+                JSONObject jservice = (JSONObject) svc;
+                String svcid = (String) jservice.get("id");
+                String svchref = (String) jservice.get("href");
+                spmAffectedServicesHtml.append("<a href=\""+svchref+"\">"+svcid+ "</a> ");
+            }
+            
+            /* this will add a json version of affected services to the event */
+            eventBuilder.addParam("spmAffectedServicesJson", spmAffectedServicesJson);
+            
+            /* this will add an html version of affected services to the event */
+            eventBuilder.addParam("spmAffectedServicesHtml", spmAffectedServicesHtml.toString());
+
+        }
+
         /* this will add the initial correlation id to the event */
         eventBuilder.addParam("spmCorrelationId", correlationId);
         /* this will add the service problem id to the event */
@@ -128,10 +157,23 @@ scriptedEventSPMForwarder() {
         eventBuilder.addParam("spmHREF", href);
         /* this will add the service problem reason to the event */
         eventBuilder.addParam("spmReason", reason);
+        /* this will add the service problem originatingSystem to the event */
+        eventBuilder.addParam("spmOriginatingSystem", originatingSystem);
+        /* this will add the service problem status to the event */
+        eventBuilder.addParam("spmStatus", status);
+        /* this will add the service problem priority to the event */
+        eventBuilder.addParam("spmPriority", priority);
 
         Event event = eventBuilder.getEvent();
         
-        log.debug("onmsEventFromServiceProblem id:"+id+" correlationId:"+correlationId+" href:"+href+" source:"+source+" reason:"+reason+ " TO EVENT:"+event);
+        log.debug("onmsEventFromServiceProblem id:"+id
+                + " correlationId:"+correlationId
+                + " href:"+href
+                + " source:"+source
+                + " reason:"+reason
+                + " originatingSystem:"+originatingSystem
+                + " affectedService:"+affectedService
+                + " TO EVENT:"+event);
         
         return event;
     }
@@ -153,10 +195,6 @@ scriptedEventSPMForwarder() {
 
     public void updateServiceProblem(IEvent ievent) {
 
-        if(! SERVICE_PROBLEM.equals(ievent.getUei())){
-            return;
-        }
-        
         try {
             log.debug("updateServiceProblem script received immutable event:" + ievent);
             
@@ -165,6 +203,7 @@ scriptedEventSPMForwarder() {
             AlarmData alarmData = (AlarmData) event.getAlarmData();
             String reductionKey = (alarmData==null) ? null : alarmData.getReductionKey();
             String description = event.getDescr();
+            String severity = event.getSeverity();
             Logmsg logmsg = event.getLogmsg();
             String logmsgStr=  (logmsg == null) ? null : logmsg.getContent();
             String uei = event.getUei();
@@ -172,15 +211,18 @@ scriptedEventSPMForwarder() {
             String businessServiceId = (event.getParm("businessServiceId") == null) ? null : event.getParm("businessServiceId").getValue().getContent();
             String rootCause = (event.getParm("rootCause") == null) ? null : event.getParm("rootCause").getValue().getContent();
             
-            /* may be in messages after reply update */
-            String href = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
-            String id = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
+            /* may be in events if created by an incoming message */
+            String spmHREF = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
+            String spmID = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
+            String spmOriginatingSystem = (event.getParm("spmOriginatingSystem") == null) ? null : event.getParm("spmOriginatingSystem").getValue().getContent();
+            String spmStatus = (event.getParm("spmStatus") == null) ? null : event.getParm("spmStatus").getValue().getContent();
+            String spmPriority = (event.getParm("spmPriority") == null) ? null : event.getParm("spmPriority").getValue().getContent();
 
-            /* only create new alarm if href not present */
-            if (href == null) {
+            /* only create new service problem if href not present */
+            if (spmHREF == null) {
                 log.debug("updateServiceProblem event has no spmHREF param - creating new service problem");
                 
-                String originatingSystem = "opennms";
+                String originatingSystem = m_thisOriginatingSystem;
                 String category = " equipment";
                 String priority = "1";
                 String reason = logmsgStr;
@@ -214,7 +256,7 @@ scriptedEventSPMForwarder() {
 
                 }
             } else {
-               log.debug("updateServiceProblem not creating new service problem as event has spmHREF="+href);
+                log.debug("updateServiceProblem not creating new service problem as event has spmHREF=" + spmHREF);
             }
 
         } catch (Exception e) {
@@ -232,7 +274,7 @@ scriptedEventSPMForwarder() {
         String requestMethod = (String) message.get("requestMethod");
         String requestHost = (String) message.get("requestHost");
         String requestPath = (String) message.get("requestPath");
-        String status = (String) message.get("status");
+        String status = (message.get("status")==null) ? null : message.get("status").toString();
         JSONObject jsonobject = (JSONObject) message.get("jsonobject");
         JSONArray jsonarray = (JSONArray) message.get("jsonarray");
 
@@ -247,9 +289,7 @@ scriptedEventSPMForwarder() {
             if ("200".equals(status) || "201".equals(status) || "204".equals(status)) {
                 /* find out what message replied to */
 
-                /*
-                 * check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem
-                 */
+                /* check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
                 if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
                         && "POST".equals(requestMethod) && jsonobject != null) {
 
@@ -278,14 +318,20 @@ scriptedEventSPMForwarder() {
         } else if ("httpServer".equals(messageSource)) {
 
             log.debug("Http server received message: " + message.toString());
-            spmEventType = null;
-            spmServiceProblem = null;
-            spmServiceProblemId = null;
+            String spmEventType = null;
+            JSONObject spmServiceProblem = null;
+            String spmServiceProblemId = null;
+            String spmOriginatingSystem = null;
+            String spmStatus = null;
+            String spmPriority = null;
             if (jsonobject != null) {
                 spmEventType = (String) jsonobject.get("eventType");
                 JSONObject spmEvent = (JSONObject) jsonobject.get("event");
                 spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
                 spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
+                spmOriginatingSystem = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("originatingSystem");
+                spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("spmStatus");
+                spmPriority = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("priority");
             }
             if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
                 log.debug("cannot recognise message as SPM event."
@@ -300,6 +346,10 @@ scriptedEventSPMForwarder() {
                 switch (spmEventType) {
                 /* TMF SPM Service Problem event types */
                 case SERVICE_PROBLEM_CREATE_NOTIFICATION :
+                    if(m_thisOriginatingSystem.equals(spmOriginatingSystem)){
+                        log.debug("not handling spm create notification which carries a create from our own originatingSystem="+spmOriginatingSystem);
+                        break;
+                    }
                     uei = SERVICE_PROBLEM_UEI;
                     event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
