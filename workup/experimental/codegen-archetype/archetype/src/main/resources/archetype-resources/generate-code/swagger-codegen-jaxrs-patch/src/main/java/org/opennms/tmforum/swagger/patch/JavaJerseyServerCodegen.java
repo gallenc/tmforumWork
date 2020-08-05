@@ -1,4 +1,7 @@
-package org.opennms.tmforum.swagger.patch;
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+package ${package}.patch;
 
 
 import io.swagger.codegen.*;
@@ -10,7 +13,7 @@ import java.util.*;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import org.opennms.tmforum.swagger.patch.AbstractJavaJAXRSServerCodegen;
+import ${package}.patch.AbstractJavaJAXRSServerCodegen;
 
 public class JavaJerseyServerCodegen extends AbstractJavaJAXRSServerCodegen {
 
@@ -18,7 +21,7 @@ public class JavaJerseyServerCodegen extends AbstractJavaJAXRSServerCodegen {
     protected static final String LIBRARY_JERSEY2 = "jersey2";
     
     /**
-     * Default library template to use. )
+     * Default library template to use. (Default:{@value ${symbol_pound}DEFAULT_LIBRARY})
      */
     public static final String DEFAULT_LIBRARY = LIBRARY_JERSEY2;
     public static final String USE_TAGS = "useTags";
