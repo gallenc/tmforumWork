@@ -168,6 +168,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- needed by Hibernate for java 11 -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- IN MEMORY Database and JDBC Driver -->
         <dependency>
             <groupId>org.hsqldb</groupId>

@@ -12,10 +12,10 @@
 <!-- Begin page content -->
 <main role="main" class="container">
     <H1>Interface Swagger Test Page</H1>
-    <a href="./swagger-ui/" target="_blank">Open swagger UI page in new tab outside of iframe</a><BR>
+    <a href="./resources/swagger-ui/index.html" target="_blank">Open swagger UI page in new tab outside of iframe</a><BR>
     <a href="./tmf-api/serviceProblemManagement/v3/swagger.json" target="_blank">Open Generated Open API Json Spec</a>
     
-    <iframe height="700" width="100%" src="./swagger-ui/" title="Interface Swagger Test Page">
+    <iframe height="700" width="100%" src="./resources/swagger-ui/index.html" title="Interface Swagger Test Page">
 </iframe>
 </main>
 

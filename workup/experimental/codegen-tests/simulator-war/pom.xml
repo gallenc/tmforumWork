@@ -225,7 +225,7 @@
                         <resource>
                             <!-- this is relative to the pom.xml directory -->
                             <directory>${project.build.directory}/swagger-ui/META-INF/resources/webjars/swagger-ui/${swagger-ui.version}</directory>
-                            <targetPath>swagger-ui</targetPath>
+                            <targetPath>WEB-INF/resources/swagger-ui</targetPath>
                         </resource>
                     </webResources>
                 </configuration>
@@ -425,6 +425,13 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- needed by Hibernate for java 11 -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
             <scope>compile</scope>
         </dependency>
 
