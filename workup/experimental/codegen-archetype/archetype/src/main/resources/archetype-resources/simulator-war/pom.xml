@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.opennms.tmforum</groupId>
-    <artifactId>${tmfSpecPackageName}-spm-simulator-war</artifactId>
+    <artifactId>${tmfSpecPackageName}-simulator-war</artifactId>
     <packaging>war</packaging>
 
 
@@ -212,7 +212,7 @@
                     <replacements>
                         <replacement>
                             <token>https://petstore.swagger.io/v2/swagger.json</token>
-                            <value>/${symbol_dollar}{project.artifactId}/tmf-api/serviceProblemManagement/v3/swagger.json</value>
+                            <value>/${symbol_dollar}{project.artifactId}${tmfSpecUrlPath}swagger.json</value>
                         </replacement>
                     </replacements>
                 </configuration>
@@ -264,14 +264,14 @@
 
         <dependency>
             <groupId>${package}</groupId>
-            <artifactId>${tmfSpecPackageName}-spm-simulator-service</artifactId>
+            <artifactId>${tmfSpecPackageName}-simulator-service</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>${package}</groupId>
-            <artifactId>${tmfSpecPackageName}-spm-simulator-dao</artifactId>
+            <artifactId>${tmfSpecPackageName}-simulator-dao</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>compile</scope>
         </dependency>

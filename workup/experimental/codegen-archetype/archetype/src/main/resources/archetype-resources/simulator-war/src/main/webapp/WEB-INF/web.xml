@@ -4,7 +4,7 @@
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-	<display-name>${tmfSpecPackageName}-spm-simulator-war</display-name>
+	<display-name>${tmfSpecPackageName}-simulator-war</display-name>
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
@@ -49,9 +49,9 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>RestApp</servlet-name>
-		<url-pattern>/tmf-api/serviceProblemManagement/v3/*</url-pattern>
+		<url-pattern>${tmfSpecUrlPath}*</url-pattern>
 	</servlet-mapping>
-	<!-- interface is at http://localhost:8080/tmf-api/serviceProblemManagement/v3/serviceProblem/3 -->
+	<!-- interface is at http://localhost:8080${tmfSpecUrlPath}serviceProblem/3 -->
 
 	<!-- <servlet> -->
 	<!-- <servlet-name>jersey</servlet-name> -->
@@ -88,7 +88,7 @@
 	<!-- </init-param> -->
 	<!-- <init-param> -->
 	<!-- <param-name>swagger.api.basepath</param-name> -->
-	<!-- <param-value>http://localhost:8080/tmf-api/serviceProblemManagement/v3/</param-value> -->
+	<!-- <param-value>http://localhost:8080${tmfSpecUrlPath}</param-value> -->
 	<!-- </init-param> -->
 
 	<!-- <load-on-startup>2</load-on-startup> -->
@@ -100,7 +100,7 @@
 	<!-- </servlet> -->
 	<!-- <servlet-mapping> -->
 	<!-- <servlet-name>jersey</servlet-name> -->
-	<!-- <url-pattern>/tmf-api/serviceProblemManagement/v3//*</url-pattern> -->
+	<!-- <url-pattern>${tmfSpecUrlPath}/*</url-pattern> -->
 	<!-- </servlet-mapping> -->
 	<!-- <filter> -->
 	<!-- <filter-name>ApiOriginFilter</filter-name> -->

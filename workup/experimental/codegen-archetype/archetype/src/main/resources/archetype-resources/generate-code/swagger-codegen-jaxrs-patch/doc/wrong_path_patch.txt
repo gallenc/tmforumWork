@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 Index: modules/swagger-codegen/src/main/java/io/swagger/codegen/languages/AbstractJavaJAXRSServerCodegen.java
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP

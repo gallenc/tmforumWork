@@ -9,7 +9,7 @@
         <artifactId>${artifactId}</artifactId>
         <version>${version}</version>
     </parent>
-    <artifactId>${tmfSpecPackageName}-spm-simulator-service</artifactId>
+    <artifactId>${tmfSpecPackageName}-simulator-service</artifactId>
 
     <packaging>jar</packaging>
 
@@ -121,7 +121,7 @@
 
         <dependency>
             <groupId>${package}</groupId>
-            <artifactId>${tmfSpecPackageName}-spm-simulator-dao</artifactId>
+            <artifactId>${tmfSpecPackageName}-simulator-dao</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>provided</scope>
         </dependency>

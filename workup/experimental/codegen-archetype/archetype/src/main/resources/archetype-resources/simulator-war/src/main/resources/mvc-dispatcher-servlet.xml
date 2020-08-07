@@ -22,7 +22,7 @@
 
     <!-- gives base path for interface NOT WORKING -->
     <bean id="basePath" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/" />
+        <constructor-arg type="java.lang.String" value="/${tmfSpecPackageName}-simulator-war${tmfSpecUrlPath}" />
     </bean>
 
     <!-- sets up annotation driven controllers for MVC -->

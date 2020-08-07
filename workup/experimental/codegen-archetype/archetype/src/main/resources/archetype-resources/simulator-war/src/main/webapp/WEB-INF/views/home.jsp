@@ -28,7 +28,7 @@
 		This experimental simulator has been contributed by the <a
 			href="https://www.opennms.com/" target="_blank">OpenNMS Project</a>
 		to the TMForum for testing and demonstrating core functionality of the
-		${tmfSpecPackageName} SPM interface.
+		${tmfSpecPackageName} interface.
 	</p>
 	<h1>Usage</h1>
 
@@ -48,8 +48,8 @@
 	<p>The simulator works with http at port 8080 or with https at port
 		8443 (self signed certificate) for example:</p>
 
-    <p>Clear: http://{hostname}:8080/${tmfSpecPackageName}-spm-simulator-war/</p>
-	<p>Secure: https://{hostname}:8443/${tmfSpecPackageName}-spm-simulator-war/<p>
+    <p>Clear: http://{hostname}:8080/${tmfSpecPackageName}-simulator-war/</p>
+	<p>Secure: https://{hostname}:8443/${tmfSpecPackageName}-simulator-war/<p>
 	
 	<p>Replacing {hostname} with domain name of server where the simulator is hosted. e.g.</p>
 	<p>Clear: <a href="http://${symbol_dollar}{host}:8080${symbol_dollar}{path}">http://${symbol_dollar}{host}:8080${symbol_dollar}{path}</a></p>

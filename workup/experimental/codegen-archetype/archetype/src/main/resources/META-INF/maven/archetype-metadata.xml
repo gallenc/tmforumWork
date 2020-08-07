@@ -17,9 +17,6 @@
         <requiredProperty key="tmfSpecPackageName" >
             <defaultValue>tmf656</defaultValue>
         </requiredProperty>
-        <requiredProperty key="tmfSpecShortName" >
-            <defaultValue>SPM</defaultValue>
-        </requiredProperty>
         <requiredProperty key="tmfSpecUrlPath" >
             <defaultValue>/tmf-api/serviceProblemManagement/v3/</defaultValue>
         </requiredProperty>

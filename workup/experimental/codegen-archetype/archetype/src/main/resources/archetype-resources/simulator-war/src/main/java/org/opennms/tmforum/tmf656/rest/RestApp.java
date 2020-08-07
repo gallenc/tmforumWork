@@ -51,10 +51,10 @@ public class RestApp extends ResourceConfig {
     private static Logger LOG = LoggerFactory.getLogger(RestApp.class);
 
     // should be injected but leave for now
-    private String basePath = "/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/";
+    private String basePath = "/${tmfSpecPackageName}-simulator-war${tmfSpecUrlPath}";
 
     // produces
-    // http://localhost:8080/tmf-api/serviceProblemManagement/v3/swagger.json
+    // http://localhost:8080${tmfSpecUrlPath}swagger.json
     // see
     // https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Getting-started
 

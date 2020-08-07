@@ -9,7 +9,7 @@
         <artifactId>${artifactId}</artifactId>
         <version>${version}</version>
     </parent>
-    <artifactId>${tmfSpecPackageName}-spm-simulator-dao</artifactId>
+    <artifactId>${tmfSpecPackageName}-simulator-dao</artifactId>
 
     <packaging>jar</packaging>
 

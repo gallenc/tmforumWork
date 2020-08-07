@@ -2,21 +2,21 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>${package}</groupId>
-		<artifactId>${tmfSpecPackageName}-jaxrs-generate-code</artifactId>
-		<version>${version}</version>
-	</parent>
-	<artifactId>swagger-codegen-jaxrs-patch</artifactId>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>${package}</groupId>
+        <artifactId>${tmfSpecPackageName}-jaxrs-generate-code</artifactId>
+        <version>${version}</version>
+    </parent>
+    <artifactId>swagger-codegen-jaxrs-patch</artifactId>
 
-	<dependencies>
-		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-codegen-maven-plugin</artifactId>
-			<version>${symbol_dollar}{version.swagger.codegen}</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-codegen-maven-plugin</artifactId>
+            <version>${symbol_dollar}{version.swagger.codegen}</version>
+        </dependency>
+    </dependencies>
 </project>

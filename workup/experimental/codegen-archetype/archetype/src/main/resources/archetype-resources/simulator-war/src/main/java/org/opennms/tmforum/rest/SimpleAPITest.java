@@ -41,16 +41,16 @@ public class SimpleAPITest {
      * 
      * 
      * simple query
-     * http://localhost:8080/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=id&offset=5&limit=7
+     * http://localhost:8080/${tmfSpecPackageName}-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=id&offset=5&limit=7
      * 
-     * http://localhost:8080/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged
+     * http://localhost:8080/${tmfSpecPackageName}-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged
      * status=acknowledged;status=rejected
      * status=acknowledged&status=rejected
      * status=acknowledged,rejected
      * 
-     * http://localhost:8080/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged,rejected
-     * http://localhost:8080/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged&status=rejected
-     * http://localhost:8080/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged;status=rejected
+     * http://localhost:8080/${tmfSpecPackageName}-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged,rejected
+     * http://localhost:8080/${tmfSpecPackageName}-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged&status=rejected
+     * http://localhost:8080/${tmfSpecPackageName}-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged;status=rejected
      * 
      * sort
      * sort=creationDate,statusChangeDate,note.date
@@ -60,13 +60,13 @@ Sort-Query-Parameters : “sort”, “=”, (Sort-Direction), Sort-Field
      * Sort-Direction : “-“ | “+”
 Sort-Field: The field to sort on.
      * example
-     * http://localhost:8080/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=id&offset=5&limit=7&sort=,+,creationDate,statusChangeDate,note.date
+     * http://localhost:8080/${tmfSpecPackageName}-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/1/?fields=id&offset=5&limit=7&sort=,+,creationDate,statusChangeDate,note.date
      * Note basic query design issue + is reserved character in http url '+' is escaped to space (or use %2B URL encoded)
      * &sort=,-,creationDate  works
      * &sort=,+,creationDate becomes &sort=, ,creationDate
      * 
      * Test String
-     * http://localhost:8080/${tmfSpecPackageName}-spm-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged&status=rejected&name=hello&dateTime.gt=2013-04-20&dateTime.lte=2017-04-20
+     * http://localhost:8080/${tmfSpecPackageName}-simulator-war/tmf-api/serviceProblemManagement/v3/simpleApiTestService/?fields=description,status&creationDate.gt=2013-04-20&status=acknowledged&status=rejected&name=hello&dateTime.gt=2013-04-20&dateTime.lte=2017-04-20
      * 
      * 
      */

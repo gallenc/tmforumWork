@@ -1,7 +1,4 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
-package ${package}.patch;
+package org.opennms.tmforum.swagger.patch;
 
 import java.io.File;
 import java.util.ArrayList;

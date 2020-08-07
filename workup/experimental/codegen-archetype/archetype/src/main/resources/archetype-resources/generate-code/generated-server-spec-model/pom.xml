@@ -105,7 +105,7 @@
 
         <!-- <dependency> -->
         <!-- <groupId>${package}</groupId> -->
-        <!-- <artifactId>${tmfSpecPackageName}-spm-simulator-dao</artifactId> -->
+        <!-- <artifactId>${tmfSpecPackageName}-simulator-dao</artifactId> -->
         <!-- <version>${symbol_dollar}{project.version}</version> -->
         <!-- <scope>provided</scope> -->
         <!-- </dependency> -->
