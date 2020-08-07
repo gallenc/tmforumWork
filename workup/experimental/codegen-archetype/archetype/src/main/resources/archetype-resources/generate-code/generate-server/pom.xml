@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>${package}</groupId>
+        <groupId>${groupId}</groupId>
         <artifactId>${tmfSpecPackageName}-jaxrs-generate-code</artifactId>
         <version>${version}</version>
     </parent>
@@ -46,7 +46,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>${package}</groupId>
+                                    <groupId>${groupId}</groupId>
                                     <artifactId>${tmfSpecPackageName}-specification</artifactId>
                                     <version>${symbol_dollar}{project.version}</version>
                                     <type>jar</type>
@@ -98,7 +98,7 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>${package}</groupId>
+                        <groupId>${groupId}</groupId>
                         <artifactId>swagger-codegen-jaxrs-patch</artifactId>
                         <version>${symbol_dollar}{project.version}</version>
                         <!-- prevent pulling in other tansitive dependencies -->

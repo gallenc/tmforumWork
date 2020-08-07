@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>${package}</groupId>
+        <groupId>${groupId}</groupId>
         <artifactId>${artifactId}</artifactId>
         <version>${version}</version>
     </parent>
@@ -249,28 +249,28 @@
 
         <!-- project dependencies -->
         <dependency>
-            <groupId>${package}</groupId>
+            <groupId>${groupId}</groupId>
             <artifactId>${tmfSpecPackageName}-jaxrs-generated-server-spec-model</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>${package}</groupId>
+            <groupId>${groupId}</groupId>
             <artifactId>${tmfSpecPackageName}-jaxrs-generated-server-spec-api</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>${package}</groupId>
+            <groupId>${groupId}</groupId>
             <artifactId>${tmfSpecPackageName}-simulator-service</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>${package}</groupId>
+            <groupId>${groupId}</groupId>
             <artifactId>${tmfSpecPackageName}-simulator-dao</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>compile</scope>

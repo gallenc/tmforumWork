@@ -48,7 +48,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="${symbol_pound}">Service Problem Interface Simulator</a>
+                        <a class="navbar-brand" href="${symbol_pound}">${tmfSpecFullName} API Simulator</a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">

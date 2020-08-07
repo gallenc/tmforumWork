@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>${package}</groupId>
+        <groupId>${groupId}</groupId>
         <artifactId>${artifactId}</artifactId>
         <version>${version}</version>
     </parent>
@@ -27,13 +27,13 @@
 
         <!-- project dependencies -->
         <dependency>
-            <groupId>${package}</groupId>
+            <groupId>${groupId}</groupId>
             <artifactId>${tmfSpecPackageName}-jaxrs-generated-server-spec-model</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>${package}</groupId>
+            <groupId>${groupId}</groupId>
             <artifactId>${tmfSpecPackageName}-jaxrs-generated-server-spec-api</artifactId>
             <version>${symbol_dollar}{project.version}</version>
             <scope>provided</scope>
