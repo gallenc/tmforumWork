@@ -21,7 +21,7 @@
 		src="./resources/images/tmForumLogo.jpg" alt="tmforum logo"
 		width="200" height="100"></a>
 
-	<h1>TMForum ${tmfSpecPackageName} Service Problem Management Interface Simulator</h1>
+	<h1>TMForum ${tmfSpecPackageName} ${tmfSpecFullName} Interface Simulator</h1>
 
 	<h1>Overview</h1>
 	<p>

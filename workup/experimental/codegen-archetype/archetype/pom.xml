@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.opennms.tmforum.swagger</groupId>
-    <artifactId>tmf656-api-sdk-project-archetype</artifactId>
+    <artifactId>tmforum-api-sdk-project-archetype</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>maven-archetype</packaging>
 
-    <name>tmf656-api-sdk-project-archetype</name>
+    <name>tmforum-api-sdk-project-archetype</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
