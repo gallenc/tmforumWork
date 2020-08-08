@@ -6,7 +6,7 @@
         <artifactId>tmf656-api-sdk-project</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>tmf656-spm-simulator-service</artifactId>
+    <artifactId>tmf656-simulator-service</artifactId>
 
     <packaging>jar</packaging>
 
@@ -118,7 +118,7 @@
 
         <dependency>
             <groupId>org.opennms.tmforum.swagger</groupId>
-            <artifactId>tmf656-spm-simulator-dao</artifactId>
+            <artifactId>tmf656-simulator-dao</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

@@ -48,7 +48,7 @@ public class RestApp extends ResourceConfig {
     private static Logger LOG = LoggerFactory.getLogger(RestApp.class);
 
     // should be injected but leave for now
-    private String basePath = "/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/";
+    private String basePath = "/tmf656-simulator-war/tmf-api/serviceProblemManagement/v3/";
 
     // produces
     // http://localhost:8080/tmf-api/serviceProblemManagement/v3/swagger.json

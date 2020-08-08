@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>org.opennms.tmforum</groupId>
-    <artifactId>tmf656-spm-simulator-war</artifactId>
+    <artifactId>tmf656-simulator-war</artifactId>
     <packaging>war</packaging>
 
 
@@ -261,14 +261,14 @@
 
         <dependency>
             <groupId>org.opennms.tmforum.swagger</groupId>
-            <artifactId>tmf656-spm-simulator-service</artifactId>
+            <artifactId>tmf656-simulator-service</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.opennms.tmforum.swagger</groupId>
-            <artifactId>tmf656-spm-simulator-dao</artifactId>
+            <artifactId>tmf656-simulator-dao</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

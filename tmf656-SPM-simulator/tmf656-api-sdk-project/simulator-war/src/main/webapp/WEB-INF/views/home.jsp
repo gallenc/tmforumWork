@@ -45,8 +45,8 @@
 	<p>The simulator works with http at port 8080 or with https at port
 		8443 (self signed certificate) for example:</p>
 
-    <p>Clear: http://{hostname}:8080/tmf656-spm-simulator-war/</p>
-	<p>Secure: https://{hostname}:8443/tmf656-spm-simulator-war/<p>
+    <p>Clear: http://{hostname}:8080/tmf656-simulator-war/</p>
+	<p>Secure: https://{hostname}:8443/tmf656-simulator-war/<p>
 	
 	<p>Replacing {hostname} with domain name of server where the simulator is hosted. e.g.</p>
 	<p>Clear: <a href="http://${host}:8080${path}">http://${host}:8080${path}</a></p>
