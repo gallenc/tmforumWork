@@ -18,7 +18,7 @@ public class JavaJerseyServerCodegen extends AbstractJavaJAXRSServerCodegen {
     protected static final String LIBRARY_JERSEY2 = "jersey2";
     
     /**
-     * Default library template to use. (Default:{@value #DEFAULT_LIBRARY})
+     * Default library template to use. )
      */
     public static final String DEFAULT_LIBRARY = LIBRARY_JERSEY2;
     public static final String USE_TAGS = "useTags";
