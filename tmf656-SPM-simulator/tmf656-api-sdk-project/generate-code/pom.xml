@@ -17,7 +17,6 @@
 
     <modules>
         <module>specification</module>
-        <module>swagger-codegen-jaxrs-patch</module>
         <module>generate-server</module>
         <module>generated-server-spec-model</module>
         <module>generated-server-spec-api</module>
