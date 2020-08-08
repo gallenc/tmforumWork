@@ -38,27 +38,36 @@ public class HubApiServiceImpl extends HubApiService {
 
     @Inject
     private GenericHubApiServiceImpl genericHub;
-    
+
     @Override
-    public Response registerListener(EventSubscriptionInput eventSubscriptionInput, SecurityContext securityContext, javax.ws.rs.core.UriInfo uriInfo) throws NotFoundException {
-        
-        LOG.debug("register listener called EventSubscriptionInput="+eventSubscriptionInput);
-        
-        GenericEventSubscriptionInput genericEventSubscriptionInput = 
-                Mappers.getMapper( ServiceProblemGenericEventSubscriptionInputMapper.class )
+    public Response registerListener(EventSubscriptionInput eventSubscriptionInput, SecurityContext securityContext,
+            javax.ws.rs.core.UriInfo uriInfo) throws NotFoundException {
+
+        LOG.debug("register listener called EventSubscriptionInput=" + eventSubscriptionInput);
+
+        GenericEventSubscriptionInput genericEventSubscriptionInput = Mappers
+                .getMapper(ServiceProblemGenericEventSubscriptionInputMapper.class)
                 .eventSubscriptionInputToGenericEventSubscriptionInput(eventSubscriptionInput);
-        
+
         // note Returning unmapped class but OK as json is the same
-        return genericHub.registerListener(genericEventSubscriptionInput, securityContext, uriInfo);
+        try {
+            return genericHub.registerListener(genericEventSubscriptionInput, securityContext, uriInfo);
+        } catch (org.opennms.tmforum.tmf650.api.NotFoundException e) {
+            throw new NotFoundException(0, e.getMessage());
+        }
 
     }
-    
-    @Override
-    public Response unregisterListener(String id, SecurityContext securityContext, javax.ws.rs.core.UriInfo uriInfo) throws NotFoundException {
-        LOG.debug("unregister listener called id="+id);
-        
-        // note Returning unmapped class but OK as json is the same
-        return genericHub.unregisterListener(id, securityContext, uriInfo);
 
+    @Override
+    public Response unregisterListener(String id, SecurityContext securityContext, javax.ws.rs.core.UriInfo uriInfo)
+            throws NotFoundException {
+        LOG.debug("unregister listener called id=" + id);
+
+        // note Returning unmapped class but OK as json is the same
+        try {
+            return genericHub.unregisterListener(id, securityContext, uriInfo);
+        } catch (org.opennms.tmforum.tmf650.api.NotFoundException e) {
+            throw new NotFoundException(0, e.getMessage());
+        }
     }
 }

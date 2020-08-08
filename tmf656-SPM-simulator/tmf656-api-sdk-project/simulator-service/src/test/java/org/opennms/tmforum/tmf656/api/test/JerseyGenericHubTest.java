@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf650.api.test;
+package org.opennms.tmforum.tmf656.api.test;
 
 import javax.inject.Inject;
 import javax.ws.rs.client.Entity;
