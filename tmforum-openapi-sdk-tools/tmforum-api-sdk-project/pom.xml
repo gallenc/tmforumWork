@@ -2,7 +2,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.opennms.tmforum.swagger</groupId>
-    <artifactId>tmf656-api-sdk-project</artifactId>
+    <artifactId>tmforum-api-sdk-project</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -80,19 +80,7 @@
                 <module>swagger-codegen-jaxrs-patch</module>
                 <module>simulator-dao-base</module>
                 <module>simulator-service-base</module>
-                <module>generate-code</module>
-                <module>simulator-dao</module>
-                <module>simulator-service</module>
-                <module>simulator-war</module>
-            </modules>
-        </profile>
-        <!-- if you have already generated the code then use mvn clean install -P no-gen-code to speed up the build -->
-        <profile>
-            <id>no-gen-code</id>
-            <modules>
-                <module>simulator-dao</module>
-                <module>simulator-service</module>
-                <module>simulator-war</module>
+                <module>tmf656-api-sdk-project</module>
             </modules>
         </profile>
     </profiles>
