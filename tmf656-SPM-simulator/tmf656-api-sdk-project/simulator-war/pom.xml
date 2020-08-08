@@ -273,6 +273,7 @@
             <scope>compile</scope>
         </dependency>
         
+
         <!-- base project dependencies -->
         <dependency>
             <groupId>org.opennms.tmforum.swagger</groupId>
@@ -280,6 +281,15 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.opennms.tmforum.swagger</groupId>
+            <artifactId>simulator-service-base</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- dependencies -->
 
         <dependency>
             <groupId>io.swagger</groupId>
