@@ -1,4 +1,4 @@
-package org.opennms.tmforum.tmf656.service;
+package org.opennms.tmforum.simulator.base.service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -36,7 +36,7 @@
     <context:annotation-config />
 
     <!-- this just activates and destroys a a bean which provides some debug information -->
-    <bean id="helloWorld2" class="org.opennms.tmforum.tmf656.service.HelloWorld" init-method="init" destroy-method="destroy">
+    <bean id="helloWorld2" class="org.opennms.tmforum.simulator.base.service.HelloWorld" init-method="init" destroy-method="destroy">
         <property name="message" value="mvc-dispatcher-servlet" />
     </bean>
 

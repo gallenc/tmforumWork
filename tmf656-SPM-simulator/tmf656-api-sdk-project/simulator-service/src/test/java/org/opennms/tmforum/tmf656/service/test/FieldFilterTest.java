@@ -6,8 +6,8 @@ import java.io.Writer;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opennms.tmforum.simulator.base.service.FieldFilter;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.ServiceProblem;
-import org.opennms.tmforum.tmf656.service.FieldFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

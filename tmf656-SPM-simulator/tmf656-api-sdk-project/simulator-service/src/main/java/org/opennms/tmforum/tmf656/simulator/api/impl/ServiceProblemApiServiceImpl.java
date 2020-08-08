@@ -1,12 +1,12 @@
 package org.opennms.tmforum.tmf656.simulator.api.impl;
 
+import org.opennms.tmforum.simulator.base.service.FieldFilter;
 import org.opennms.tmforum.swagger.tmf656.swagger.api.*;
 import org.opennms.tmforum.swagger.tmf656.swagger.model.*;
 
 import org.opennms.tmforum.swagger.tmf656.swagger.model.Error;
 import org.opennms.tmforum.tmf650.hub.impl.GenericHubApiServiceImpl;
 import org.opennms.tmforum.tmf650.hub.impl.NotificationDispatcher;
-import org.opennms.tmforum.tmf656.service.FieldFilter;
 import org.opennms.tmforum.tmf656.simulator.dao.ServiceProblemRepository;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemCreateMapper;
 import org.opennms.tmforum.tmf656.simulator.mapper.ServiceProblemMapper;

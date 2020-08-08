@@ -14,9 +14,9 @@
         ">
 
     <!-- Scans for components that will be auto-registered as Spring beans -->
-    <context:component-scan base-package="org.opennms.tmforum.tmf656.simulator.dao" />
+    <context:component-scan base-package="org.opennms.tmforum.simulator.base.dao,org.opennms.tmforum.tmf656.simulator.dao" />
     <!-- Scans for repositories that will be auto-registered -->
-    <jpa:repositories base-package="org.opennms.tmforum.tmf656.simulator.dao" />
+    <jpa:repositories base-package="org.opennms.tmforum.simulator.base.dao,org.opennms.tmforum.tmf656.simulator.dao" />
     <!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
     <context:annotation-config />
 
@@ -43,8 +43,8 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" p:dataSource-ref="dataSource">
         <property name="packagesToScan">
             <array>
+                <value>org.opennms.tmforum.simulator.base.model</value>
                 <value>org.opennms.tmforum.tmf656.simulator.model</value>
-<!--                <value>org.opennms.tmforum.swagger.tmf656.swagger.model</value> -->
             </array>
         </property>
         <property name="jpaVendorAdapter">

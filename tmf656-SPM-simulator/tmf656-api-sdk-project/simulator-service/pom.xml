@@ -122,6 +122,14 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
+        
+        <!-- base project dependencies -->
+        <dependency>
+            <groupId>org.opennms.tmforum.swagger</groupId>
+            <artifactId>simulator-dao-base</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>io.swagger</groupId>
