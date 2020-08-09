@@ -1,6 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -87,13 +88,6 @@
         </plugins>
     </build>
     <dependencies>
-        <!-- <dependency> -->
-        <!-- <groupId>${groupId}</groupId> -->
-        <!-- <artifactId>${tmfSpecPackageName}-generate-jaxrs-server-spec</artifactId> -->
-        <!-- <classifier>api</classifier> -->
-        <!-- <version>${symbol_dollar}{project.version}</version> -->
-        <!-- <scope>provided</scope> -->
-        <!-- </dependency> -->
 
         <dependency>
             <groupId>${groupId}</groupId>
@@ -101,13 +95,6 @@
             <version>${symbol_dollar}{project.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- <dependency> -->
-        <!-- <groupId>${groupId}</groupId> -->
-        <!-- <artifactId>${tmfSpecPackageName}-simulator-dao</artifactId> -->
-        <!-- <version>${symbol_dollar}{project.version}</version> -->
-        <!-- <scope>provided</scope> -->
-        <!-- </dependency> -->
 
         <dependency>
             <groupId>io.swagger</groupId>
@@ -275,19 +262,6 @@
             <artifactId>jackson-core</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <!-- <dependency> -->
-        <!-- <groupId>com.fasterxml.jackson.datatype</groupId> -->
-        <!-- <artifactId>jackson-datatype-joda</artifactId> -->
-        <!-- <scope>compile</scope> -->
-        <!-- </dependency> -->
-
-        <!-- <dependency> -->
-        <!-- <groupId>com.fasterxml.jackson.module</groupId> -->
-        <!-- <artifactId>jackson-modules-java8</artifactId> -->
-        <!-- <version>${symbol_dollar}{jackson-version}</version> -->
-        <!-- <scope>compile</scope> -->
-        <!-- </dependency> -->
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>

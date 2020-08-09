@@ -26,20 +26,6 @@
     </requiredProperties>
     <fileSets>
         <fileSet filtered="true" encoding="UTF-8">
-            <directory>generate-code/swagger-codegen-jaxrs-patch</directory>
-            <includes>
-                <include>pom.xml</include>
-            </includes>
-        </fileSet>
-        <fileSet encoding="UTF-8">
-            <directory>generate-code/swagger-codegen-jaxrs-patch</directory>
-            <includes>
-                <include>**/*.txt</include>
-                <include>**/*.java</include>
-                <include>**/*.md</include>
-            </includes>
-        </fileSet>
-        <fileSet filtered="true" encoding="UTF-8">
             <directory>generate-code/specification</directory>
             <includes>
                 <include>pom.xml</include>

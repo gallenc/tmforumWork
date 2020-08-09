@@ -1,6 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -14,8 +15,6 @@
     <groupId>org.opennms.tmforum</groupId>
     <artifactId>${tmfSpecPackageName}-simulator-war</artifactId>
     <packaging>war</packaging>
-
-
 
     <properties>
 
@@ -275,6 +274,24 @@
             <version>${symbol_dollar}{project.version}</version>
             <scope>compile</scope>
         </dependency>
+        
+        
+        <!-- base project dependencies -->
+        <dependency>
+            <groupId>org.opennms.tmforum.swagger</groupId>
+            <artifactId>simulator-dao-base</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.opennms.tmforum.swagger</groupId>
+            <artifactId>simulator-service-base</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- dependencies -->
 
         <dependency>
             <groupId>io.swagger</groupId>
