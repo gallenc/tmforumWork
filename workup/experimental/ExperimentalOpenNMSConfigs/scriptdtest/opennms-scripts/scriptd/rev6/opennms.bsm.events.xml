@@ -71,6 +71,7 @@
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
             &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
@@ -80,15 +81,17 @@
             %parm[spmID]%&lt;/a> State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%</logmsg>
         <severity>Indeterminate</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
-            <update-field field-name="logmsg" update-on-reduction="false" />
-            <update-field field-name="event-label" update-on-reduction="false" />
-            <update-field field-name="descr" update-on-reduction="false" />
+            <update-field field-name="severity" update-on-reduction="true"/>
+            <update-field field-name="logmsg" update-on-reduction="true" />
+            <update-field field-name="event-label" update-on-reduction="true" />
+            <update-field field-name="descr" update-on-reduction="true" />
             <update-field field-name="operinstruct" update-on-reduction="true" />
         </alarm-data>
     </event>
 
 
     <!-- Events From External Service Problems -->
+    <!-- service problem severity (OnmsSeverity) Indeterminate Cleared Normal Warning Minor Major Critical -->
     <!-- service problem state can be Submitted, Rejected, Acknowledged, Held, Pending, Resolved, Closed, Cancelled; -->
     <!-- spm priority 1..10 -->
 
@@ -99,6 +102,7 @@
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
             &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
@@ -109,6 +113,7 @@
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
+            <update-field field-name="severity" update-on-reduction="true"/>
             <update-field field-name="logmsg" update-on-reduction="true" />
             <update-field field-name="event-label" update-on-reduction="true" />
             <update-field field-name="descr" update-on-reduction="true" />
@@ -120,9 +125,10 @@
         <uei>uei.opennms.org/tmf656spm/serviceProblemAttributeValueChange</uei>
         <event-label>External Service Problem Attribute Value Change</event-label>
         <descr>
-            &lt;p>External Service Problem Value Change %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
+            &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
             &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
@@ -133,6 +139,7 @@
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
+            <update-field field-name="severity" update-on-reduction="true"/>
             <update-field field-name="logmsg" update-on-reduction="true" />
             <update-field field-name="event-label" update-on-reduction="true" />
             <update-field field-name="descr" update-on-reduction="true" />
@@ -147,16 +154,18 @@
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
             &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> State Change State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%
+            %parm[spmID]%&lt;/a> State Change State=%parm[spmState]% spmStatusChangeReason=%parm[spmStatusChangeReason]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
+            <update-field field-name="severity" update-on-reduction="true"/>
             <update-field field-name="logmsg" update-on-reduction="true" />
             <update-field field-name="event-label" update-on-reduction="true" />
             <update-field field-name="descr" update-on-reduction="true" />
@@ -171,6 +180,7 @@
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
             &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
@@ -181,6 +191,7 @@
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
+            <update-field field-name="severity" update-on-reduction="true"/>
             <update-field field-name="logmsg" update-on-reduction="true" />
             <update-field field-name="event-label" update-on-reduction="true" />
             <update-field field-name="descr" update-on-reduction="true" />
