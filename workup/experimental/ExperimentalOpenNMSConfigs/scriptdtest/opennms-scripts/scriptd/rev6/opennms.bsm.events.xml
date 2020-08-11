@@ -76,7 +76,8 @@
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">%parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > Related Service Problem ID = %parm[spmID]%&lt;/a></logmsg>
+        <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%</logmsg>
         <severity>Indeterminate</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
             <update-field field-name="logmsg" update-on-reduction="false" />
@@ -103,7 +104,7 @@
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+        <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
             %parm[spmID]%&lt;/a> State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
@@ -127,8 +128,8 @@
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem Value Change &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%
+        <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> Value Change State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -151,8 +152,8 @@
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem State Change &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%
+        <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> State Change State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -175,8 +176,8 @@
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem Information Required &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]% 
+        <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> Information Required State=%parm[spmState]% Priority=%parm[spmPriority]% Reason=%parm[spmReason]% 
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
