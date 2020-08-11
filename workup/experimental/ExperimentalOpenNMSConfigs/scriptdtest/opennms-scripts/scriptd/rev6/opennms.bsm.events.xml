@@ -67,9 +67,14 @@
     <event>
         <uei>uei.opennms.org/tmf656spm/serviceProblemReply</uei>
         <event-label>Business Service Monitoring: Service Problem Created Reply</event-label>
-        <descr>&lt;p>Business Service Monitoring: Service Problem Created Reply spmID= %parm[spmID]% &lt;/p>
+        <descr>
+            &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+            &lt;p> spmState=%param[spmState]% &lt;/p>
+            &lt;p> spmPriority=%param[spmPriority]% &lt;/p>
+            &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
+            &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">%parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > Related Service Problem ID = %parm[spmID]%&lt;/a></logmsg>
         <severity>Indeterminate</severity>
@@ -87,14 +92,17 @@
     <event>
         <uei>uei.opennms.org/tmf656spm/serviceProblem</uei>
         <event-label>External Service Problem Created</event-label>
-        <descr>&lt;p>External Service Problem &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+        <descr>
+            &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+            &lt;p> spmState=%param[spmState]% &lt;/p>
+            &lt;p> spmPriority=%param[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a>
+        <logmsg dest="logndisplay">External Service Problem &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> State=%param[spmState]% Priority=%param[spmPriority]% Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -108,14 +116,17 @@
     <event>
         <uei>uei.opennms.org/tmf656spm/serviceProblemAttributeValueChange</uei>
         <event-label>External Service Problem Attribute Value Change</event-label>
-        <descr>&lt;p>External Service Problem &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+        <descr>
+            &lt;p>External Service Problem Value Change %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+            &lt;p> spmState=%param[spmState]% &lt;/p>
+            &lt;p> spmPriority=%param[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a>
+        <logmsg dest="logndisplay">External Service Problem Value Change &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> State=%param[spmState]% Priority=%param[spmPriority]% Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -129,14 +140,17 @@
     <event>
         <uei>uei.opennms.org/tmf656spm/serviceProblemStateChange</uei>
         <event-label>External Service Problem State Change</event-label>
-        <descr>&lt;p>External Service Problem &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+        <descr>
+            &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+            &lt;p> spmState=%param[spmState]% &lt;/p>
+            &lt;p> spmPriority=%param[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a>
+        <logmsg dest="logndisplay">External Service Problem State Change &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> State=%param[spmState]% Priority=%param[spmPriority]% Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -150,14 +164,17 @@
     <event>
         <uei>uei.opennms.org/tmf656spm/serviceProblemInformationRequired</uei>
         <event-label>External Service Problem Information Required</event-label>
-        <descr>&lt;p>External Service Problem &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+        <descr>
+            &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
+            &lt;p> spmState=%param[spmState]% &lt;/p>
+            &lt;p> spmPriority=%param[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
-        <logmsg dest="logndisplay">External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a>
+        <logmsg dest="logndisplay">External Service Problem Information Required &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
+            %parm[spmID]%&lt;/a> State=%param[spmState]% Priority=%param[spmPriority]% Reason=%parm[spmReason]% 
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
