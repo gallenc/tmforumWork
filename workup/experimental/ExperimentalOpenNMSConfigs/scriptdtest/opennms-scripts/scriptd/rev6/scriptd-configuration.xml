@@ -43,7 +43,7 @@
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
-                "/opennms/tmf-api/serviceProblemManagement/v3//listener/serviceProblemStateChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemStateChangeNotification",
                 "/generic-listener/notification"
                 };
 

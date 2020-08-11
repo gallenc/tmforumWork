@@ -29,6 +29,9 @@ import org.slf4j.LoggerFactory;
 
 public class ScriptedEventSPMForwarderTest {
     static final Logger log = LoggerFactory.getLogger(ApacheHttpAsyncClientTest.class);
+    
+    static final String BASE_TEST_URL = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war";
+    //static final String BASE_TEST_URL = "http://localhost:8080/tmf656-simulator-war";
 
     /* Standard OpenNMS BSM events */
     String SERVICE_PROBLEM = "uei.opennms.org/bsm/serviceProblem";
@@ -117,7 +120,7 @@ public class ScriptedEventSPMForwarderTest {
         spmForwarder.setThisOriginatingSystem("testOpenNMS");
         
         /* urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
-        List<UrlCredential> urlCredentials = Arrays.asList(new UrlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password" ));
+        List<UrlCredential> urlCredentials = Arrays.asList(new UrlCredential(BASE_TEST_URL, "username", "password",null ));
         spmForwarder.setUrlCredentials(urlCredentials);
 
         spmForwarder.setScriptedClient(scriptedClient);
@@ -132,7 +135,7 @@ public class ScriptedEventSPMForwarderTest {
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
-                "/opennms/tmf-api/serviceProblemManagement/v3//listener/serviceProblemStateChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemStateChangeNotification",
                 "/generic-listener/notification"
                 };
 
@@ -162,7 +165,7 @@ public class ScriptedEventSPMForwarderTest {
     //@Test // uncomment if testing server only
     public void testEventServerSpm() throws BSFException {
         log.debug("run testEventServerSpm test");
-        
+
         log.debug("server started waiting 30 secs for for requests  ");
         // Pause for 30 seconds
         try {
@@ -173,6 +176,39 @@ public class ScriptedEventSPMForwarderTest {
         
         log.debug("end run testEventServerSpm test");
     }
+    
+    @Test
+    public void testRegisterAndUnregisterforNotifications() {
+        log.debug("run RegisterAndUnregisterforNotifications() test");
+        
+        /* urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
+        List<UrlCredential> notificationCredentials = Arrays.asList(new UrlCredential(BASE_TEST_URL, "username", "password",null ));
+        UrlCredential callbackCredential = new UrlCredential(BASE_TEST_URL+"/generic-listener/notification", "username", "password",null );
+
+        log.debug("registering for notifications  ");
+        spmForwarder.startRegisterNotifications(notificationCredentials, callbackCredential);
+        
+        log.debug("server started waiting 30 secs for for requests  ");
+        // Pause for 20 seconds
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            log.debug("sleep interupted");
+        }
+        log.debug("test stopping notifications ");
+        spmForwarder.stopRegisterNotifications();
+        
+        // Pause for 10 seconds
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            log.debug("sleep interupted");
+        }
+        
+        log.debug("end run RegisterAndUnregisterforNotifications() test");
+    }
+    
+    
 
     @Test
     public void testEventHasHrefExistingSpm() {
@@ -206,7 +242,7 @@ public class ScriptedEventSPMForwarderTest {
         eventBuilder.addParam("spmID", "1");
         
         /* this will add the service problem href to the alarm */
-        eventBuilder.addParam("spmHREF", "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/1");
+        eventBuilder.addParam("spmHREF", BASE_TEST_URL+"/tmf-api/serviceProblemManagement/v3/serviceProblem/1");
 
         event = eventBuilder.getEvent();
         log.debug("Sending event:" +event.toString());
@@ -228,6 +264,8 @@ public class ScriptedEventSPMForwarderTest {
 
         log.debug("end of ForExistingSpm()");
     }
+    
+    
     
     @Test
     public void testEventHasNoHrefNewSpm() {

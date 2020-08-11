@@ -17,7 +17,7 @@
       spmForwarder.setThisOriginatingSystem("testOpenNMS");
       
       /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
-      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password" );
+      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password", null );
 
       List urlCredentials = new ArrayList();
       urlCredentials.add(url1);
@@ -40,7 +40,7 @@
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
-                "/opennms/tmf-api/serviceProblemManagement/v3//listener/serviceProblemStateChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemStateChangeNotification",
                 "/generic-listener/notification"
                 };
       String keyStoreFileLocation = null;
@@ -56,6 +56,18 @@
       
       log.debug("start script starting spm notification listening http server");
       scriptedHttpServer.start();
+      
+      /* set urls and credentials for spm hosts sending notifications UrlCredential(String url, String username, String password, String query) */
+      notificationCredential1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password", null );
+
+      List notificationCredentials = new ArrayList();
+      notificationCredentials.add(notificationCredential1);
+      
+      /* set urls and credentials for notification call back UrlCredential(String url, String username, String password, String query) */
+      callbackCredential = urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null );
+
+      log.debug("start script registering to receive notifications");
+      spmForwarder.startRegisterNotifications(notificationCredentials, callbackCredential);
 
       log.debug("end of start script");
 

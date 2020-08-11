@@ -7,6 +7,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,7 +25,7 @@ import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Logmsg;
 
-urlCredential(String url, String username, String password) {
+urlCredential(String url, String username, String password, String query) {
     public String getUrl() {
         return url;
     }
@@ -27,6 +34,10 @@ urlCredential(String url, String username, String password) {
     }
     public String getPassword() {
         return password;
+    }
+    
+    public String getQuery() {
+        return query;
     }
 
     /* returns this beanshell declaration so that its methods can be invoked */
@@ -59,7 +70,14 @@ scriptedEventSPMForwarder() {
     
     m_urlCredentials = null;
     
+    m_notificationCredentials = null;
+    
     private String m_thisOriginatingSystem="opennms-notset";
+
+    /* URL, Registered Listener */
+    m_registered_listeners = Collections.synchronizedMap(new HashMap());
+
+    m_scheduledExecutorService = null;
 
     public void setUrlCredentials(List urlCredentials) {
         if (urlCredentials == null || urlCredentials.size() == 0) {
@@ -279,6 +297,7 @@ scriptedEventSPMForwarder() {
         String requestMethod = (String) message.get("requestMethod");
         String requestHost = (String) message.get("requestHost");
         String requestPath = (String) message.get("requestPath");
+        String requestRawUrl = (String) message.get("requestRawUrl");
         String status = (message.get("status")==null) ? null : message.get("status").toString();
         JSONObject jsonobject = (JSONObject) message.get("jsonobject");
         JSONArray jsonarray = (JSONArray) message.get("jsonarray");
@@ -294,8 +313,20 @@ scriptedEventSPMForwarder() {
             if ("200".equals(status) || "201".equals(status) || "204".equals(status)) {
                 /* find out what message replied to */
 
+                /* check for reply to register for events */
+                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/hub")
+                        && "POST".equals(requestMethod) && jsonobject != null) {
+                    
+                    log.debug("successfully registered for messages: " + requestPath + " reply:" + jsonobject.toString() + " requestRawUrl="+requestRawUrl);
+                    String id = (String) jsonobject.get("id");
+                    String url = requestRawUrl.substring(0,
+                            requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
+                    log.debug("registering listener for : url="+ url + " id" + id);
+                    m_registered_listeners.put(url, id);
+                }
+
                 /* check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
-                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
+                else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
                         && "POST".equals(requestMethod) && jsonobject != null) {
 
                     String uei = SERVICE_PROBLEM_REPLY_UEI;
@@ -411,8 +442,101 @@ scriptedEventSPMForwarder() {
         }
 
     }
-
     
+    public void startRegisterNotifications(notificationCredentials, callbackCredential) {
+        log.debug("starting notification registration process");
+        if (notificationCredentials == null || notificationCredentials.size() == 0 || callbackCredential == null) {
+            log.error("UrlCredential[] notificationCredentials is null or empty. Cannot register for notifications");
+            return;
+        }
+        if (callbackCredential == null || callbackCredential.getUrl() == null) {
+            log.error("callback credential is null or callback url is null. Cannot register for notifications");
+            return;
+        }
+        try {
+            URL u = new URL(callbackCredential.getUrl());
+        } catch (MalformedURLException e) {
+            log.error("callbackCredential.getUrl() malformed url=" + callbackCredential.getUrl());
+            return;
+        }
+        for (notificationCredential : notificationCredentials) {
+            String url = notificationCredential.getUrl();
+            try {
+                URL u = new URL(url);
+            } catch (MalformedURLException e) {
+                log.error("notificationCredential[] notificationCredential malformed url=" + url);
+                return;
+            }
+        }
+        
+        m_notificationCredentials = notificationCredentials;
+
+        /* run as daemon so that we definitely exit */
+        ThreadFactory threadFactory = new ThreadFactory() {
+            public Thread newThread(Runnable r) {
+                Thread t = Executors.defaultThreadFactory().newThread(r);
+                t.setDaemon(true);
+                return t;
+            }
+        };
+        
+        m_scheduledExecutorService = Executors.newScheduledThreadPool(1, threadFactory);
+                
+        /* using runnable because of beanshell */
+        Runnable ttask = new Runnable() {
+
+            public void run() {
+                log.debug("credentialTimer trying to register for notifications m_registered_listeners.size()="+m_registered_listeners.size()
+                    +" m_notificationCredentials.size()="+m_registered_listeners.size());
+                if(m_registered_listeners.size()==m_notificationCredentials.size() ) {
+                    log.debug("all notifications registered. Ending timer");
+                    m_scheduledExecutorService.shutdown();;
+                }
+                    
+                for (UrlCredential urlCredential : m_notificationCredentials) {
+                    String url = urlCredential.getUrl();
+                    String query = urlCredential.getQuery();
+                    if (!m_registered_listeners.containsKey(url)) {
+                        log.debug("trying to register for notification: server url="+url+ " callbackUrl="+ callbackCredential.getUrl()
+                                + " query="+query);
+                        registerForNotifications(urlCredential, callbackCredential, query);
+                    }
+                }
+            }
+        };
+
+        /* run every 30 seconds until all urls registered */
+        m_scheduledExecutorService.scheduleAtFixedRate(ttask, 0, 30, TimeUnit.SECONDS); 
+
+    }
+
+    public void stopRegisterNotifications() {
+        log.debug("stopping notification registration process");
+        if (m_scheduledExecutorService != null)
+            m_scheduledExecutorService.shutdownNow();
+        for (urlCredential : m_notificationCredentials) {
+            url = urlCredential.getUrl();
+            id = m_registered_listeners.get(url);
+            if (id != null) {
+                log.debug("unregistering for notification: server url="+url+ " registration id="+id);
+                unRegisterForNotifications(urlCredential, id);
+            }
+        }
+        m_registered_listeners.clear();
+    }
+
+    private void unRegisterForNotifications(urlCredential, String id) {
+        m_scriptedClient.deleteRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub"+"/" + id, urlCredential.getUsername(),
+                urlCredential.getPassword());
+    }
+
+    private void registerForNotifications(urlCredential, callback, String query) {
+        JSONObject hubRequest = new JSONObject();
+        hubRequest.put("callback", callback.getUrl());
+        hubRequest.put("query", query);
+        m_scriptedClient.postRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub", hubRequest.toString(),
+                urlCredential.getUsername(), urlCredential.getPassword());
+    }
         
     /* returns this beanshell declaration so that its methods can be invoked */
     return this;
