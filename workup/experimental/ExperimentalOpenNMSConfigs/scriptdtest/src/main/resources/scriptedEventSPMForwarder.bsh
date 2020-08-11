@@ -323,20 +323,21 @@ scriptedEventSPMForwarder() {
         } else if ("httpServer".equals(messageSource)) {
 
             log.debug("Http server received message: " + message.toString());
-            String spmEventType = null;
-            JSONObject spmServiceProblem = null;
-            String spmServiceProblemId = null;
-            String spmOriginatingSystem = null;
-            String spmStatus = null;
-            String spmPriority = null;
+            /* Note removing object declaration for beanshell */
+            spmEventType = null;
+            spmServiceProblem = null;
+            spmServiceProblemId = null;
+            spmOriginatingSystem = null;
+            spmStatus = null;
+            spmPriority = null;
             if (jsonobject != null) {
                 spmEventType = (String) jsonobject.get("eventType");
                 JSONObject spmEvent = (JSONObject) jsonobject.get("event");
                 spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
                 spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
                 spmOriginatingSystem = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("originatingSystem");
-                spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("spmStatus");
-                spmPriority = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("priority");
+                spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("status");
+                spmPriority = (spmServiceProblem == null) ? null : (Long) spmServiceProblem.get("priority");
             }
             if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
                 log.debug("cannot recognise message as SPM event."

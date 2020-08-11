@@ -146,7 +146,8 @@ public class TestRunBshSpm1Script {
 
     }
     
-    // uncomment if you just want to run a server test @Test
+    // uncomment if you just want to run a server test 
+    // @Test
     public void testEventServerSpm() throws BSFException {
         log.debug("run testEventServerSpm test");
         
