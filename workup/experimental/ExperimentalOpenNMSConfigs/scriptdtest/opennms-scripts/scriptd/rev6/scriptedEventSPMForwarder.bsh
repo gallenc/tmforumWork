@@ -127,6 +127,7 @@ scriptedEventSPMForwarder() {
         String originatingSystem = (String) serviceProblem.get("originatingSystem");
         String status = (String) serviceProblem.get("status");
         String priority = ( serviceProblem.get("priority")==null )? null : serviceProblem.get("priority").toString();
+        String statusChangeReason = ( serviceProblem.get("statusChangeReason")==null )? null : serviceProblem.get("statusChangeReason").toString();
 
         EventBuilder eventBuilder = new EventBuilder(uei, source);
         
@@ -149,6 +150,8 @@ scriptedEventSPMForwarder() {
 
         }
 
+        eventBuilder.setSeverity("Warning");
+
         /* this will add the initial correlation id to the event */
         eventBuilder.addParam("spmCorrelationId", correlationId);
         /* this will add the service problem id to the event */
@@ -161,6 +164,8 @@ scriptedEventSPMForwarder() {
         eventBuilder.addParam("spmOriginatingSystem", originatingSystem);
         /* this will add the service problem status to the event */
         eventBuilder.addParam("spmStatus", status);
+        /* this will add the service problem status change reason to the event */
+        eventBuilder.addParam("spmStatusChangeReason", statusChangeReason);
         /* this will add the service problem priority to the event */
         eventBuilder.addParam("spmPriority", priority);
 
