@@ -28,9 +28,9 @@ public class ApacheHttpAsyncClientTestOLD {
     
     final String TEST_PASSWORD = "password";
 
-    final String baseHTTPSUrl = "https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-spm-simulator-war";
+    final String baseHTTPSUrl = "https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-simulator-war";
 
-    final String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
+    final String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war";
 
     ScriptedApacheHttpAsyncClient scriptedClient = new ScriptedApacheHttpAsyncClient();
     

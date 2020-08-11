@@ -72,9 +72,9 @@ public class HTTPAsyncClientSimpleTest {
     // In the following example – we configure HttpAsyncClient to accept all
     // certificates:
 
-    final String baseHTTPSUrl = "https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-spm-simulator-war";
+    final String baseHTTPSUrl = "https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-simulator-war";
 
-    final String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
+    final String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war";
 
     final int BOUND = 20;
 

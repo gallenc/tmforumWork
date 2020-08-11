@@ -20,7 +20,7 @@
       spmForwarder.setThisOriginatingSystem("testOpenNMS");
       
       /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
-      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
+      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password" );
 
       List urlCredentials = new ArrayList();
       urlCredentials.add(url1);

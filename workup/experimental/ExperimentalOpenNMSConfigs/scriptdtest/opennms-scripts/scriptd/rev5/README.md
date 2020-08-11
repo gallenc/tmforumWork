@@ -20,7 +20,7 @@ Both http and https URLs can be used.
 
 ```
 /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
-      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
+      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password" );
 ```
 NOTE BUG - this does change the URL but NOT the username and password.
 Currently the password / username for the spm server are hard coded in scriptedApacheHttpAsyncClient.bsh at line 240. Change them here

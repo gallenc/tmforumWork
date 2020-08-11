@@ -117,7 +117,7 @@ public class ScriptedEventSPMForwarderTest {
         spmForwarder.setThisOriginatingSystem("testOpenNMS");
         
         /* urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
-        List<UrlCredential> urlCredentials = Arrays.asList(new UrlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" ));
+        List<UrlCredential> urlCredentials = Arrays.asList(new UrlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password" ));
         spmForwarder.setUrlCredentials(urlCredentials);
 
         spmForwarder.setScriptedClient(scriptedClient);
@@ -206,7 +206,7 @@ public class ScriptedEventSPMForwarderTest {
         eventBuilder.addParam("spmID", "1");
         
         /* this will add the service problem href to the alarm */
-        eventBuilder.addParam("spmHREF", "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/1");
+        eventBuilder.addParam("spmHREF", "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/1");
 
         event = eventBuilder.getEvent();
         log.debug("Sending event:" +event.toString());

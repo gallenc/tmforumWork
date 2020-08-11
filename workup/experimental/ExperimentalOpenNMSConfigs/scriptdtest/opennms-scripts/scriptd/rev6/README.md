@@ -22,7 +22,7 @@ Both http and https URLs can be used.
 
 ```
 /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
-      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war", "username", "password" );
+      url1= urlCredential("http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war", "username", "password" );
 ```
 For the reply events, you need to set up the incoming HTTP server.
 The port is set by changing the following line. 

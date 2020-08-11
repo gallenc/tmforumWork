@@ -40,7 +40,7 @@
       log.debug("event:"+event);
       
       
-      String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
+      String baseHTTPUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war";
       scriptedClient.getRequest(baseHTTPUrl  + "/tmf-api/serviceProblemManagement/v3/serviceProblem");
 
       log.debug("end of on event script");

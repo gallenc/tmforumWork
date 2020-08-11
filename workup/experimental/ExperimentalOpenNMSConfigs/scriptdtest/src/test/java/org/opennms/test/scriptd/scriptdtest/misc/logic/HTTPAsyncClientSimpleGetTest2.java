@@ -89,7 +89,7 @@ public class HTTPAsyncClientSimpleGetTest2 {
             client.start();
             
             /* get request */
-            HttpGet request = new HttpGet("https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
+            HttpGet request = new HttpGet("https://tmf656-test1.centralus.cloudapp.azure.com:8443/tmf656-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem/2");
             Future<HttpResponse> future = client.execute(request, null);
             HttpResponse response = future.get();
 

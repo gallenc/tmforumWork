@@ -12,7 +12,7 @@ import org.opennms.netmgt.xml.event.Value;
 
 scriptedEventSPMForwarder() {
 
-    String[] baseUrls = { "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war" };
+    String[] baseUrls = { "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war" };
 
     m_scriptedClient = null;
     

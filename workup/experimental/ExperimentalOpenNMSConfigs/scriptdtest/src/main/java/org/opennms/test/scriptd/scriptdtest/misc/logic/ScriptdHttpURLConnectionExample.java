@@ -28,7 +28,7 @@ import bsh.util.BeanShellBSFEngine;
 // https://wiki.opennms.org/wiki/InsEventProxy
 // http://192.168.92.131:8980/opennms/event/list
 // https://beanshell.github.io/manual/bshmanual.html#Scripted_Methods
-// http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/swaggerUI
+// http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war/swaggerUI
 
 //<?xml version="1.0"?>
 
@@ -46,7 +46,7 @@ public class ScriptdHttpURLConnectionExample {
 
     
     
-    String baseUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war";
+    String baseUrl = "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war";
     String username= "admin";
     String password= "admin";
     
@@ -181,7 +181,7 @@ public class ScriptdHttpURLConnectionExample {
             
             JSONObject serviceProblemCreate = (JSONObject) parser.parse(basicServiceProblemTemplate);
             
-            // curl -X POST "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem" -H  "accept: application/json;charset=utf-8"
+            // curl -X POST "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem" -H  "accept: application/json;charset=utf-8"
             url = new URL(baseUrl+"/tmf-api/serviceProblemManagement/v3/serviceProblem/");
 
             HttpURLConnection con;
@@ -252,7 +252,7 @@ public class ScriptdHttpURLConnectionExample {
         URL url;
         try {
             
-            // curl -X GET "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-spm-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem" -H  "accept: application/json;charset=utf-8"
+            // curl -X GET "http://tmf656-test1.centralus.cloudapp.azure.com:8080/tmf656-simulator-war/tmf-api/serviceProblemManagement/v3/serviceProblem" -H  "accept: application/json;charset=utf-8"
             url = new URL(baseUrl+"/tmf-api/serviceProblemManagement/v3/serviceProblem/"+id.toString());
 
             HttpURLConnection con;
