@@ -55,7 +55,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     private ScriptedApacheHttpAsyncClient m_scriptedClient = null;
 
     private List<UrlCredential> m_urlCredentials = new ArrayList();
-    
+
     private List<UrlCredential> m_notificationCredentials = new ArrayList();
 
     private String m_thisOriginatingSystem = "opennms-notset";
@@ -64,7 +64,6 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     private Map<String, String> m_registered_listeners = Collections.synchronizedMap(new HashMap<String, String>());
 
     private ScheduledExecutorService m_scheduledExecutorService = null;
-
 
     public void setUrlCredentials(List<UrlCredential> urlCredentials) {
         if (urlCredentials == null || urlCredentials.size() == 0) {
@@ -92,8 +91,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         m_scriptedClient = scriptedClient;
     }
 
-    public JSONObject createMinimalServiceProblem(String originatingSystem, String category, String priority,
-            String description, String reason, String correlationId, String[] affectedServices) {
+    public JSONObject createMinimalServiceProblem(String originatingSystem, String category, String priority, String description, String reason,
+            String correlationId, String[] affectedServices) {
 
         JSONObject spm = new JSONObject();
         if (originatingSystem != null)
@@ -134,8 +133,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         String originatingSystem = (String) serviceProblem.get("originatingSystem");
         String status = (String) serviceProblem.get("status");
         String priority = (serviceProblem.get("priority") == null) ? null : serviceProblem.get("priority").toString();
-        String statusChangeReason = (serviceProblem.get("statusChangeReason") == null) ? null
-                : serviceProblem.get("statusChangeReason").toString();
+        String statusChangeReason = (serviceProblem.get("statusChangeReason") == null) ? null : serviceProblem.get("statusChangeReason").toString();
 
         EventBuilder eventBuilder = new EventBuilder(uei, source);
 
@@ -179,9 +177,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
         Event event = eventBuilder.getEvent();
 
-        log.debug("onmsEventFromServiceProblem id:" + id + " correlationId:" + correlationId + " href:" + href
-                + " source:" + source + " reason:" + reason + " originatingSystem:" + originatingSystem
-                + " affectedService:" + affectedService + " TO EVENT:" + event);
+        log.debug("onmsEventFromServiceProblem id:" + id + " correlationId:" + correlationId + " href:" + href + " source:" + source + " reason:" + reason
+                + " originatingSystem:" + originatingSystem + " affectedService:" + affectedService + " TO EVENT:" + event);
 
         return event;
     }
@@ -192,8 +189,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             updateServiceProblem(ievent);
 
         } else if (SERVICE_OPERATIONAL_STATUS_CHANGED.equals(ievent.getUei())) {
-            log.debug(
-                    "handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:" + node);
+            log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:" + node);
 
         } else if (SERVICE_PROBLEM_RESOLVED.equals(ievent.getUei())) {
             log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
@@ -218,21 +214,16 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             String uei = event.getUei();
             String businessServiceName = (event.getParm("businessServiceName") == null) ? "Undefined"
                     : event.getParm("businessServiceName").getValue().getContent();
-            String businessServiceId = (event.getParm("businessServiceId") == null) ? null
-                    : event.getParm("businessServiceId").getValue().getContent();
-            String rootCause = (event.getParm("rootCause") == null) ? null
-                    : event.getParm("rootCause").getValue().getContent();
+            String businessServiceId = (event.getParm("businessServiceId") == null) ? null : event.getParm("businessServiceId").getValue().getContent();
+            String rootCause = (event.getParm("rootCause") == null) ? null : event.getParm("rootCause").getValue().getContent();
 
             /* may be in events if created by an incoming message */
-            String spmHREF = (event.getParm("spmHREF") == null) ? null
-                    : event.getParm("spmHREF").getValue().getContent();
+            String spmHREF = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
             String spmID = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
             String spmOriginatingSystem = (event.getParm("spmOriginatingSystem") == null) ? null
                     : event.getParm("spmOriginatingSystem").getValue().getContent();
-            String spmStatus = (event.getParm("spmStatus") == null) ? null
-                    : event.getParm("spmStatus").getValue().getContent();
-            String spmPriority = (event.getParm("spmPriority") == null) ? null
-                    : event.getParm("spmPriority").getValue().getContent();
+            String spmStatus = (event.getParm("spmStatus") == null) ? null : event.getParm("spmStatus").getValue().getContent();
+            String spmPriority = (event.getParm("spmPriority") == null) ? null : event.getParm("spmPriority").getValue().getContent();
 
             /* only create new service problem if href not present */
             if (spmHREF == null) {
@@ -258,8 +249,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
                     try {
 
-                        JSONObject serviceProblem = createMinimalServiceProblem(originatingSystem, category, priority,
-                                description, reason, correlationId, affectedServices);
+                        JSONObject serviceProblem = createMinimalServiceProblem(originatingSystem, category, priority, description, reason, correlationId,
+                                affectedServices);
                         log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
                         String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
 
@@ -307,20 +298,19 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 /* find out what message replied to */
 
                 /* check for reply to register for events */
-                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/hub")
-                        && "POST".equals(requestMethod) && jsonobject != null) {
-                    
-                    log.debug("successfully registered for messages: " + requestPath + " reply:" + jsonobject.toString() + " requestRawUrl="+requestRawUrl);
+                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/hub") && "POST".equals(requestMethod)
+                        && jsonobject != null) {
+
+                    log.debug("successfully registered for messages: " + requestPath + " reply:" + jsonobject.toString() + " requestRawUrl=" + requestRawUrl);
                     String id = (String) jsonobject.get("id");
-                    String url = requestRawUrl.substring(0,
-                            requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
-                    log.debug("registering listener for : url="+ url + " id" + id);
+                    String url = requestRawUrl.substring(0, requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
+                    log.debug("registering listener for : url=" + url + " id" + id);
                     m_registered_listeners.put(url, id);
                 }
 
                 /* check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
-                else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
-                        && "POST".equals(requestMethod) && jsonobject != null) {
+                else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem") && "POST".equals(requestMethod)
+                        && jsonobject != null) {
 
                     String uei = SERVICE_PROBLEM_REPLY_UEI;
                     Event event = onmsEventFromServiceProblem(uei, jsonobject);
@@ -358,15 +348,13 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 JSONObject spmEvent = (JSONObject) jsonobject.get("event");
                 spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
                 spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
-                spmOriginatingSystem = (spmServiceProblem == null) ? null
-                        : (String) spmServiceProblem.get("originatingSystem");
+                spmOriginatingSystem = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("originatingSystem");
                 spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("status");
                 spmPriority = (spmServiceProblem == null) ? null : (Long) spmServiceProblem.get("priority");
             }
             if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
-                log.debug("cannot recognise message as SPM event." + " spmEventType: " + spmEventType
-                        + " spmServiceProblemId: " + spmServiceProblemId + " spmServiceProblem: " + spmServiceProblem
-                        + " Message: " + message.toString());
+                log.debug("cannot recognise message as SPM event." + " spmEventType: " + spmEventType + " spmServiceProblemId: " + spmServiceProblemId
+                        + " spmServiceProblem: " + spmServiceProblem + " Message: " + message.toString());
 
             } else {
 
@@ -377,9 +365,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 /* TMF SPM Service Problem event types */
                 case SERVICE_PROBLEM_CREATE_NOTIFICATION:
                     if (m_thisOriginatingSystem.equals(spmOriginatingSystem)) {
-                        log.debug(
-                                "not handling spm create notification which carries a create from our own originatingSystem="
-                                        + spmOriginatingSystem);
+                        log.debug("not handling spm create notification which carries a create from our own originatingSystem=" + spmOriginatingSystem);
                         break;
                     }
                     uei = SERVICE_PROBLEM_UEI;
@@ -432,14 +418,12 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
         } else {
             /* unknown message source */
-            log.debug("message received from unknown internal source:" + messageSource + " message: "
-                    + message.toString());
+            log.debug("message received from unknown internal source:" + messageSource + " message: " + message.toString());
         }
 
     }
 
-    public void startRegisterNotifications(List<UrlCredential> notificationCredentials,
-            UrlCredential callbackCredential) {
+    public void startRegisterNotifications(List<UrlCredential> notificationCredentials, UrlCredential callbackCredential) {
         log.debug("starting notification registration process");
         if (notificationCredentials == null || notificationCredentials.size() == 0 || callbackCredential == null) {
             log.error("UrlCredential[] notificationCredentials is null or empty. Cannot register for notifications");
@@ -464,7 +448,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 return;
             }
         }
-        
+
         m_notificationCredentials = notificationCredentials;
 
         /* run as daemon so that we definitely exit */
@@ -475,54 +459,71 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 return t;
             }
         };
-        
+
         m_scheduledExecutorService = Executors.newScheduledThreadPool(1, threadFactory);
-                
+
         /* using runnable because of beanshell */
         Runnable ttask = new Runnable() {
 
             public void run() {
-                log.debug("credentialTimer trying to register for notifications m_registered_listeners.size()="+m_registered_listeners.size()
-                    +" m_notificationCredentials.size()="+m_registered_listeners.size());
-                if(m_registered_listeners.size()==m_notificationCredentials.size() ) {
+                log.debug("credentialTimer trying to register for notifications m_registered_listeners.size()=" + m_registered_listeners.size()
+                        + " m_notificationCredentials.size()=" + m_notificationCredentials.size());
+                if (m_registered_listeners.size() >= m_notificationCredentials.size()) {
                     log.debug("all notifications registered. Ending timer");
-                    m_scheduledExecutorService.shutdown();;
-                }
-                    
-                for (UrlCredential urlCredential : m_notificationCredentials) {
-                    String url = urlCredential.getUrl();
-                    String query = urlCredential.getQuery();
-                    if (!m_registered_listeners.containsKey(url)) {
-                        log.debug("trying to register for notification: server url="+url+ " callbackUrl="+ callbackCredential.getUrl()
-                                + " query="+query);
-                        registerForNotifications(urlCredential, callbackCredential, query);
+                    m_scheduledExecutorService.shutdown();
+                    return;
+                } else try {
+                    log.debug("still unregisterd credentials. Trying registration");
+                    for (UrlCredential urlCredential : m_notificationCredentials) {
+                        String url = urlCredential.getUrl();
+                        String query = urlCredential.getQuery();
+                        if (!m_registered_listeners.containsKey(url)) {
+                            log.debug("trying to register for notification: server url=" + url + " callbackUrl=" + callbackCredential.getUrl() + " query="
+                                    + query);
+                            try {
+                                registerForNotifications(urlCredential, callbackCredential, query);
+                            } catch (Exception ex) {
+                                log.error("problem registering url=" + url + ", query=" + query + " for notifications", ex);
+                            }
+                        }
                     }
+                } catch (Exception ex) {
+                    log.error("problem registering for notifications", ex);
                 }
             }
         };
 
         /* run every 30 seconds until all urls registered */
-        m_scheduledExecutorService.scheduleAtFixedRate(ttask, 0, 30, TimeUnit.SECONDS); 
+        m_scheduledExecutorService.scheduleAtFixedRate(ttask, 0, 30, TimeUnit.SECONDS);
 
     }
 
     public void stopRegisterNotifications() {
-        log.debug("stopping notification registration process");
+        log.debug("stopping notification registration process for " + m_notificationCredentials.size() + " credentials");
         if (m_scheduledExecutorService != null)
             m_scheduledExecutorService.shutdownNow();
-        for (UrlCredential urlCredential : m_notificationCredentials) {
-            String url = urlCredential.getUrl();
-            String id = m_registered_listeners.get(url);
-            if (id != null) {
-                log.debug("unregistering for notification: server url="+url+ " registration id="+id);
-                unRegisterForNotifications(urlCredential, id);
+        try {
+            for (UrlCredential urlCredential : m_notificationCredentials) {
+                String url = urlCredential.getUrl();
+                String id = m_registered_listeners.get(url);
+                if (id != null) {
+                    log.debug("unregistering for notification: server url=" + url + " registration id=" + id);
+                    try {
+                        unRegisterForNotifications(urlCredential, id);
+                    } catch (Exception ex) {
+                        log.error("problem un-registering for notifications", ex);
+                    }
+                }
             }
+            m_registered_listeners.clear();
+        } catch (Exception ex) {
+            log.error("problem un-registering for notifications", ex);
         }
-        m_registered_listeners.clear();
+
     }
 
     private void unRegisterForNotifications(UrlCredential urlCredential, String id) {
-        m_scriptedClient.deleteRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub"+"/" + id, urlCredential.getUsername(),
+        m_scriptedClient.deleteRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub" + "/" + id, urlCredential.getUsername(),
                 urlCredential.getPassword());
     }
 
@@ -530,8 +531,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         JSONObject hubRequest = new JSONObject();
         hubRequest.put("callback", callback.getUrl());
         hubRequest.put("query", query);
-        m_scriptedClient.postRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub", hubRequest.toString(),
-                urlCredential.getUsername(), urlCredential.getPassword());
+        m_scriptedClient.postRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub", hubRequest.toString(), urlCredential.getUsername(),
+                urlCredential.getPassword());
     }
 
     /* returns this beanshell declaration so that its methods can be invoked */

@@ -487,20 +487,28 @@ scriptedEventSPMForwarder() {
 
             public void run() {
                 log.debug("credentialTimer trying to register for notifications m_registered_listeners.size()="+m_registered_listeners.size()
-                    +" m_notificationCredentials.size()="+m_registered_listeners.size());
-                if(m_registered_listeners.size()==m_notificationCredentials.size() ) {
+                    +" m_notificationCredentials.size()="+m_notificationCredentials.size());
+                if(m_registered_listeners.size()>=m_notificationCredentials.size() ) {
                     log.debug("all notifications registered. Ending timer");
-                    m_scheduledExecutorService.shutdown();;
-                }
-                    
-                for (UrlCredential urlCredential : m_notificationCredentials) {
-                    String url = urlCredential.getUrl();
-                    String query = urlCredential.getQuery();
-                    if (!m_registered_listeners.containsKey(url)) {
-                        log.debug("trying to register for notification: server url="+url+ " callbackUrl="+ callbackCredential.getUrl()
-                                + " query="+query);
-                        registerForNotifications(urlCredential, callbackCredential, query);
+                    m_scheduledExecutorService.shutdown();
+                    return;
+                } else try {
+                    log.debug("still unregisterd credentials. Trying registration");
+                    for (UrlCredential urlCredential : m_notificationCredentials) {
+                        String url = urlCredential.getUrl();
+                        String query = urlCredential.getQuery();
+                        if (!m_registered_listeners.containsKey(url)) {
+                            log.debug("trying to register for notification: server url="+url+ " callbackUrl="+ callbackCredential.getUrl()
+                                    + " query="+query);
+                            try{
+                                registerForNotifications(urlCredential, callbackCredential, query);
+                            } catch (Exception ex){
+                                log.error("problem registering for notifications",ex);
+                            }
+                         }
                     }
+                } catch (Exception ex) {
+                    log.error("problem registering for notifications", ex);
                 }
             }
         };
@@ -511,18 +519,26 @@ scriptedEventSPMForwarder() {
     }
 
     public void stopRegisterNotifications() {
-        log.debug("stopping notification registration process");
+        log.debug("stopping notification registration process for "+m_notificationCredentials.size()+" credentials"); 
         if (m_scheduledExecutorService != null)
             m_scheduledExecutorService.shutdownNow();
-        for (urlCredential : m_notificationCredentials) {
-            url = urlCredential.getUrl();
-            id = m_registered_listeners.get(url);
-            if (id != null) {
-                log.debug("unregistering for notification: server url="+url+ " registration id="+id);
-                unRegisterForNotifications(urlCredential, id);
+        try {
+            for (urlCredential : m_notificationCredentials) {
+                url = urlCredential.getUrl();
+                id = m_registered_listeners.get(url);
+                if (id != null) {
+                    log.debug("unregistering for notification: server url="+url+ " registration id="+id);
+                    try {
+                        unRegisterForNotifications(urlCredential, id);
+                    } catch (Exception ex){
+                        log.error("problem un-registering for notifications",ex);
+                    }
+                }
             }
+            m_registered_listeners.clear();
+        } catch (Exception ex) {
+            log.error("problem un-registering for notifications", ex);
         }
-        m_registered_listeners.clear();
     }
 
     private void unRegisterForNotifications(urlCredential, String id) {
