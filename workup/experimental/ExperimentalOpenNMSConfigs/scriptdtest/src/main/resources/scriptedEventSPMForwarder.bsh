@@ -494,7 +494,7 @@ scriptedEventSPMForwarder() {
                     return;
                 } else try {
                     log.debug("still unregisterd credentials. Trying registration");
-                    for (UrlCredential urlCredential : m_notificationCredentials) {
+                    for (urlCredential : m_notificationCredentials) {
                         String url = urlCredential.getUrl();
                         String query = urlCredential.getQuery();
                         if (!m_registered_listeners.containsKey(url)) {

@@ -4,9 +4,9 @@
       log = bsf.lookupBean("log");
       log.debug("running beanshell stop script");
 
-      log.debug("stopping notifications ");
+      log.debug("unregistering for notifications ");
       spmForwarder.stopRegisterNotifications();
-        
+
       log.debug("stop script waiting for 20 secs");
       Thread.sleep(20000); 
       log.debug("stop script finished waiting");
