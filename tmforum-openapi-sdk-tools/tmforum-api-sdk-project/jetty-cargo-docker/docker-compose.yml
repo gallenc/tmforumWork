@@ -2,9 +2,13 @@ version: "3.2"
 
 services: 
     jetty-cargo:
-        build:
-            context: ./jetty-cargo/Dockerfile
-            dockerfile: Dockerfile
+        build: 
+          context: ./jetty-cargo-docker
+          dockerfile: Dockerfile
+        ports: 
+        - "8080:8080"
+        - "8443:8443"
+
 #     volumes:
 #        - ./:/app
 #     working_dir: /app
