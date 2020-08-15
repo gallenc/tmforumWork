@@ -1,0 +1,19 @@
+version: "3.2"
+
+services: 
+    jetty-cargo:
+        build:
+            context: ./jetty-cargo/Dockerfile
+            dockerfile: Dockerfile
+#     volumes:
+#        - ./:/app
+#     working_dir: /app
+  
+  
+#    app:
+#        image: jetty:9.4-jre8
+#        ports: 
+#        - "8080:8080"
+#        volumes:
+#        - /target/example.war:/var/lib/jetty/webapps/root.war
+#        - ./target/example.war:/var/lib/jetty/webapps/root.war
