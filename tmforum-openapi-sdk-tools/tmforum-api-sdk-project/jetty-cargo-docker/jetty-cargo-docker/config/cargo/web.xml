@@ -55,7 +55,7 @@
 
   <login-config>
     <auth-method>BASIC</auth-method>
-    <realm-name>Test Realm</realm-name>
+    <realm-name>OpenOSS Realm</realm-name>
   </login-config>
 
 

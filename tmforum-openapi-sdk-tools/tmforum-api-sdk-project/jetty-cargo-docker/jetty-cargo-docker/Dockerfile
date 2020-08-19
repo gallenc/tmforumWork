@@ -15,13 +15,13 @@ RUN rm /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer.war
 
 COPY --chown=jetty:jetty config/cargo/web.xml /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer/WEB-INF/web.xml
 
-COPY --chown=jetty:jetty config/jetty-openoss-realm.xml /usr/local/etc/jetty-openoss-realm.xml
-COPY --chown=jetty:jetty config/openoss-realm.properties /usr/local/etc/openoss-realm.properties
+COPY --chown=jetty:jetty config/openoss-realm.properties /usr/local/jetty/etc/openoss-realm.properties
+COPY --chown=jetty:jetty config/jetty.xml /usr/local/jetty/etc/jetty.xml
 
-COPY --chown=jetty:jetty config/jetty-http.xml /usr/local/etc/jetty-http.xml
-COPY --chown=jetty:jetty config/jetty-https.xml /usr/local/etc/jetty-https.xml
-COPY --chown=jetty:jetty config/jetty-ssl.xml /usr/local/etc/jetty-ssl.xml
-COPY --chown=jetty:jetty config/jetty.keystore /usr/local/etc/jetty.keystore
+#COPY --chown=jetty:jetty config/jetty-http.xml /usr/local/jetty/etc/jetty-http.xml
+#COPY --chown=jetty:jetty config/jetty-https.xml /usr/local/jetty/etc/jetty-https.xml
+#COPY --chown=jetty:jetty config/jetty-ssl.xml /usr/local/jetty/etc/jetty-ssl.xml
+#COPY --chown=jetty:jetty config/jetty.keystore /usr/local/jetty/etc/jetty.keystore
 
 
 # Run Jetty
