@@ -5,6 +5,7 @@ services:
         build: 
           context: ./jetty-cargo-docker
           dockerfile: Dockerfile
+        image: openoss/jetty-cargo:v1.0
         ports: 
         - "8080:8080"
         - "8443:8443"

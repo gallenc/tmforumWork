@@ -6,7 +6,23 @@
 FROM jetty:9.4.31-jdk11
 
 # Install Cargo
-ADD --chown=jetty:jetty https://repo1.maven.org/maven2/org/codehaus/cargo/cargo-jetty-7-and-onwards-deployer/1.8.0/cargo-jetty-7-and-onwards-deployer-1.8.0.war /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer-1.8.0.war
+# ADD --chown=jetty:jetty https://repo1.maven.org/maven2/org/codehaus/cargo/cargo-jetty-7-and-onwards-deployer/1.8.0/cargo-jetty-7-and-onwards-deployer-1.8.0.war /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer-1.8.0.war
+
+RUN wget -O /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer.war "https://repo1.maven.org/maven2/org/codehaus/cargo/cargo-jetty-7-and-onwards-deployer/1.8.0/cargo-jetty-7-and-onwards-deployer-1.8.0.war"
+RUN unzip /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer.war -d /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer
+RUN chown -R jetty:jetty /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer
+RUN rm /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer.war 
+
+COPY --chown=jetty:jetty config/cargo/web.xml /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer/WEB-INF/web.xml
+
+COPY --chown=jetty:jetty config/jetty-openoss-realm.xml /usr/local/etc/jetty-openoss-realm.xml
+COPY --chown=jetty:jetty config/openoss-realm.properties /usr/local/etc/openoss-realm.properties
+
+COPY --chown=jetty:jetty config/jetty-http.xml /usr/local/etc/jetty-http.xml
+COPY --chown=jetty:jetty config/jetty-https.xml /usr/local/etc/jetty-https.xml
+COPY --chown=jetty:jetty config/jetty-ssl.xml /usr/local/etc/jetty-ssl.xml
+COPY --chown=jetty:jetty config/jetty.keystore /usr/local/etc/jetty.keystore
+
 
 # Run Jetty
 
