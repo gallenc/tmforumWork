@@ -27,6 +27,7 @@
         <maven-war-plugin-version>3.2.3</maven-war-plugin-version>
         <maven-deploy-plugin-version>3.0.0-M1</maven-deploy-plugin-version>
         <maven-antrun-plugin-version>3.0.0</maven-antrun-plugin-version>
+        <maven-cargo-plugin-version>1.8.0</maven-cargo-plugin-version>
 
         <!-- library dependencies versions -->
         <!-- <jetty-version>9.3.27.v20190418</jetty-version> -->
@@ -206,6 +207,12 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>keytool-maven-plugin</artifactId>
                     <version>1.5</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.cargo</groupId>
+                    <artifactId>cargo-maven2-plugin</artifactId>
+                    <version>${maven-cargo-plugin-version}</version>
                 </plugin>
 
                 <plugin>
