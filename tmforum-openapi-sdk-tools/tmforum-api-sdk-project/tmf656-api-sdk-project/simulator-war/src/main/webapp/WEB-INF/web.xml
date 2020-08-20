@@ -5,6 +5,11 @@
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
+    
+    <!-- initialise and shuts down hsqldb before anything else -->
+    <listener>
+        <listener-class>org.opennms.tmforum.tmf656.web.HsqlDatabaseInitialiser</listener-class>
+    </listener>
 
 	<!-- loads application config chain for the underlying services -->
 	<!-- and data persistance and web security -->
