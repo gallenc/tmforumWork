@@ -5,6 +5,8 @@
 
 FROM jetty:9.4.31-jdk11
 
+RUN java -jar "$JETTY_HOME/start.jar" --create-startd --add-to-start=ssl,https
+
 # Install Cargo
 # ADD --chown=jetty:jetty https://repo1.maven.org/maven2/org/codehaus/cargo/cargo-jetty-7-and-onwards-deployer/1.8.0/cargo-jetty-7-and-onwards-deployer-1.8.0.war /var/lib/jetty/webapps/cargo-jetty-7-and-onwards-deployer-1.8.0.war
 
@@ -18,9 +20,6 @@ COPY --chown=jetty:jetty config/cargo/web.xml /var/lib/jetty/webapps/cargo-jetty
 COPY --chown=jetty:jetty config/openoss-realm.properties /usr/local/jetty/etc/openoss-realm.properties
 COPY --chown=jetty:jetty config/jetty.xml /usr/local/jetty/etc/jetty.xml
 
-#COPY --chown=jetty:jetty config/jetty-http.xml /usr/local/jetty/etc/jetty-http.xml
-#COPY --chown=jetty:jetty config/jetty-https.xml /usr/local/jetty/etc/jetty-https.xml
-#COPY --chown=jetty:jetty config/jetty-ssl.xml /usr/local/jetty/etc/jetty-ssl.xml
 #COPY --chown=jetty:jetty config/jetty.keystore /usr/local/jetty/etc/jetty.keystore
 
 
