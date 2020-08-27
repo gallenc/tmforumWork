@@ -7,6 +7,16 @@ builds a docker image with official jetty image and cargo war file installed
 
 see https://codehaus-cargo.github.io/cargo/Jetty+Remote+Deployer.html
 
+The openoss-realm.properties file contains the username and password for cargo. 
+These names must match the settings in ./simulator-war/pom.xml 
+
+NOTE this needs changed to a more secure properties based mechanism
+
+```
+<cargo.remote.username>someusername</cargo.remote.username>
+<cargo.remote.password>somepassword</cargo.remote.password>
+```
+
 ## Docker compose
 does a build of the docker file and spins up a jetty image with cargo running
 
@@ -42,14 +52,17 @@ put in this directory at least the docker-compose.yml file (and whatever else yo
 ```
 
 Start the service via 
+
 ```
 systemctl start docker-compose@servicename
 ```
 
 (Optional) Start the service on boot with 
+
 ```
 systemctl enable docker-compose@servicename
 ```
+
 ## jetty docker compose example
 
 In this case simply 
@@ -66,7 +79,7 @@ sudo systemctl daemon-reload
 to run the jetty service
 
 ```
-systemctl start docker-compose@jetty-cargo-docker
+sudo systemctl start docker-compose@jetty-cargo-docker
 ```
 
 to stop the jetty service
