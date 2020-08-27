@@ -13,13 +13,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <maven-cargo-plugin-version>1.8.0</maven-cargo-plugin-version>
 
-        <!-- default properties for cargo which may be overridden by properties-maven-plugin -->
-        <cargo.hostname>127.0.0.1</cargo.hostname>
-        <cargo.servlet.port>8080</cargo.servlet.port>
-        <cargo.remote.username>someusername</cargo.remote.username>
-        <cargo.remote.password>somepassword</cargo.remote.password>
     </properties>
 
     <build>
@@ -94,7 +88,7 @@
                     <!-- read passwords for cargo -->
                     <execution>
                         <id>add-cargo-credentials.properties</id>
-                        <!--  <phase>initialize</phase> -->
+                        <!-- <phase>initialize</phase> -->
                         <goals>
                             <goal>read-project-properties</goal>
                         </goals>
@@ -252,48 +246,6 @@
                 </configuration>
             </plugin>
 
-            <!-- see https://www.baeldung.com/deploy-to-jetty -->
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <version>${maven-cargo-plugin-version}</version>
-
-                <configuration>
-                    <container>
-                        <containerId>jetty9x</containerId>
-                        <type>remote</type>
-                    </container>
-
-                    <configuration>
-                        <type>runtime</type>
-                        <properties>
-                            <cargo.hostname>${cargo.hostname}</cargo.hostname>
-                            <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
-                            <cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
-                            <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
-                        </properties>
-                    </configuration>
-
-                    <deployer>
-                        <type>remote</type>
-                    </deployer>
-
-                    <deployables>
-                        <deployable>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>${project.artifactId}</artifactId>
-                            <type>war</type>
-                            <!-- <properties> -->
-                            <!-- <context>/myAppContext</context> -->
-                            <!-- </properties> -->
-                            <!-- <pingURL>optional url to ping to know if deployable is done or not</pingURL> -->
-                            <!-- <pingTimeout>optional timeout to ping (default 20000 milliseconds)</pingTimeout> -->
-                        </deployable>
-                    </deployables>
-                </configuration>
-            </plugin>
-
-
             <plugin>
                 <groupId>org.eclipse.m2e</groupId>
                 <artifactId>lifecycle-mapping</artifactId>
@@ -302,6 +254,111 @@
         </plugins>
 
     </build>
+
+    <profiles>
+        <!-- mvn clean -Pcargo-deploy will undeploy from remote server -->
+        <!-- mvn install -Pcargo-deploy will deploy to remote server -->
+        <profile>
+            <id>cargo-deploy</id>
+
+            <properties>
+                <maven-cargo-plugin-version>1.8.0</maven-cargo-plugin-version>
+
+                <!-- default properties for cargo which may be overridden by properties-maven-plugin -->
+                <cargo.hostname>127.0.0.1</cargo.hostname>
+                <cargo.servlet.port>8080</cargo.servlet.port>
+                <cargo.remote.username>someusername</cargo.remote.username>
+                <cargo.remote.password>somepassword</cargo.remote.password>
+            </properties>
+
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>properties-maven-plugin</artifactId>
+                        <executions>
+
+                            <!-- read passwords for cargo -->
+                            <execution>
+                                <id>add-cargo-credentials.properties</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>read-project-properties</goal>
+                                </goals>
+                                <configuration>
+                                    <files>
+                                        <file>./cargo-credentials.properties</file>
+                                    </files>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- see https://www.baeldung.com/deploy-to-jetty -->
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <version>${maven-cargo-plugin-version}</version>
+
+                        <executions>
+                            <!-- Undeploy the application on clean -->
+                            <execution>
+                                <id>undeploy-cargo</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                </goals>
+                            </execution>
+                            <!-- Deploy the application on package -->
+                            <execution>
+                                <id>deploy-cargo</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <container>
+                                <containerId>jetty9x</containerId>
+                                <type>remote</type>
+                            </container>
+
+                            <configuration>
+                                <type>runtime</type>
+                                <properties>
+                                    <cargo.hostname>${cargo.hostname}</cargo.hostname>
+                                    <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                                    <cargo.remote.username>${cargo.remote.username}</cargo.remote.username>
+                                    <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+                                </properties>
+                            </configuration>
+
+                            <deployer>
+                                <type>remote</type>
+                            </deployer>
+
+                            <deployables>
+                                <deployable>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <type>war</type>
+                                    <!-- <properties> -->
+                                    <!-- <context>/myAppContext</context> -->
+                                    <!-- </properties> -->
+                                    <!-- <pingURL>optional url to ping to know if deployable is done or not</pingURL> -->
+                                    <!-- <pingTimeout>optional timeout to ping (default 20000 milliseconds)</pingTimeout> -->
+                                </deployable>
+                            </deployables>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 
     <dependencies>
