@@ -85,20 +85,6 @@
                 <artifactId>properties-maven-plugin</artifactId>
                 <executions>
 
-                    <!-- read passwords for cargo -->
-                    <execution>
-                        <id>add-cargo-credentials.properties</id>
-                        <!-- <phase>initialize</phase> -->
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>${project.home}/cargo-credentials.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-
                     <!-- added for logs in jetty -->
                     <execution>
                         <id>set-local-jetty-properties</id>
@@ -256,24 +242,28 @@
     </build>
 
     <profiles>
-        <!-- mvn clean -Pcargo-deploy will undeploy from remote server -->
+        <!-- mvn clean -Pcargo-deploy will undeploy from remote server using default pom properties-->
+        <!-- mvn clean -Pcargo-deploy -Dcargo.hostname=127.0.0.1 -Dcargo.servlet.port=8080 -Dcargo.remote.username=someusername -Dcargo.remote.password=somepassword -->
+        <!-- will undeploy from remote server using system properties-->
         <!-- mvn install -Pcargo-deploy will deploy to remote server -->
+        <!-- mvn install -Pcargo-deploy -Dcargo.hostname=127.0.0.1 -Dcargo.servlet.port=8080 -Dcargo.remote.username=someusername -Dcargo.remote.password=somepassword -->
+        <!-- will deploy to remote server using system properties-->
         <profile>
             <id>cargo-deploy</id>
 
             <properties>
                 <maven-cargo-plugin-version>1.8.0</maven-cargo-plugin-version>
 
-                <!-- default properties for cargo which may be overridden by properties-maven-plugin -->
-                <cargo.hostname>127.0.0.1</cargo.hostname>
-                <cargo.servlet.port>8080</cargo.servlet.port>
-                <cargo.remote.username>someusername</cargo.remote.username>
-                <cargo.remote.password>somepassword</cargo.remote.password>
+                <!-- default properties for cargo which may be overridden by system properties -->
+                <!-- <cargo.hostname>1.1.1.1</cargo.hostname> -->
+                <!-- <cargo.servlet.port>8080</cargo.servlet.port> -->
+                <!-- <cargo.remote.username>someusername</cargo.remote.username> -->
+                <!-- <cargo.remote.password>somepassword</cargo.remote.password> -->
             </properties>
 
             <build>
                 <plugins>
-
+                    <!-- NOTE THIS PROPERTIES LOADER DOESNT WORK NEED TO REPLACE WITH ANT TASK -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>properties-maven-plugin</artifactId>
@@ -282,7 +272,7 @@
                             <!-- read passwords for cargo -->
                             <execution>
                                 <id>add-cargo-credentials.properties</id>
-                                <phase>initialize</phase>
+                                <phase>pre-clean</phase>
                                 <goals>
                                     <goal>read-project-properties</goal>
                                 </goals>
@@ -290,6 +280,36 @@
                                     <files>
                                         <file>./cargo-credentials.properties</file>
                                     </files>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>set-system-cargo-properties</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                    <goal>set-system-properties</goal>
+                                </goals>
+
+                                <!-- cargo -->
+                                <configuration>
+                                    <properties>
+                                        <property>
+                                            <name>cargo.hostname</name>
+                                            <value>${cargo.hostname.property}</value>
+                                        </property>
+                                        <property>
+                                            <name>cargo.servlet.port</name>
+                                            <value>${cargo.servlet.port.property}</value>
+                                        </property>
+                                        <property>
+                                            <name>cargo.remote.username</name>
+                                            <value>${cargo.remote.username.property}</value>
+                                        </property>
+                                        <property>
+                                            <name>cargo.remote.password</name>
+                                            <value>${cargo.remote.password}</value>
+                                        </property>
+                                    </properties>
                                 </configuration>
                             </execution>
                         </executions>

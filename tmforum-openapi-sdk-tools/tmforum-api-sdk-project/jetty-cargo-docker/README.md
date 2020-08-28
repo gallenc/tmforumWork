@@ -88,6 +88,13 @@ to stop the jetty service
 systemctl stop docker-compose@jetty-cargo-docker
 ```
 
+## deploying to server with cargo
+in the similator-war project you can use cargo to deploy to the remote server using system properties
 
+```
+mvn install -Pcargo-deploy -Dcargo.hostname=127.0.0.1 -Dcargo.servlet.port=8080 -Dcargo.remote.username=someusername \
+-Dcargo.remote.password=somepassword
+
+```
 
 
