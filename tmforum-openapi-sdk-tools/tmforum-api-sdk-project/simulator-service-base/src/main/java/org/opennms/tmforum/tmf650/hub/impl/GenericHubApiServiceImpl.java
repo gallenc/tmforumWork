@@ -1,11 +1,8 @@
 package org.opennms.tmforum.tmf650.hub.impl;
 
 import org.opennms.tmforum.tmf650.api.*;
-import org.opennms.tmforum.tmf650.model.*;
-
 //import org.opennms.tmforum.swagger.tmf656.swagger.model.Error;
-import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
-import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
+import org.opennms.tmforum.tmf650.model.*;
 //import org.opennms.tmforum.tmf656.simulator.api.impl.HubApiServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,4 +82,30 @@ public class GenericHubApiServiceImpl extends GenericHubApiService {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(apiResponseMessage).build();
         }
     }
+    
+    
+	@Override
+    public Response getAllSubscriptionStatistics( SecurityContext securityContext,
+            javax.ws.rs.core.UriInfo uriInfo) throws NotFoundException {
+
+        try {
+
+            LOG.debug("getSubscriptionStatistics");
+            
+            AllSubscriptionStatistics subscriptionStatistics = notificationDispatcher.getAllSubscriptionStatistics();
+
+            return Response.ok().entity(subscriptionStatistics).build();
+
+        } catch (Exception ex) {
+            LOG.error("GET /getAllSubscriptionStatistics error", ex);
+            ApiResponseMessage apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR,
+                    "GET /getAllSubscriptionStatistics error: " + ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(apiResponseMessage).build();
+        }
+
+    }
+    
+    
+    
+    
 }

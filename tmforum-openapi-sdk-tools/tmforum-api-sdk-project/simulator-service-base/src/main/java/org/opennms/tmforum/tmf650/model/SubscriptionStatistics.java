@@ -1,5 +1,7 @@
 package org.opennms.tmforum.tmf650.model;
 
+import java.net.URI;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SubscriptionStatistics {
@@ -12,8 +14,12 @@ public class SubscriptionStatistics {
     private Long errorCount;
 
     private Long consecutiveErrorCount;
+    
+    private URI targetUri;
+    
+    private String notificationFilter;
 
-    @JsonProperty("id")
+	@JsonProperty("id")
     public String getId() {
         return id;
     }
@@ -48,13 +54,23 @@ public class SubscriptionStatistics {
     public void setConsecutiveErrorCount(Long consecutiveErrorCount) {
         this.consecutiveErrorCount = consecutiveErrorCount;
     }
-
-    @Override
-    public String toString() {
-        return "SubscriptionStatistics [id=" + id + ", messageCount=" + messageCount + ", errorCount=" + errorCount
-                + ", consecutiveErrorCount=" + consecutiveErrorCount + "]";
-    }
     
-    
+	@JsonProperty("targetUri")
+    public URI getTargetUri() {
+		return targetUri;
+	}
 
+	public void setTargetUri(URI targetUri) {
+		this.targetUri = targetUri;
+	}
+
+	@JsonProperty("notificationFilter")
+	public String getNotificationFilter() {
+		return notificationFilter;
+	}
+
+	public void setNotificationFilter(String notificationFilter) {
+		this.notificationFilter = notificationFilter;
+	}
+    
 }

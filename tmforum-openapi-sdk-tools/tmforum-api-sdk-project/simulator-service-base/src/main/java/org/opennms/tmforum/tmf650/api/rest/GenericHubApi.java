@@ -5,6 +5,7 @@ import io.swagger.jaxrs.*;
 
 import org.opennms.tmforum.tmf650.api.NotFoundException;
 import org.opennms.tmforum.tmf650.api.GenericHubApiService;
+import org.opennms.tmforum.tmf650.model.AllSubscriptionStatistics;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscription;
 import org.opennms.tmforum.tmf650.model.GenericEventSubscriptionInput;
 
@@ -79,6 +80,7 @@ public class GenericHubApi {
         return delegate.registerListener(data, securityContext, uriInfo);
     }
 
+
     @DELETE
     @Path("/{id}")
     @Consumes({ "application/json;charset=utf-8" })
@@ -105,4 +107,22 @@ public class GenericHubApi {
             throws NotFoundException {
         return delegate.unregisterListener(id, securityContext, uriInfo);
     }
+    
+    // additional non standard method to get subscription statistics
+    @GET
+    @Path("/allSubscriptionStatistics")
+    @Consumes({ "application/json;charset=utf-8" })
+    @Produces({ "application/json;charset=utf-8" })
+    @io.swagger.annotations.ApiOperation(value = "allSubscriptionStatistics", notes = "gets all current subscriptions and subscription statistics", response = Void.class, tags = {
+            "events subscription", })
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "All Subscription Statistics", response = AllSubscriptionStatistics.class),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error", response = Error.class) })
+    public Response getallSubscriptionStatistics(
+            @Context SecurityContext securityContext, @Context javax.ws.rs.core.UriInfo uriInfo)
+            throws NotFoundException {
+    	
+        return delegate.getAllSubscriptionStatistics(securityContext, uriInfo);
+    }
+    
 }

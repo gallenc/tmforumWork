@@ -163,6 +163,8 @@ public class GenericRestNotificationPoster implements NotificationPoster {
         stats.setConsecutiveErrorCount(consecutiveErrorCount.get());
         stats.setMessageCount(messageCount.get());
         stats.setId(subscriptionId);
+        stats.setTargetUri(targetUri);
+        stats.setNotificationFilter(notificationFilter);
 
         return stats;
     }
