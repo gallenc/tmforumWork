@@ -169,6 +169,8 @@ public class ProblemGroupApiServiceImpl extends ProblemGroupApiService {
 
                 // generate updated event
                 ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
+                notification.setEventType("ServiceProblemAttributeValueChangeEvent");
+                
                 ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
                 event.setServiceProblem(childServiceProblem);
                 // TODO eventRepository.createEvent save changed event
@@ -187,8 +189,11 @@ public class ProblemGroupApiServiceImpl extends ProblemGroupApiService {
                 // map jpa entity to swagger dto
                 ServiceProblem parentServiceProblem = ServiceProblemMapper.INSTANCE
                         .serviceProblemEntityToServiceProblem(parentProblemEntity);
+                
                 // generate parent updated event
                 ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
+                notification.setEventType("ServiceProblemAttributeValueChangeEvent");
+                
                 ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
                 event.setServiceProblem(parentServiceProblem);
                 // TODO eventRepository.createEvent save changed event

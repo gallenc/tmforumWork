@@ -53,6 +53,8 @@ public class ListenerApiServiceImpl extends ListenerApiService {
                 JsonNode jsonNode = om.valueToTree(data.getEvent());
 
                 GenericNotification genericNotification = new GenericNotification();
+                genericNotification.setEventType(data.getEventType());
+                
                 genericNotification.setEvent(jsonNode);
 
                 LOG.debug("sending notification to listeners=");
@@ -83,6 +85,7 @@ public class ListenerApiServiceImpl extends ListenerApiService {
                 JsonNode jsonNode = om.valueToTree(data.getEvent());
 
                 GenericNotification genericNotification = new GenericNotification();
+                genericNotification.setEventType(data.getEventType());
                 genericNotification.setEvent(jsonNode);
 
                 LOG.debug("sending notification to listeners=");
@@ -114,6 +117,8 @@ public class ListenerApiServiceImpl extends ListenerApiService {
                 JsonNode jsonNode = om.valueToTree(data.getEvent());
 
                 GenericNotification genericNotification = new GenericNotification();
+                genericNotification.setEventType(data.getEventType());
+                
                 genericNotification.setEvent(jsonNode);
 
                 LOG.debug("sending notification to listeners=");
@@ -145,6 +150,8 @@ public class ListenerApiServiceImpl extends ListenerApiService {
                 JsonNode jsonNode = om.valueToTree(data.getEvent());
 
                 GenericNotification genericNotification = new GenericNotification();
+                genericNotification.setEventType(data.getEventType());
+                
                 genericNotification.setEvent(jsonNode);
 
                 LOG.debug("sending notification to listeners=");

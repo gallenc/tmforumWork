@@ -97,6 +97,8 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
             // service problem create event
             ServiceProblemCreateNotification notification = new ServiceProblemCreateNotification();
+            notification.setEventType("ServiceProblemCreateEvent");
+            
             ServiceProblemCreateEvent event = new ServiceProblemCreateEvent();
             event.setServiceProblem(serviceProblem);
             // TODO eventRepository.createEvent save changed event
@@ -135,8 +137,10 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
             // state change to cancelled
             ServiceProblemStateChangeNotification notification = new ServiceProblemStateChangeNotification();
+            notification.setEventType("ServiceProblemStateChangeEvent");
+            
             ServiceProblemStateChangeEvent event = new ServiceProblemStateChangeEvent();
-            // note delted service problem so not using real service problem
+            // note delete service problem so not using real service problem
 
             ServiceProblem serviceProblem = new ServiceProblem();
             serviceProblem.setId(idStr);
@@ -289,6 +293,8 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
             // service problem AttributeValueChange event
             ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
+            notification.setEventType("ServiceProblemAttributeValueChangeEvent");
+            
             ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
             event.setServiceProblem(serviceProblem);
             // TODO eventRepository.createEvent save changed event

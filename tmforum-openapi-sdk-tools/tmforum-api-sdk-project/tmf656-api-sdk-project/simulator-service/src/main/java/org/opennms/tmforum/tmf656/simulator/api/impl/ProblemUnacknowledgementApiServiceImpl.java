@@ -102,6 +102,8 @@ public class ProblemUnacknowledgementApiServiceImpl extends ProblemUnacknowledge
 
                 // service problem ack event
                 ServiceProblemStateChangeNotification notification = new ServiceProblemStateChangeNotification();
+                notification.setEventType("ServiceProblemStateChangeEvent");
+                
                 ServiceProblemStateChangeEvent event = new ServiceProblemStateChangeEvent();
                 event.setServiceProblem(serviceProblem);
                 // TODO eventRepository.createEvent save changed event

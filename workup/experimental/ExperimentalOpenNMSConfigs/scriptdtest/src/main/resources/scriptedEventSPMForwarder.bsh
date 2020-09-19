@@ -90,6 +90,7 @@ scriptedEventSPMForwarder() {
                 URL u = new URL(url);
             } catch (MalformedURLException e) {
                 log.error("UrlCredential[] urlCredentials malformed url="+url);
+                return;
             }
         }
         m_urlCredentials = urlCredentials;
