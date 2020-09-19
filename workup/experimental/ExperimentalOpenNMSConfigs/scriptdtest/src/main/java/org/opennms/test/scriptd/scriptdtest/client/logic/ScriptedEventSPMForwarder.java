@@ -47,10 +47,10 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     static final String SERVICE_PROBLEM_STATE_CHANGE_UEI = "uei.opennms.org/tmf656spm/serviceProblemStateChange";
 
     /* TMF SPM Service Problem event types */
-    static final String SERVICE_PROBLEM_CREATE_NOTIFICATION = "serviceProblemCreateNotification";
-    static final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION = "serviceProblemAttributeValueChangeNotification";
-    static final String SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION = "serviceProblemInformationRequiredNotification";
-    static final String SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION = "serviceProblemStateChangeNotification";
+    static final String SERVICE_PROBLEM_CREATE_NOTIFICATION = "ServiceProblemCreateNotification";
+    static final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION = "ServiceProblemAttributeValueChangeNotification";
+    static final String SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION = "ServiceProblemInformationRequiredNotification";
+    static final String SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION = "ServiceProblemStateChangeNotification";
 
     private ScriptedApacheHttpAsyncClient m_scriptedClient = null;
 

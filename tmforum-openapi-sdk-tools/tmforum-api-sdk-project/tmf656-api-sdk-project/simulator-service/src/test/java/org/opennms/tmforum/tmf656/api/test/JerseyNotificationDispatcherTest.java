@@ -92,7 +92,8 @@ public class JerseyNotificationDispatcherTest extends JerseyTest {
             OffsetDateTime eventTime = OffsetDateTime.now();
             notification.setEventTime(eventTime);
 
-            notification.setEventType(event.getClass().getSimpleName());
+            //notification.setEventType(event.getClass().getSimpleName());
+            notification.setEventType("ServiceProblemAttributeValueChangeNotification");
 
             notificationDispatcher.sendNotification(notification);
         }

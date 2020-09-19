@@ -74,7 +74,7 @@ public class JerseyGernericNotificationPosterTest extends JerseyTest {
         OffsetDateTime eventTime = OffsetDateTime.now();
         notification.setEventTime(eventTime);
 
-        notification.setEventType(event.getClass().getSimpleName());
+        notification.setEventType("ServiceProblemAttributeValueChangeNotification");
 
         restNotificationPoster.postNotification(notification);
         

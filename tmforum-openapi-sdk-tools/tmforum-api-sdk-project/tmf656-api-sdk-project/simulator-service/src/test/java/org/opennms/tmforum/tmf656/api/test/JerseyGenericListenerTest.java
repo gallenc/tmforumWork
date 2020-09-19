@@ -74,7 +74,7 @@ public class JerseyGenericListenerTest extends JerseyTest {
         genericNotification.setEventId("10");
         OffsetDateTime eventTime = OffsetDateTime.now();
         genericNotification.setEventTime(eventTime);
-        genericNotification.setEventType(genericEvent.getClass().getSimpleName());
+        genericNotification.setEventType("GenericNotification");
         // genericNotification.setFieldPath(fieldPath);
         // genericNotification.setResourcePath(resourcePath);
 
@@ -99,12 +99,12 @@ public class JerseyGenericListenerTest extends JerseyTest {
         ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
         event.setServiceProblem(serviceProblem);
         ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
+        notification.setEventType("ServiceProblemAttributeValueChangeNotification");
         notification.setEvent(event);
         notification.setEventId("10");
         OffsetDateTime eventTime = OffsetDateTime.now();
         notification.setEventTime(eventTime);
 
-        notification.setEventType(event.getClass().getSimpleName());
         // genericNotification.setFieldPath(fieldPath);
         // genericNotification.setResourcePath(resourcePath);
 

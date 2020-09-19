@@ -61,10 +61,10 @@ scriptedEventSPMForwarder() {
     final String SERVICE_PROBLEM_STATE_CHANGE_UEI = "uei.opennms.org/tmf656spm/serviceProblemStateChange";
 
     /* TMF SPM Service Problem event types */
-    final String SERVICE_PROBLEM_CREATE_NOTIFICATION = "serviceProblemCreateNotification";
-    final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION = "serviceProblemAttributeValueChangeNotification";
-    final String SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION = "serviceProblemInformationRequiredNotification";
-    final String SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION = "serviceProblemStateChangeNotification";
+    final String SERVICE_PROBLEM_CREATE_NOTIFICATION = "ServiceProblemCreateNotification";
+    final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION = "ServiceProblemAttributeValueChangeNotification";
+    final String SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION = "ServiceProblemInformationRequiredNotification";
+    final String SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION = "ServiceProblemStateChangeNotification";
 
     m_scriptedClient = null;
     

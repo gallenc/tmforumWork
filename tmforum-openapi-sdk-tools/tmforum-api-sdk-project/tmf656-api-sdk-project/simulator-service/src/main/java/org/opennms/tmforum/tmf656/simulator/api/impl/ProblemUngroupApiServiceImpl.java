@@ -175,7 +175,7 @@ public class ProblemUngroupApiServiceImpl extends ProblemUngroupApiService {
 
                     // generate updated event
                     ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
-                    notification.setEventType("ServiceProblemAttributeValueChangeEvent");
+                    notification.setEventType("ServiceProblemAttributeValueChangeNotification");
                     
                     ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
                     event.setServiceProblem(childServiceProblem);
@@ -198,7 +198,7 @@ public class ProblemUngroupApiServiceImpl extends ProblemUngroupApiService {
                         .serviceProblemEntityToServiceProblem(parentProblemEntity);
                 // generate parent updated event
                 ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
-                notification.setEventType("ServiceProblemAttributeValueChangeEvent");
+                notification.setEventType("ServiceProblemAttributeValueChangeNotification");
                 
                 ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
                 event.setServiceProblem(parentServiceProblem);

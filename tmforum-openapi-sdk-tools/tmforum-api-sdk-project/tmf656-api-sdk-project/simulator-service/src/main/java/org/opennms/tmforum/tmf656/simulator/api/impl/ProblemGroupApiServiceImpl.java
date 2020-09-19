@@ -169,7 +169,7 @@ public class ProblemGroupApiServiceImpl extends ProblemGroupApiService {
 
                 // generate updated event
                 ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
-                notification.setEventType("ServiceProblemAttributeValueChangeEvent");
+                notification.setEventType("ServiceProblemAttributeValueChangeNotification");
                 
                 ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
                 event.setServiceProblem(childServiceProblem);
@@ -192,7 +192,7 @@ public class ProblemGroupApiServiceImpl extends ProblemGroupApiService {
                 
                 // generate parent updated event
                 ServiceProblemAttributeValueChangeNotification notification = new ServiceProblemAttributeValueChangeNotification();
-                notification.setEventType("ServiceProblemAttributeValueChangeEvent");
+                notification.setEventType("ServiceProblemAttributeValueChangeNotification");
                 
                 ServiceProblemAttributeValueChangeEvent event = new ServiceProblemAttributeValueChangeEvent();
                 event.setServiceProblem(parentServiceProblem);
