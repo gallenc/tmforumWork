@@ -74,7 +74,7 @@ public class NotificationDispatcherImpl implements NotificationDispatcher {
             throw new IllegalArgumentException("cannot parse callback " + callback+ "cause: "+ e.getMessage());
         }
 
-        LOG.debug("registering new listener subscriptionId=" + id + " callback=" + callback + "query=" + query);
+        LOG.debug("registering new listener subscriptionId=" + id + " callback=" + callback + " query=" + query);
 
         NotificationPoster notificationPoster = new GenericRestNotificationPoster(targetUri, timeout,
                 maxConsecutiveErrors, query, id, this);
