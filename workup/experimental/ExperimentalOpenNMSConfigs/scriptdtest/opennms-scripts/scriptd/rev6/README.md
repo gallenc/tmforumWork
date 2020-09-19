@@ -1,6 +1,22 @@
 # Scriptd based Opennms Service problem API integration
 
 ## installation
+
+Ensure OpenNMS is stopped before installation. 
+
+```
+sudo \opt\opennms\bin\opennms stop
+```
+
+
+Before installing you are advised to save an original copy of scriptd-configuration.xml and opennms.bsm.events.xml so that if needed you can restore the configuration without this feature.
+(Note that virgin configuration files are also held in /opt/opennms/share/etc-pristine if you need to restore anything)
+
+```
+sudo cp /opt/opennms/etc/scriptd-configuration.xml /opt/opennms/etc/scriptd-configuration.xml.old
+sudo cp /opt/opennms/etc/events/opennms.bsm.events.xml /opt/opennms/etc/events/opennms.bsm.events.xml.old
+```
+
 copy the files in this folder (as root)  to the following locations, replacing opennms.bsm.events.xml and scriptd-configuration.xml which already exist. 
 
 
@@ -56,17 +72,29 @@ If this is not set, https requests will not respond.
 ```
 
 Once you have set the the above settings then Restart OpenNMS. 
+
+(note that you can also use systemd to stop and start the opennms service but doing a direct call to the stop and start scripts as described here gives you more visibility when testing)
+
 Wait for OpenNMS to stop properly before restarting.
+
 ```
-\opt\opennms\bin\opennms stop
-\opt\opennms\bin\opennms start
-```
-You can check the status using 
-```
-\opt\opennms\bin\opennms -v status
+sudo \opt\opennms\bin\opennms stop
+sudo \opt\opennms\bin\opennms start
 ```
 
-Logs for scriptd can be seen by firstly changing the log4j scriptd setting to DEBUG 
+You can check the status using 
+
+```
+sudo \opt\opennms\bin\opennms -v status
+```
+You can also check opennms has really stopped by checking the processes using
+
+```
+sudo ps -aux | grep opennms
+```
+
+Logs for this scriptd configuration can be seen by changing the log4j scriptd setting to DEBUG
+ 
 ```
 \opt\opennms\etc\log4j2.xml
 
@@ -75,10 +103,13 @@ Logs for scriptd can be seen by firstly changing the log4j scriptd setting to DE
 ```
 
 Logs are in
+
 ```
 \opt\opennms\logs\scriptd.log
 ```
+
 To see logs as they occur use
+
 ```
 tail -f \opt\opennms\logs\scriptd.log 
 ```
