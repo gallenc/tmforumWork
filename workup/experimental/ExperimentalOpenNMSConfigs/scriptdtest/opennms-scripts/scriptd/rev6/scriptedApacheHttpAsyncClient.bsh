@@ -310,15 +310,20 @@ scriptedApacheHttpAsyncClient() {
                     int status = response.getStatusLine().getStatusCode();
                     log.debug(" response status: " + status+ " request: "+request.getRequestLine());
 
-                    InputStream responseBody = response.getEntity().getContent();
-
-                    /* read the response of the request and place it in a content String */
-                    in = new BufferedReader(new InputStreamReader(responseBody));
-                    String inputLine;
                     StringBuffer contentbuff = new StringBuffer();
-                    while ((inputLine = in.readLine()) != null) {
-                        contentbuff.append(inputLine);
+
+                    if (response.getEntity() != null) {
+                        InputStream responseBody = response.getEntity().getContent();
+
+                        /* read the response of the request and place it in a content String */
+                        in = new BufferedReader(new InputStreamReader(responseBody));
+                        String inputLine;
+
+                        while ((inputLine = in.readLine()) != null) {
+                            contentbuff.append(inputLine);
+                        }
                     }
+                    
                     String content = contentbuff.toString();
 
                     log.debug(" reply content status: " + status+ " request: "+request.getRequestLine() +" content: "+ content);
@@ -328,6 +333,8 @@ scriptedApacheHttpAsyncClient() {
                     message.put("requestMethod", request.getMethod());
                     message.put("requestHost", request.getURI().getHost());
                     message.put("requestPath", request.getURI().getPath());
+                    message.put("requestPort", request.getURI().getPort());
+                    message.put("requestRawUrl", request.getURI().toURL().toExternalForm());
                     message.put("status", status);
                     message.put("jsonobject", null);
                     message.put("jsonarray", null);
