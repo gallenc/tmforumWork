@@ -17,7 +17,10 @@
       spmForwarder = scriptedEventSPMForwarder();
       
       /* convenience placeholder for SPM hub. */
-      spmHubUrl1="http://tmf656-test1.centralus.cloudapp.azure.com:8080";
+      /* spmHubUrl1="http://tmf656-test1.centralus.cloudapp.azure.com:8080"; */
+
+      spmHubUrl1="http://localhost:8080";
+
 
       /* set name of this originating system in sent spm calls */
       spmForwarder.setThisOriginatingSystem("testOpenNMS");
@@ -64,7 +67,8 @@
       log.debug("start script starting spm notification listening http server");
       scriptedHttpServer.start();
 
-      /* set urls and credentials for spm hosts sending notifications UrlCredential(String url, String username, String password, String query) */
+      /* set urls and credentials for spm hosts sending notifications */
+      /* UrlCredential(String url, String username, String password, String query) */
       String query1="";
       notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 );
 
