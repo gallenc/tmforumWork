@@ -50,7 +50,7 @@
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
                 "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemStateChangeNotification",
-                "/generic-listener/notification"
+                "/opennms/tmf-api/generic-listener/notification"
                 };
 
       String keyStoreFileLocation = null;
@@ -70,14 +70,18 @@
       /* set urls and credentials for spm hosts sending notifications */
       /* UrlCredential(String url, String username, String password, String query) */
       String query1="";
+      
       notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 );
 
       List notificationCredentials = new ArrayList();
       notificationCredentials.add(notificationCredential1);
       
       /* set urls and credentials for notification call back UrlCredential(String url, String username, String password, String query) */
-      /* this needs to point at the opennms listener but set as simulator for test. Note query is null and not used here*/
-      callbackCredential = urlCredential(spmHubUrl1 + "/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null );
+      /* this needs to point at the opennms listener but set as simulator for test. Note query is null and not used here */
+      /* callbackCredential = urlCredential(spmHubUrl1 + "/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null ); */
+      
+      String opennmsSpmListenerUrl= "http://localhost:8981/opennms/tmf-api/generic-listener/notification";
+      callbackCredential = urlCredential(opennmsSpmListenerUrl, "username", "password", null );
 
       log.debug("start script registering to receive notifications");
       spmForwarder.startRegisterNotifications(notificationCredentials, callbackCredential);
