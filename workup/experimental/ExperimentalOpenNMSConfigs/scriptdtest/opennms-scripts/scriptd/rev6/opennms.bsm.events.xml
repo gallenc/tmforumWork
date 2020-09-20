@@ -70,7 +70,7 @@
         <descr>
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
-            &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatus=%parm[spmStatus]% &lt;/p>
             &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
@@ -78,7 +78,7 @@
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> | State=%parm[spmState]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%</logmsg>
+            %parm[spmID]%&lt;/a> | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%</logmsg>
         <severity>Indeterminate</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
             <update-field field-name="severity" update-on-reduction="true"/>
@@ -92,7 +92,7 @@
 
     <!-- Events From External Service Problems -->
     <!-- service problem severity (OnmsSeverity) Indeterminate Cleared Normal Warning Minor Major Critical -->
-    <!-- service problem state can be Submitted, Rejected, Acknowledged, Held, Pending, Resolved, Closed, Cancelled; -->
+    <!-- service problem Status can be Submitted, Rejected, Acknowledged, Held, Pending, Resolved, Closed, Cancelled; -->
     <!-- spm priority 1..10 -->
 
     <event>
@@ -101,7 +101,7 @@
         <descr>
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
-            &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatus=%parm[spmStatus]% &lt;/p>
             &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
@@ -109,7 +109,7 @@
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> | State=%parm[spmState]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
+            %parm[spmID]%&lt;/a> | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -127,7 +127,7 @@
         <descr>
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
-            &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatus=%parm[spmStatus]% &lt;/p>
             &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
@@ -135,7 +135,7 @@
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> | Value Change | State=%parm[spmState]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
+            %parm[spmID]%&lt;/a> | Value Change | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -148,12 +148,12 @@
     </event>
 
     <event>
-        <uei>uei.opennms.org/tmf656spm/serviceProblemStateChange</uei>
-        <event-label>External Service Problem State Change</event-label>
+        <uei>uei.opennms.org/tmf656spm/serviceProblemStatusChange</uei>
+        <event-label>External Service Problem Status Change</event-label>
         <descr>
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
-            &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatus=%parm[spmStatus]% &lt;/p>
             &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
@@ -161,7 +161,7 @@
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> | State Change | State=%parm[spmState]% | Status Change Reason=%parm[spmStatusChangeReason]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
+            %parm[spmID]%&lt;/a> | Status Change | Status=%parm[spmStatus]% | Status Change Reason=%parm[spmStatusChangeReason]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
@@ -179,7 +179,7 @@
         <descr>
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
-            &lt;p> spmState=%parm[spmState]% &lt;/p>
+            &lt;p> spmStatus=%parm[spmStatus]% &lt;/p>
             &lt;p> spmStatusChangeReason=%parm[spmStatusChangeReason]% &lt;/p>
             &lt;p> spmPriority=%parm[spmPriority]% &lt;/p>
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
@@ -187,7 +187,7 @@
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> | Information Required | State=%parm[spmState]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]% 
+            %parm[spmID]%&lt;/a> | Information Required | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]% 
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
