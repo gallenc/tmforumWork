@@ -378,8 +378,10 @@ scriptedEventSPMForwarder() {
                         + " spmServiceProblem: "+spmServiceProblem
                         + " Message: " + message.toString());
             } else {
-                String uei = null;
-                Event event = null;
+            	
+            	/* no type to avoid problems with bsh */
+                uei = null;
+                event = null;
                 
                 switch (spmEventType) {
                 /* TMF SPM Service Problem event types */

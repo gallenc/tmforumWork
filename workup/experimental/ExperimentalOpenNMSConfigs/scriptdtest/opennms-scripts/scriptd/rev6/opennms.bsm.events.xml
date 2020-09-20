@@ -199,7 +199,7 @@
         </alarm-data>
     </event>
     
-        <event>
+    <event>
         <uei>uei.opennms.org/tmf656spm/serviceProblemClosedCancelledOrDeleted</uei>
         <event-label>External Service Problem Closed Cancelled Or Deleted</event-label>
         <descr>
