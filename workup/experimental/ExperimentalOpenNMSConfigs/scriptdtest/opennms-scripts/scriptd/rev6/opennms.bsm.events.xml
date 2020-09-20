@@ -148,8 +148,8 @@
     </event>
 
     <event>
-        <uei>uei.opennms.org/tmf656spm/serviceProblemStatusChange</uei>
-        <event-label>External Service Problem Status Change</event-label>
+        <uei>uei.opennms.org/tmf656spm/serviceProblemStateChange</uei>
+        <event-label>External Service Problem State Change</event-label>
         <descr>
             &lt;p>External Service Problem %parm[spmReason]% &lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID = %parm[spmID]% &lt;/p>
             &lt;p> &lt;a href="%parm[spmHREF]%" target="_blank" > href = %parm[spmHREF]%&lt;/a> &lt;/p>
@@ -161,7 +161,7 @@
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
-            %parm[spmID]%&lt;/a> | Status Change | Status=%parm[spmStatus]% | Status Change Reason=%parm[spmStatusChangeReason]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
+            %parm[spmID]%&lt;/a> | State Change | Status=%parm[spmStatus]% | Status Change Reason=%parm[spmStatusChangeReason]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
         </logmsg>
         <severity>Warning</severity>
         <alarm-data reduction-key="uei.opennms.org/tmf656spm/serviceProblem:%parm[spmOriginatingSystem]%:%parm[spmID]%" alarm-type="1">
