@@ -33,9 +33,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
 
     /* Standard OpenNMS BSM events */
-    static final String SERVICE_PROBLEM = "uei.opennms.org/bsm/serviceProblem";
-    static final String SERVICE_OPERATIONAL_STATUS_CHANGED = "uei.opennms.org/bsm/serviceOperationalStatusChanged";
-    static final String SERVICE_PROBLEM_RESOLVED = "uei.opennms.org/bsm/serviceProblemResolved";
+    static final String BSM_SERVICE_PROBLEM_UEI = "uei.opennms.org/bsm/serviceProblem";
+    static final String BSM_SERVICE_OPERATIONAL_STATUS_CHANGED_UEI = "uei.opennms.org/bsm/serviceOperationalStatusChanged";
+    static final String BSM_SERVICE_PROBLEM_RESOLVED_UEI = "uei.opennms.org/bsm/serviceProblemResolved";
 
     /* New OpenNMS Service Problem Reply Event */
     static final String SERVICE_PROBLEM_REPLY_UEI = "uei.opennms.org/tmf656spm/serviceProblemReply";
@@ -45,6 +45,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     static final String SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI = "uei.opennms.org/tmf656spm/serviceProblemAttributeValueChange";
     static final String SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI = "uei.opennms.org/tmf656spm/serviceProblemInformationRequired";
     static final String SERVICE_PROBLEM_STATE_CHANGE_UEI = "uei.opennms.org/tmf656spm/serviceProblemStateChange";
+    static final String SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI ="uei.opennms.org/tmf656spm/serviceProblemClosedCancelledOrDeleted";
 
     /* TMF SPM Service Problem event types */
     static final String SERVICE_PROBLEM_CREATE_NOTIFICATION = "ServiceProblemCreateNotification";
@@ -184,16 +185,15 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     }
 
     public void handleEvent(IEvent ievent, OnmsNode node) {
-        if (SERVICE_PROBLEM.equals(ievent.getUei())) {
+        if (BSM_SERVICE_PROBLEM_UEI.equals(ievent.getUei())) {
             log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent + " node:" + node);
             updateServiceProblem(ievent);
 
-        } else if (SERVICE_OPERATIONAL_STATUS_CHANGED.equals(ievent.getUei())) {
+        } else if (BSM_SERVICE_OPERATIONAL_STATUS_CHANGED_UEI.equals(ievent.getUei())) {
             log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:" + node);
 
-        } else if (SERVICE_PROBLEM_RESOLVED.equals(ievent.getUei())) {
+        } else if (BSM_SERVICE_PROBLEM_RESOLVED_UEI.equals(ievent.getUei())) {
             log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
-
         }
 
     }
@@ -379,23 +379,35 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     }
                     break;
                 case SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION:
-                    uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
+                	// check if state is now Closed or Cancelled
+                	if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
+                		uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
+                	} else {
+                		uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
+                	}
+
                     event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION event through ipcManager");
+                        log.debug("received SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION sent "+uei+" event through ipcManager");
                     } catch (Throwable t) {
                         log.debug("problem sending event to OpenNMS:", t);
                     }
                     break;
                 case SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION:
-                    uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
+                	// check if state is now Closed or Cancelled
+                	if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
+                		uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
+                	} else {
+                		uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
+                	}
+
                     event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION event through ipcManager");
+                        log.debug("received SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION sent "+uei+" event through ipcManager");
                     } catch (Throwable t) {
                         log.debug("problem sending event to OpenNMS:", t);
                     }
