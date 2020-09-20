@@ -127,23 +127,35 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
 
             Long id = Long.parseLong(idStr);
             ApiResponseMessage apiResponseMessage;
-
-            if (!serviceProblemRepository.existsById(id)) {
+            
+            // retrieve service problem first so that we can put it in the notification as cancelled / deleted
+            Optional<ServiceProblemEntity> spOptional = serviceProblemRepository.findById(id);
+            if (!spOptional.isPresent()) {
                 LOG.debug("DELETE /deleteServiceProblem/{id} entity does not exist id=" + idStr);
                 apiResponseMessage = new ApiResponseMessage(ApiResponseMessage.ERROR,
                         "DELETE /deleteServiceProblem/{id} not found id=" + idStr);
                 return Response.status(Response.Status.NOT_FOUND).entity(apiResponseMessage).build();
             }
 
+            ServiceProblemEntity serviceProblemEntity = spOptional.get();
+
+            LOG.debug("retreived serviceProblemEntity:" + serviceProblemEntity);
+
+            // map jpa entity to swagger dto
+            ServiceProblem serviceProblem = ServiceProblemMapper.INSTANCE
+                    .serviceProblemEntityToServiceProblem(serviceProblemEntity);
+
+            // add absolute path href
+            String href = uriInfo.getAbsolutePath().toASCIIString();
+            serviceProblem.setHref(href);
+
+            LOG.debug("mapped serviceProblem:" + serviceProblem);
+            
             // state change to cancelled
             ServiceProblemStateChangeNotification notification = new ServiceProblemStateChangeNotification();
             notification.setEventType("ServiceProblemStateChangeNotification");
             
             ServiceProblemStateChangeEvent event = new ServiceProblemStateChangeEvent();
-            // note delete service problem so not using real service problem
-
-            ServiceProblem serviceProblem = new ServiceProblem();
-            serviceProblem.setId(idStr);
 
             // set resolution time
             OffsetDateTime resolutionDate = OffsetDateTime.now();
@@ -161,7 +173,7 @@ public class ServiceProblemApiServiceImpl extends ServiceProblemApiService {
             notification.setEvent(event);
             notificationDispatcher.sendNotification(notification);
 
-            // map jpa entity to swagger dto
+            // delete the problem after sending the cancelled notification
             serviceProblemRepository.deleteById(id);
 
             return Response.status(Response.Status.NO_CONTENT).build(); // NO_CONTENT = 204
