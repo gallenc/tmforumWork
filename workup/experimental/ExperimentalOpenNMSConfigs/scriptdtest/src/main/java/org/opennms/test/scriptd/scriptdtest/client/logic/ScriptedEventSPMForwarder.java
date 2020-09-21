@@ -382,11 +382,13 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 	// check if state is now Closed or Cancelled
                 	if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
                 		uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
+                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+                		event.setSeverity("Cleared");
                 	} else {
                 		uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
+                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                 	}
 
-                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
@@ -399,11 +401,13 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                 	// check if state is now Closed or Cancelled
                 	if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
                 		uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
+                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+                		event.setSeverity("Cleared");
                 	} else {
                 		uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
+                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                 	}
 
-                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
                     log.debug("Persisting event to OpenNMS:" + event.toString());
                     try {
                         EventIpcManagerFactory.getIpcManager().sendNow(event);
