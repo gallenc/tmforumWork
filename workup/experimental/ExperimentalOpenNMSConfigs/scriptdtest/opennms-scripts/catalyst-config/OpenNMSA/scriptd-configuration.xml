@@ -84,8 +84,8 @@
       /* this needs to point at the opennms listener but set as simulator for test. Note query is null and not used here */
       /* callbackCredential = urlCredential(spmHubUrl1 + "/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null ); */
 
-      /* OpenNMSA http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3/ */
-      String opennmsSpmListenerUrl= "http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3/";
+      /* OpenNMSA http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3 */
+      String opennmsSpmListenerUrl= "http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3";
       callbackCredential = urlCredential(opennmsSpmListenerUrl, "username", "password", null );
 
       log.debug("start script registering to receive notifications");
