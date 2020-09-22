@@ -165,7 +165,8 @@ scriptedApacheHttpAsyncClient() {
             log.error("Client not started. call startClient() first");
             return;
         }
-        HttpDelete request = new HttpDelete(url);
+        /* added because of beanshell issues*/
+        org.apache.http.client.methods.HttpDelete request = new org.apache.http.client.methods.HttpDelete(url);
         executeRequest(request, username, password);
     }
 
