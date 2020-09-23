@@ -57,6 +57,10 @@ scriptedApacheHttpAsyncClient() {
 
     int BOUND = 20;
 
+    /* Apache HttpAsync setSocketTimeout(TIMEOUT).setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT) */
+    /* 5 seconds timeout */
+    int TIMEOUT = 5000;
+
     CloseableHttpAsyncClient m_client = null;
 
     BlockingQueue m_jsonQueue = new LinkedBlockingQueue(BOUND);
@@ -250,7 +254,7 @@ scriptedApacheHttpAsyncClient() {
 
             /* default request config */
             RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT)
-                    .setSocketTimeout(1000).setConnectTimeout(1000).setConnectionRequestTimeout(1000).build();
+                    .setSocketTimeout(TIMEOUT).setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT).build();
 
             /* Set Up async client */
             HttpAsyncClientBuilder clientBuilder = HttpAsyncClients.custom()

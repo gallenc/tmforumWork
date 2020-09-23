@@ -55,10 +55,14 @@ public class ScriptedApacheHttpAsyncClient {
      * following example – we configure HttpAsyncClient to accept all certificates:
      * 
      * NOTE beanshell does not support generics or @Override !!! ( annotations ) or
-     * | in Exceptions (basically limited to before java 5
+     * | in Exceptions (basically limited to before java 5)
      */
 
     int BOUND = 20;
+    
+    /* Apache HttpAsync setSocketTimeout(TIMEOUT).setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT) */
+    /* 5 seconds timeout */
+    int TIMEOUT = 5000;
 
     CloseableHttpAsyncClient m_client = null;
 
@@ -253,7 +257,7 @@ public class ScriptedApacheHttpAsyncClient {
 
             /* default request config */
             RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT)
-                    .setSocketTimeout(1000).setConnectTimeout(1000).setConnectionRequestTimeout(1000).build();
+                    .setSocketTimeout(TIMEOUT).setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT).build();
 
             /* Set Up async client */
             HttpAsyncClientBuilder clientBuilder = HttpAsyncClients.custom()
