@@ -304,7 +304,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     log.debug("successfully registered for messages: " + requestPath + " reply:" + jsonobject.toString() + " requestRawUrl=" + requestRawUrl);
                     String id = (String) jsonobject.get("id");
                     String url = requestRawUrl.substring(0, requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
-                    log.debug("registering listener for : url=" + url + " id" + id);
+                    log.debug("registering listener for : url=" + url + " id=" + id);
                     m_registered_listeners.put(url, id);
                 }
 
