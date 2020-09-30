@@ -1,0 +1,32 @@
+<model-import xmlns="http://xmlns.opennms.org/xsd/config/model-import" date-stamp="2020-09-01T20:04:26.708Z" foreign-source="Lab" last-import="2020-08-28T20:03:44.509Z">
+   <node foreign-id="1598359938016" node-label="R1">
+      <interface ip-addr="192.168.123.2" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="14" node-label="192.168.101.201">
+      <interface descr="disc-if" ip-addr="192.168.101.201" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="15" node-label="192.168.101.205">
+      <interface descr="disc-if" ip-addr="192.168.101.205" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="16" node-label="192.168.101.206">
+      <interface descr="disc-if" ip-addr="192.168.101.206" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="17" node-label="192.168.101.233">
+      <interface descr="disc-if" ip-addr="192.168.101.233" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="18" node-label="192.168.102.231">
+      <interface descr="disc-if" ip-addr="192.168.102.231" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="19" node-label="192.168.102.202">
+      <interface descr="disc-if" ip-addr="192.168.102.202" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="20" node-label="192.168.102.203">
+      <interface descr="disc-if" ip-addr="192.168.102.203" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="21" node-label="192.168.102.204">
+      <interface descr="disc-if" ip-addr="192.168.102.204" managed="true" status="1" snmp-primary="P"/>
+   </node>
+   <node building="Lab" foreign-id="22" node-label="192.168.102.232">
+      <interface descr="disc-if" ip-addr="192.168.102.232" managed="true" status="1" snmp-primary="P"/>
+   </node>
+</model-import>
