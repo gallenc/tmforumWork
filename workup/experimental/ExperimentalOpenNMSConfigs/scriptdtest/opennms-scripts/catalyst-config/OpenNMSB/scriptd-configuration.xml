@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!-- scriptd-config.xml revision 4.0 -->
+<scriptd-configuration>
+    <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
+    <start-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running start script");
+      
+      import java.util.ArrayList;
+      import java.util.List;
+
+      source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
+      scriptedClient = scriptedApacheHttpAsyncClient();      
+      
+      source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
+      spmForwarder = scriptedEventSPMForwarder();
+      
+      /* convenience placeholder for SPM hub. */
+      /* spmHubUrl1="http://tmf656-test1.centralus.cloudapp.azure.com:8080"; */
+      /* spmHubUrl1="http://localhost:8080"; */
+
+      /* cortexA */
+      /* "https://10.7.23.204:10000/tmf-api/serviceProblemManagement/v3/serviceProblem" */
+      spmHubUrl1="https://10.7.23.204:10000";
+
+      /* set name of this originating system in sent spm calls */
+      spmForwarder.setThisOriginatingSystem("OpenNMSA");
+      
+      /* set urls and credentials for spm hosts UrlCredential(String url, String username, String password) */
+      url1= urlCredential(spmHubUrl1 , "username", "password", null );
+
+      List urlCredentials = new ArrayList();
+      urlCredentials.add(url1);
+ 
+      spmForwarder.setUrlCredentials(urlCredentials);
+
+      log.debug("setting scripted client for spmForwarder");
+      spmForwarder.setScriptedClient(scriptedClient);
+      
+      log.debug("setting messageHandler for scriptedClient");
+      scriptedClient.setMessageHandler(spmForwarder);
+    
+      /* setting up http notification listening server for allowed target urls on port 8981 with no https/SSL key file */
+         
+      source("/opt/opennms/etc/scriptedApacheHttpServer.bsh");
+      
+      int port=8981;
+
+      String[] allowedTargets = {
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemStateChangeNotification",
+                "/opennms/tmf-api/generic-listener/notification"
+                };
+
+      String keyStoreFileLocation = null;
+      
+      jsonQueue = scriptedClient.getjsonQueue();
+      
+      scriptedHttpServer = scriptedApacheHttpServer(port, jsonQueue, allowedTargets, keyStoreFileLocation);
+
+      log.debug("start script starting message listener");
+      scriptedClient.startListener();
+      log.debug("start script starting spm client");
+      scriptedClient.startClient();
+
+      log.debug("start script starting spm notification listening http server");
+      scriptedHttpServer.start();
+
+      /* set urls and credentials for spm hosts sending notifications */
+      /* UrlCredential(String url, String username, String password, String query) */
+      /* String query1=""; */
+      /* notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 ); */
+
+      /* listens for watchdog notifications from cortex */
+      notificationCredential1= urlCredential(spmHubUrl1, "username", "password", "serviceProblem.id=00000000-0000-0000-0000-000000000000" );
+      notificationCredential2= urlCredential(spmHubUrl1, "username", "password", "affectedResource.id=7603F67D-631E-4A46-8FA7-52B0199A7E3F" );
+
+      List notificationCredentials = new ArrayList();
+      notificationCredentials.add(notificationCredential1);
+      notificationCredentials.add(notificationCredential2);
+      
+      /* set urls and credentials for notification call back UrlCredential(String url, String username, String password, String query) */
+      /* this needs to point at the opennms listener but set as simulator for test. Note query is null and not used here */
+      /* callbackCredential = urlCredential(spmHubUrl1 + "/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null ); */
+
+      /* OpenNMSA http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3 */
+      String opennmsSpmListenerUrl= "http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3";
+      callbackCredential = urlCredential(opennmsSpmListenerUrl, "username", "password", null );
+
+      log.debug("start script registering to receive notifications");
+      spmForwarder.startRegisterNotifications(notificationCredentials, callbackCredential);
+
+      log.debug("end of start script");
+
+    </start-script>
+
+    <stop-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running beanshell stop script");
+      
+      log.debug("unregistering for notifications ");
+      spmForwarder.stopRegisterNotifications();
+
+      log.debug("stop script waiting for 20 secs");
+      Thread.sleep(20000); 
+      log.debug("stop script finished waiting");
+
+      log.debug("stop script stop listener");
+      scriptedClient.stopListener();
+      log.debug("stop script stop client");
+      scriptedClient.stopClient();
+
+      log.debug("stop script stop http server");
+      scriptedHttpServer.stop();
+      
+      log.debug("end of stop script");
+
+    </stop-script>
+
+    <event-script language="beanshell">
+
+        log = bsf.lookupBean("log");
+        log.debug("running on event script");
+        
+        ievent = bsf.lookupBean("event");
+        node = bsf.lookupBean("node");
+        
+        spmForwarder.handleEvent(ievent, node);
+
+        log.debug("end of on event script");
+
+    </event-script>
+
+
+</scriptd-configuration>
+
