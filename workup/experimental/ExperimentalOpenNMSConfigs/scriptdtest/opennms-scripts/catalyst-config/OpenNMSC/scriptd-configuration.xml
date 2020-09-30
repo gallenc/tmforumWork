@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<!-- scriptd-config.xml revision 4.0 -->
+<!-- scriptd-config.xml revision 6.0 -->
+<!-- OpenNMSC catalyst  10.7.23.219 -->
 <scriptd-configuration>
     <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
     <start-script language="beanshell">
@@ -86,8 +87,8 @@
       /* this needs to point at the opennms listener but set as simulator for test. Note query is null and not used here */
       /* callbackCredential = urlCredential(spmHubUrl1 + "/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null ); */
 
-      /* OpenNMSA http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3 */
-      String opennmsSpmListenerUrl= "http://10.7.23.209:8981/opennms/tmf-api/serviceProblemManagement/v3";
+      /* OpenNMSC http://10.7.23.219:8981/opennms/tmf-api/serviceProblemManagement/v3 */
+      String opennmsSpmListenerUrl= "http://10.7.23.219:8981/opennms/tmf-api/serviceProblemManagement/v3";
       callbackCredential = urlCredential(opennmsSpmListenerUrl, "username", "password", null );
 
       log.debug("start script registering to receive notifications");

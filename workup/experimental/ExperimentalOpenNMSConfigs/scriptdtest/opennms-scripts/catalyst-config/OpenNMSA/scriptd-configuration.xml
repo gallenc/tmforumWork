@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<!-- scriptd-config.xml revision 4.0 -->
+<!-- scriptd-config.xml revision 6.0 -->
+<!-- OpenNMSC catalyst  10.7.23.209 -->
 <scriptd-configuration>
     <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
     <start-script language="beanshell">
