@@ -7,6 +7,8 @@ package org.opennms.test.scriptd.scriptdtest.client.logic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -306,11 +308,11 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             /* if spmAffectedServices or spmAffectedResources are not set we will not process event */
             String spmAffectedServices = (event.getParm("spmAffectedServices") == null) ? null : event.getParm("spmAffectedServices").getValue().getContent();
             String[] affectedServices = ( (spmAffectedServices==null) ? new String[] {} : spmAffectedServices.split(","));
-            log.debug("createServiceProblem spmAffectedServices="+spmAffectedServices+ "affectedServices="+affectedServices);
+            log.debug("createServiceProblem spmAffectedServices="+spmAffectedServices);
 
             String spmAffectedResources = (event.getParm("spmAffectedResources") == null) ? null : event.getParm("spmAffectedResources").getValue().getContent();
             String[] affectedResources = ( (spmAffectedResources==null) ? new String[] {} : spmAffectedResources.split(","));
-            log.debug("createServiceProblem spmAffectedResources="+spmAffectedResources+ "affectedResources="+affectedResources);
+            log.debug("createServiceProblem spmAffectedResources="+spmAffectedResources);
 
             /* may be in events if created by an incoming message */
             String spmHREF = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
@@ -325,8 +327,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             	return;
             }
 
-            if ( affectedServices.length !=0 || affectedResources.length !=0 ) {
-            	log.debug("createServiceProblem not creating new service problem as spmAffectedServices or spmAffectedResources not defined");
+            if ( affectedServices.length == 0 && affectedResources.length == 0 ) {
+            	log.debug("createServiceProblem not creating new service problem as spmAffectedServices or spmAffectedResources not defined in bsm business service");
                 return;
             } else {
                 log.debug("createServiceProblem event has no spmHREF param and spmAffectedServices or spmAffectedResources are defined - creating new service problem");
