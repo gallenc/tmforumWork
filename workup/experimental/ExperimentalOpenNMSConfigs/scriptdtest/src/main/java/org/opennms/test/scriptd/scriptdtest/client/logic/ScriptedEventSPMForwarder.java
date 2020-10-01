@@ -344,13 +344,17 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             String spmStatus = null;
             Long spmPriority = null;
             if (jsonobject != null) {
-                spmEventType = (String) jsonobject.get("eventType");
-                JSONObject spmEvent = (JSONObject) jsonobject.get("event");
-                spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
-                spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
-                spmOriginatingSystem = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("originatingSystem");
-                spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("status");
-                spmPriority = (spmServiceProblem == null) ? null : (Long) spmServiceProblem.get("priority");
+            	try {
+                   spmEventType = (String) jsonobject.get("eventType");
+                   JSONObject spmEvent = (JSONObject) jsonobject.get("event");
+                   spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
+                   spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
+                   spmOriginatingSystem = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("originatingSystem");
+                   spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("status");
+                   spmPriority = (spmServiceProblem == null) ? null : (Long) spmServiceProblem.get("priority");
+            	} catch (Exception e) {
+            		log.error("problem reading message posted to httpServer", e);
+            	}
             }
             if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
                 log.debug("cannot recognise message as SPM event." + " spmEventType: " + spmEventType + " spmServiceProblemId: " + spmServiceProblemId

@@ -1,0 +1,50 @@
+{
+	"requestHost": null,
+	"jsonobject": {
+		"eventId": "7380f418fc97412f8107cc1f2a798912",
+		"eventTime": "2020-10-01 10:53:51",
+		"eventType": "ServiceProblemCreateNotification",
+		"event": {
+			"serviceProblem": {
+				"statusChangeReason": "Initial Creation",
+				"reason": "Link Down",
+				"timeRaised": "2020-10-01 10:53:47",
+				"description": "Loss of connectivity",
+				"relatedEvent": [
+					{
+						"id": "7380F418-FC97-412F-8107-CC1F2A798912",
+						"href": "https:\/\/3.15.141.111:10000\/tmf-api\/serviceProblemManagement\/v3\/Event\/7380F418-FC97-412F-8107-CC1F2A798912"
+					}
+				],
+				"originatorParty": {
+					"id": "8A3BA497-8B70-4A13-AB2D-593ED58EB232",
+					"href": "https:\/\/3.15.141.111:10000\/tmf-api\/serviceProblemManagement\/v3\/Party\/8A3BA497-8B70-4A13-AB2D-593ED58EB232"
+				},
+				"priority": "2",
+				"statusChangeDate": "2020-10-01 10:53:47",
+				"affectedResource": [
+					{
+						"id": "7603F67D-631E-4A46-8FA7-52B0199A7E3F",
+						"href": "https:\/\/3.15.141.111:10000\/tmf-api\/serviceProblemManagement\/v3\/Resource\/7603F67D-631E-4A46-8FA7-52B0199A7E3F"
+					}
+				],
+				"problemEscalation": "none",
+				"originatingSystem": "Internal Network",
+				"affectedNumberOfServices": 0,
+				"impactImportanceFactor": "22",
+				"timeChanged": "2020-10-01 10:53:47",
+				"correlationId": "334455",
+				"id": "846ABB3D-D28B-4CEB-961A-7C8A0EA19163",
+				"href": "https:\/\/3.15.141.111:10000\/tmf-api\/serviceProblemManagement\/v3\/serviceProblem\/846ABB3D-D28B-4CEB-961A-7C8A0EA19163",
+				"category": "Hardware",
+				"status": "SUBMITTED"
+			}
+		}
+	},
+	"jsonarray": null,
+	"poison": null,
+	"requestMethod": "POST",
+	"messageSource": "httpServer",
+	"requestPath": "\/opennms\/tmf-api\/serviceProblemManagement\/v3\/listener\/serviceProblemCreateNotification",
+	"status": null
+}
