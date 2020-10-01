@@ -306,9 +306,11 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             /* if spmAffectedServices or spmAffectedResources are not set we will not process event */
             String spmAffectedServices = (event.getParm("spmAffectedServices") == null) ? null : event.getParm("spmAffectedServices").getValue().getContent();
             String[] affectedServices = ( (spmAffectedServices==null) ? new String[] {} : spmAffectedServices.split(","));
+            log.debug("createServiceProblem spmAffectedServices="+spmAffectedServices+ "affectedServices="+affectedServices);
 
             String spmAffectedResources = (event.getParm("spmAffectedResources") == null) ? null : event.getParm("spmAffectedResources").getValue().getContent();
             String[] affectedResources = ( (spmAffectedResources==null) ? new String[] {} : spmAffectedResources.split(","));
+            log.debug("createServiceProblem spmAffectedResources="+spmAffectedResources+ "affectedResources="+affectedResources);
 
             /* may be in events if created by an incoming message */
             String spmHREF = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
