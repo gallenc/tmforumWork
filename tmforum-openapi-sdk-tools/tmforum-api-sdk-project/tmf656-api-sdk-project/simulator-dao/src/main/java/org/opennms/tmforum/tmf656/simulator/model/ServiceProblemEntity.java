@@ -153,6 +153,7 @@ public class ServiceProblemEntity {
         this.correlationId = correlationId;
     }
 
+    @Column(length = 1000)
     public String getDescription() {
         return description;
     }
@@ -193,6 +194,7 @@ public class ServiceProblemEntity {
         this.problemEscalation = problemEscalation;
     }
 
+    @Column(length = 1000)
     public String getReason() {
         return reason;
     }
@@ -225,6 +227,7 @@ public class ServiceProblemEntity {
         this.statusChangeDate = statusChangeDate;
     }
 
+    @Column(length = 1000)
     public String getStatusChangeReason() {
         return statusChangeReason;
     }
