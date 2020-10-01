@@ -92,8 +92,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         m_scriptedClient = scriptedClient;
     }
 
-    public JSONObject createMinimalServiceProblem(String originatingSystem, String category, String priority, String description, String reason,
-            String correlationId, String[] affectedServices) {
+    public JSONObject createMinimalServiceProblem(String originatingSystem, String category, String priority,
+    		String description, String reason, String correlationId, String[] affectedServices, String[] affectedResources) {
 
         JSONObject spm = new JSONObject();
         if (originatingSystem != null)
@@ -119,9 +119,18 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             }
             spm.put("affectedService", affectedService);
         }
-
+        
+        if (affectedResources != null) {
+            JSONArray affectedResource = new JSONArray();
+            for (String resource : affectedResources) {
+                JSONObject jresource = new JSONObject();
+                jresource.put("id", resource);
+                jresource.put("href", null);
+                affectedResource.add(jresource);
+            }
+            spm.put("affectedResource", affectedResource);
+        }
         return spm;
-
     }
 
     public Event onmsEventFromServiceProblem(String uei, JSONObject serviceProblem) {
@@ -156,6 +165,25 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             eventBuilder.addParam("spmAffectedServicesHtml", spmAffectedServicesHtml.toString());
 
         }
+        
+        JSONArray affectedResource = (JSONArray) serviceProblem.get("affectedResource");
+        if (affectedResource != null) {
+            String spmAffectedResourcesJson = affectedResource.toString();
+            StringBuilder spmAffectedResourcesHtml = new StringBuilder();
+            for (Object res : affectedResource) {
+                JSONObject jresource = (JSONObject) res;
+                String resid = (String) jresource.get("id");
+                String reshref = (String) jresource.get("href");
+                spmAffectedResourcesHtml.append("<a href=\"" + reshref + "\">" + resid + "</a> ");
+            }
+
+            /* this will add a json version of affected resources to the event */
+            eventBuilder.addParam("spmAffectedResourcesJson", spmAffectedResourcesJson);
+
+            /* this will add an html version of affected resources to the event */
+            eventBuilder.addParam("spmAffectedResourcesHtml", spmAffectedResourcesHtml.toString());
+
+        }
 
         eventBuilder.setSeverity("Warning");
 
@@ -179,7 +207,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         Event event = eventBuilder.getEvent();
 
         log.debug("onmsEventFromServiceProblem id:" + id + " correlationId:" + correlationId + " href:" + href + " source:" + source + " reason:" + reason
-                + " originatingSystem:" + originatingSystem + " affectedService:" + affectedService + " TO EVENT:" + event);
+                + " originatingSystem:" + originatingSystem + " affectedService:" + affectedService + " affectedResource:" + affectedResource +" TO EVENT:" + event);
 
         return event;
     }
@@ -187,21 +215,71 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     public void handleEvent(IEvent ievent, OnmsNode node) {
         if (BSM_SERVICE_PROBLEM_UEI.equals(ievent.getUei())) {
             log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent + " node:" + node);
-            updateServiceProblem(ievent);
+            createServiceProblem(ievent);
 
         } else if (BSM_SERVICE_OPERATIONAL_STATUS_CHANGED_UEI.equals(ievent.getUei())) {
             log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:" + node);
 
         } else if (BSM_SERVICE_PROBLEM_RESOLVED_UEI.equals(ievent.getUei())) {
             log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
+            resolveServiceProblem(ievent);
         }
 
     }
+    
+    /* note this only works for single href */
+    public void resolveServiceProblem(IEvent ievent) {
+        log.debug("resolveServiceProblem script received immutable event:" + ievent);
+        Event event = Event.copyFrom(ievent);
+        String spmHREF = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
+        String spmID = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
+        
+        if ( spmHREF == null ) {
+        	log.debug("resolveServiceProblem cannot resolve serviceProblem as event has no spmHREF");
+        	return;
+        }
+        
+        try {
+        	log.debug("resolveServiceProblem trying to resolve problem with spmHREF="+spmHREF);
 
-    public void updateServiceProblem(IEvent ievent) {
+        	/* patch service problem for spmHREF using correct credentials */
+            if (m_urlCredentials.size() == 0) {
+                log.warn("no baseUrls set. Cannot send service problem patch.");
+            }
+
+            /* send patch to all spm server matching spmHREF */
+            for (UrlCredential urlCredential : m_urlCredentials) {
+                String baseUrl = urlCredential.getUrl();
+                String username = urlCredential.getUsername();
+                String password = urlCredential.getPassword();
+                
+                if(spmHREF!=null && spmHREF.contains(baseUrl)) try {
+                	
+                	JSONObject serviceProblemPatch = new JSONObject();
+                	serviceProblemPatch.put("id", spmID);
+                	serviceProblemPatch.put("href", spmHREF);
+                	serviceProblemPatch.put("status", "Resolved");
+                	serviceProblemPatch.put("statusChangeReason", "service problem resolved in OpenNMS");
+
+                    log.debug("resolveServiceProblem resolving service problem HREF : " + spmHREF);
+                    String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
+
+                    /* patch http request */
+                    m_scriptedClient.patchRequest(url, serviceProblemPatch.toString(), username, password);
+
+                } catch (Exception e2) {
+                    log.error("problem patching service problem ", e2);
+                }
+            }
+         } catch (Exception e) {
+            log.debug("resolveServiceProblem problem patching service problem", e);
+         }
+    }
+
+    public void createServiceProblem(IEvent ievent) {
 
         try {
-            log.debug("updateServiceProblem script received immutable event:" + ievent);
+            log.debug("createServiceProblem script received immutable event:" + ievent);
 
             Event event = Event.copyFrom(ievent);
             Integer eventId = event.getDbid();
@@ -212,29 +290,43 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             Logmsg logmsg = event.getLogmsg();
             String logmsgStr = (logmsg == null) ? null : logmsg.getContent();
             String uei = event.getUei();
-            String businessServiceName = (event.getParm("businessServiceName") == null) ? "Undefined"
-                    : event.getParm("businessServiceName").getValue().getContent();
+            String businessServiceName = (event.getParm("businessServiceName") == null) ? "Undefined" : event.getParm("businessServiceName").getValue().getContent();
             String businessServiceId = (event.getParm("businessServiceId") == null) ? null : event.getParm("businessServiceId").getValue().getContent();
             String rootCause = (event.getParm("rootCause") == null) ? null : event.getParm("rootCause").getValue().getContent();
+
+            /* spmAffectedServices must be set by bsm business service attributes as comma separated variables with no spaces */
+            /* spmAffectedResources must be set by bsm business service attributes as comma separated variables with no spaces */
+            /* if spmAffectedServices or spmAffectedResources are not set we will not process event */
+            String spmAffectedServices = (event.getParm("spmAffectedServices") == null) ? null : event.getParm("spmAffectedServices").getValue().getContent();
+            String[] affectedServices = ( (spmAffectedServices==null) ? new String[] {} : spmAffectedServices.split(","));
+
+            String spmAffectedResources = (event.getParm("spmAffectedResources") == null) ? null : event.getParm("spmAffectedResources").getValue().getContent();
+            String[] affectedResources = ( (spmAffectedResources==null) ? new String[] {} : spmAffectedResources.split(","));
 
             /* may be in events if created by an incoming message */
             String spmHREF = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
             String spmID = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
-            String spmOriginatingSystem = (event.getParm("spmOriginatingSystem") == null) ? null
-                    : event.getParm("spmOriginatingSystem").getValue().getContent();
+            String spmOriginatingSystem = (event.getParm("spmOriginatingSystem") == null) ? null : event.getParm("spmOriginatingSystem").getValue().getContent();
             String spmStatus = (event.getParm("spmStatus") == null) ? null : event.getParm("spmStatus").getValue().getContent();
             String spmPriority = (event.getParm("spmPriority") == null) ? null : event.getParm("spmPriority").getValue().getContent();
 
-            /* only create new service problem if href not present */
-            if (spmHREF == null) {
-                log.debug("updateServiceProblem event has no spmHREF param - creating new service problem");
+            /* only create new service problem if href not present and affectedServices or affectedResources defined */
+            if ( spmHREF != null ) {
+            	log.debug("createServiceProblem not creating new service problem as event has spmHREF=" + spmHREF);
+            	return;
+            }
+
+            if ( affectedServices.length !=0 || affectedResources.length !=0 ) {
+            	log.debug("createServiceProblem not creating new service problem as spmAffectedServices or spmAffectedResources not defined");
+                return;
+            } else {
+                log.debug("createServiceProblem event has no spmHREF param and spmAffectedServices or spmAffectedResources are defined - creating new service problem");
 
                 String originatingSystem = m_thisOriginatingSystem;
                 String category = "equipment";
                 String priority = "1";
                 String reason = logmsgStr;
                 String correlationId = reductionKey;
-                String[] affectedServices = { businessServiceName };
 
                 /* create new service problem for each url */
                 if (m_urlCredentials.size() == 0) {
@@ -250,24 +342,22 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     try {
 
                         JSONObject serviceProblem = createMinimalServiceProblem(originatingSystem, category, priority, description, reason, correlationId,
-                                affectedServices);
-                        log.debug("updateServiceProblem sending service problem : " + serviceProblem.toString());
+                                affectedServices, affectedResources);
+                        log.debug("createServiceProblem sending service problem : " + serviceProblem.toString());
                         String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
 
                         /* post http request */
                         m_scriptedClient.postRequest(url, serviceProblem.toString(), username, password);
 
                     } catch (Exception e2) {
-                        log.error("problem posting new service problem ", e2);
+                        log.error("createServiceProblem problem posting new service problem ", e2);
                     }
 
                 }
-            } else {
-                log.debug("updateServiceProblem not creating new service problem as event has spmHREF=" + spmHREF);
-            }
+            } 
 
         } catch (Exception e) {
-            log.debug("problem creating service problem", e);
+            log.debug("updateServiceProblem problem creating service problem", e);
         }
 
     }
@@ -308,7 +398,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                     m_registered_listeners.put(url, id);
                 }
 
-                /* check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
+                /* check for reply to create service problem POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
                 else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem") && "POST".equals(requestMethod)
                         && jsonobject != null) {
 
