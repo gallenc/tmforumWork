@@ -206,9 +206,16 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
         Event event = eventBuilder.getEvent();
 
-        log.debug("onmsEventFromServiceProblem id:" + id + " correlationId:" + correlationId + " href:" + href + " source:" + source + " reason:" + reason
-                + " originatingSystem:" + originatingSystem + " affectedService:" + affectedService + " affectedResource:" + affectedResource +" TO EVENT:" + event);
-
+        log.debug("onmsEventFromServiceProblem id:"+id
+                + " correlationId:"+correlationId
+                + " href:"+href
+                + " source:"+source
+                + " reason:"+reason
+                + " originatingSystem:"+originatingSystem
+                + " affectedService:"+affectedService
+                + " affectedResource:"+affectedResource
+                + " TO EVENT:"+event);
+        
         return event;
     }
 

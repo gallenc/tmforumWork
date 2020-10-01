@@ -376,6 +376,7 @@ scriptedEventSPMForwarder() {
                     }
 
                 }
+            } 
 
         } catch (Exception e) {
             log.debug("updateServiceProblem problem creating service problem", e);
