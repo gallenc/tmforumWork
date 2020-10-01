@@ -76,6 +76,7 @@
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
+            &lt;p> spmAffectedResourcesHtml=%parm[spmAffectedResourcesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
             %parm[spmID]%&lt;/a> | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%</logmsg>
@@ -107,6 +108,7 @@
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
+            &lt;p> spmAffectedResourcesHtml=%parm[spmAffectedResourcesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
             %parm[spmID]%&lt;/a> | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
@@ -133,6 +135,7 @@
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
+            &lt;p> spmAffectedResourcesHtml=%parm[spmAffectedResourcesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
             %parm[spmID]%&lt;/a> | Value Change | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
@@ -159,6 +162,7 @@
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
+            &lt;p> spmAffectedResourcesHtml=%parm[spmAffectedResourcesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
             %parm[spmID]%&lt;/a> | State Change | Status=%parm[spmStatus]% | Status Change Reason=%parm[spmStatusChangeReason]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]%
@@ -185,6 +189,7 @@
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
+            &lt;p> spmAffectedResourcesHtml=%parm[spmAffectedResourcesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
             %parm[spmID]%&lt;/a> | Information Required | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]% 
@@ -211,6 +216,7 @@
             &lt;p> spmOriginatingSystem=%parm[spmOriginatingSystem]% &lt;/p>
             &lt;p> spmCorrelationId=%parm[spmCorrelationId]% &lt;/p>
             &lt;p> spmAffectedServicesHtml=%parm[spmAffectedServicesHtml]% &lt;/p>
+            &lt;p> spmAffectedResourcesHtml=%parm[spmAffectedResourcesHtml]% &lt;/p>
         </descr>
         <logmsg dest="logndisplay">&lt;a href="%parm[spmHREF]%" target="_blank" > External Service Problem ID =
             %parm[spmID]%&lt;/a> | Closed Cancelled Or Deleted | Status=%parm[spmStatus]% | Priority=%parm[spmPriority]% | Reason=%parm[spmReason]% 
