@@ -61,7 +61,7 @@ scriptedApacheHttpAsyncClient() {
     /* 5 seconds timeout */
     int TIMEOUT = 5000;
 
-    int m_timeout = TIMEOUT;
+    m_timeout = TIMEOUT;
 
     CloseableHttpAsyncClient m_client = null;
 
@@ -240,7 +240,7 @@ scriptedApacheHttpAsyncClient() {
     }
 
     public synchronized void startClient() {
-        log.debug("Starting scriptedHttpAsyncClient");
+        log.debug("Starting scriptedHttpAsyncClient socket-timeout="+m_timeout);
 
         if (m_client != null) {
             log.error("Client already started. Stop client before starting a new one");

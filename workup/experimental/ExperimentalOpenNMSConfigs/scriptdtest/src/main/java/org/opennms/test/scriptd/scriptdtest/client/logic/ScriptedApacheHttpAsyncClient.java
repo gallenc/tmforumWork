@@ -243,7 +243,7 @@ public class ScriptedApacheHttpAsyncClient {
     }
 
     public synchronized void startClient() {
-        log.debug("Starting scriptedHttpAsyncClient");
+        log.debug("Starting scriptedHttpAsyncClient socket-timeout="+m_timeout);
 
         if (m_client != null) {
             log.error("Client already started. Stop client before starting a new one");
