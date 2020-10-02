@@ -94,23 +94,23 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     }
 
     public void setThisOriginatingSystem(String thisOriginatingSystem) {
-        this.m_thisOriginatingSystem = thisOriginatingSystem;
+        m_thisOriginatingSystem = thisOriginatingSystem;
     }
 
     public void setThisOriginatorParty(String thisOriginatorParty) {
-		this.m_thisOriginatorParty = thisOriginatorParty;
+		m_thisOriginatorParty = thisOriginatorParty;
 	}
 
     public void setResourceInventoryManagementBaseHrefUrl(String resourceInventoryManagementBaseHrefUrl) {
-		this.m_resourceInventoryManagementBaseHrefUrl = resourceInventoryManagementBaseHrefUrl;
+		m_resourceInventoryManagementBaseHrefUrl = resourceInventoryManagementBaseHrefUrl;
 	}
 
 	public void setServiceInventoryManagementBaseHrefUrl(String serviceInventoryManagementBaseHrefUrl) {
-		this.m_serviceInventoryManagementBaseHrefUrl = serviceInventoryManagementBaseHrefUrl;
+		m_serviceInventoryManagementBaseHrefUrl = serviceInventoryManagementBaseHrefUrl;
 	}
 
 	public void setPartyManagementBaseHrefUrl(String partyManagementBaseHrefUrl) {
-		this.m_partyManagementBaseHrefUrl = partyManagementBaseHrefUrl;
+		m_partyManagementBaseHrefUrl = partyManagementBaseHrefUrl;
 	}
 
     public void setScriptedClient(ScriptedApacheHttpAsyncClient scriptedClient) {
