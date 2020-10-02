@@ -75,6 +75,14 @@ scriptedEventSPMForwarder() {
     
     private String m_thisOriginatingSystem="opennms-notset";
 
+    private String m_thisOriginatorParty ="originator-party-notset";
+
+	private String m_resourceInventoryManagementBaseHrefUrl = "http://localhost:8080/tmf-api/resourceInventoryManagement/v3/resource/";
+    
+    private String m_serviceInventoryManagementBaseHrefUrl ="http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/";
+    
+    private String m_partyManagementBaseHrefUrl = "http://localhost:8080/tmf-api/partyManagement/v3/party/";
+
     /* URL, Registered Listener */
     m_registered_listeners = Collections.synchronizedMap(new HashMap());
 
@@ -100,6 +108,22 @@ scriptedEventSPMForwarder() {
     public void setThisOriginatingSystem(String thisOriginatingSystem) {
         this.m_thisOriginatingSystem = thisOriginatingSystem;
     }
+    
+    public void setThisOriginatorParty(String thisOriginatorParty) {
+		this.m_thisOriginatorParty = thisOriginatorParty;
+	}
+
+    public void setResourceInventoryManagementBaseHrefUrl(String resourceInventoryManagementBaseHrefUrl) {
+		this.m_resourceInventoryManagementBaseHrefUrl = resourceInventoryManagementBaseHrefUrl;
+	}
+
+	public void setServiceInventoryManagementBaseHrefUrl(String serviceInventoryManagementBaseHrefUrl) {
+		this.m_serviceInventoryManagementBaseHrefUrl = serviceInventoryManagementBaseHrefUrl;
+	}
+
+	public void setPartyManagementBaseHrefUrl(String partyManagementBaseHrefUrl) {
+		this.m_partyManagementBaseHrefUrl = partyManagementBaseHrefUrl;
+	}
 
     public void setScriptedClient(scriptedClient) {
         log.debug("scriptedEventSPMForwarder set scriptedClient "+ m_scriptedClient);
@@ -128,7 +152,7 @@ scriptedEventSPMForwarder() {
             for (String service : affectedServices) {
                 JSONObject jservice = new JSONObject();
                 jservice.put("id",service);
-                jservice.put("href",null);
+                jservice.put("href", m_serviceInventoryManagementBaseHrefUrl+service);
                 affectedService.add(jservice);
             }
             spm.put("affectedService", affectedService);
@@ -139,11 +163,17 @@ scriptedEventSPMForwarder() {
             for (String resource : affectedResources) {
                 JSONObject jresource = new JSONObject();
                 jresource.put("id", resource);
-                jresource.put("href", null);
+                jresource.put("href", m_resourceInventoryManagementBaseHrefUrl+resource);
                 affectedResource.add(jresource);
             }
             spm.put("affectedResource", affectedResource);
         }
+        
+        JSONObject joriginatorParty = new JSONObject();
+        joriginatorParty.put("id", m_thisOriginatorParty);
+        joriginatorParty.put("href", m_partyManagementBaseHrefUrl+m_thisOriginatorParty);
+        spm.put("originatorParty", joriginatorParty);
+        
         return spm;
     }
 
@@ -412,20 +442,19 @@ scriptedEventSPMForwarder() {
                 /* find out what message replied to */
 
                 /* check for reply to register for events */
-                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/hub")
-                        && "POST".equals(requestMethod) && jsonobject != null) {
+                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/hub") && "POST".equals(requestMethod) 
+                		&& jsonobject != null) {
                     
                     log.debug("successfully registered for messages: " + requestPath + " reply:" + jsonobject.toString() + " requestRawUrl="+requestRawUrl);
                     String id = (String) jsonobject.get("id");
-                    String url = requestRawUrl.substring(0,
-                            requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
-                    log.debug("registering listener for : url="+ url + " id" + id);
+                    String url = requestRawUrl.substring(0, requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
+                    log.debug("registering listener for : url=" + url + " id=" + id);
                     m_registered_listeners.put(url, id);
                 }
 
-                /* check for reply to POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
-                else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem")
-                        && "POST".equals(requestMethod) && jsonobject != null) {
+                /* check for reply to create service problem POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
+                else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem") && "POST".equals(requestMethod)
+                		&& jsonobject != null) {
 
                     String uei = SERVICE_PROBLEM_REPLY_UEI;
                     Event event = onmsEventFromServiceProblem(uei, jsonobject);
@@ -618,11 +647,11 @@ scriptedEventSPMForwarder() {
                         String query = urlCredential.getQuery();
                         if (!m_registered_listeners.containsKey(url)) {
                             log.debug("trying to register for notification: server url="+url+ " callbackUrl="+ callbackCredential.getUrl()
-                                    + " query="+query);
+                                + " query="+query);
                             try{
                                 registerForNotifications(urlCredential, callbackCredential, query);
                             } catch (Exception ex){
-                                log.error("problem registering for notifications",ex);
+                                log.error("problem registering url=" + url + ", query=" + query + " for notifications", ex);
                             }
                          }
                     }

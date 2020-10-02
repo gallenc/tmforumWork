@@ -1,0 +1,22 @@
+{
+	"affectedService": [
+		{
+			"id": "NP1_Tokyo_Osaka",
+			"href": "https://mycsp.com:8080/tmf-api/serviceInventoryManagement/v3/service/NW1_Tokyo_Osaka"
+		},
+		{
+			"id": "NP1_Tokyo_xxxx",
+			"href": "https://mycsp.com:8080/tmf- api/serviceInventoryManagement/v3/service/NW1_Tokyo_xxxx"
+		}
+	],
+	"affectedResource": [
+		{
+			"id": "NP1_RES_0001",
+			"href": "https://mycsp.com:8080/tmf-api/resourceInventoryManagement/v3/resource/NW1_RES_0001"
+		}
+	],
+	"originatorParty": {
+		"id": "112324252",
+		"href": "https://mycsp.com:8080/tmf-api/partyManagement/v3/party/112324252"
+	}
+}

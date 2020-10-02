@@ -62,15 +62,23 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     private List<UrlCredential> m_notificationCredentials = new ArrayList();
 
     private String m_thisOriginatingSystem = "opennms-notset";
+    
+    private String m_thisOriginatorParty ="originator-party-notset";
 
-    /* URL, Registered Listener */
+	private String m_resourceInventoryManagementBaseHrefUrl = "http://localhost:8080/tmf-api/resourceInventoryManagement/v3/resource/";
+    
+    private String m_serviceInventoryManagementBaseHrefUrl ="http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/";
+    
+    private String m_partyManagementBaseHrefUrl = "http://localhost:8080/tmf-api/partyManagement/v3/party/";
+
+	/* URL, Registered Listener */
     private Map<String, String> m_registered_listeners = Collections.synchronizedMap(new HashMap<String, String>());
 
     private ScheduledExecutorService m_scheduledExecutorService = null;
 
     public void setUrlCredentials(List<UrlCredential> urlCredentials) {
         if (urlCredentials == null || urlCredentials.size() == 0) {
-            log.error("UrlCredential[] urlCredentials is null or empty. Cannot send service problem");
+            log.error("urlCredentials is null or empty. Cannot send service problem");
             return;
         }
         for (UrlCredential urlCredential : urlCredentials) {
@@ -88,6 +96,22 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     public void setThisOriginatingSystem(String thisOriginatingSystem) {
         this.m_thisOriginatingSystem = thisOriginatingSystem;
     }
+
+    public void setThisOriginatorParty(String thisOriginatorParty) {
+		this.m_thisOriginatorParty = thisOriginatorParty;
+	}
+
+    public void setResourceInventoryManagementBaseHrefUrl(String resourceInventoryManagementBaseHrefUrl) {
+		this.m_resourceInventoryManagementBaseHrefUrl = resourceInventoryManagementBaseHrefUrl;
+	}
+
+	public void setServiceInventoryManagementBaseHrefUrl(String serviceInventoryManagementBaseHrefUrl) {
+		this.m_serviceInventoryManagementBaseHrefUrl = serviceInventoryManagementBaseHrefUrl;
+	}
+
+	public void setPartyManagementBaseHrefUrl(String partyManagementBaseHrefUrl) {
+		this.m_partyManagementBaseHrefUrl = partyManagementBaseHrefUrl;
+	}
 
     public void setScriptedClient(ScriptedApacheHttpAsyncClient scriptedClient) {
         log.debug("scriptedEventSPMForwarder set scriptedClient " + m_scriptedClient);
@@ -116,7 +140,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             for (String service : affectedServices) {
                 JSONObject jservice = new JSONObject();
                 jservice.put("id", service);
-                jservice.put("href", null);
+                jservice.put("href", m_serviceInventoryManagementBaseHrefUrl+service);
                 affectedService.add(jservice);
             }
             spm.put("affectedService", affectedService);
@@ -127,11 +151,17 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             for (String resource : affectedResources) {
                 JSONObject jresource = new JSONObject();
                 jresource.put("id", resource);
-                jresource.put("href", null);
+                jresource.put("href", m_resourceInventoryManagementBaseHrefUrl+resource);
                 affectedResource.add(jresource);
             }
             spm.put("affectedResource", affectedResource);
         }
+        
+        JSONObject joriginatorParty = new JSONObject();
+        joriginatorParty.put("id", m_thisOriginatorParty);
+        joriginatorParty.put("href", m_partyManagementBaseHrefUrl+m_thisOriginatorParty);
+        spm.put("originatorParty", joriginatorParty);
+        
         return spm;
     }
 
@@ -458,9 +488,11 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
             	}
             }
             if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
-                log.debug("cannot recognise message as SPM event." + " spmEventType: " + spmEventType + " spmServiceProblemId: " + spmServiceProblemId
-                        + " spmServiceProblem: " + spmServiceProblem + " Message: " + message.toString());
-
+                log.debug("cannot recognise message as SPM event."
+                        + " spmEventType: " + spmEventType 
+                        + " spmServiceProblemId: " + spmServiceProblemId
+                        + " spmServiceProblem: " + spmServiceProblem 
+                        + " Message: " + message.toString());
             } else {
 
                 String uei = null;
@@ -599,8 +631,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
                         String url = urlCredential.getUrl();
                         String query = urlCredential.getQuery();
                         if (!m_registered_listeners.containsKey(url)) {
-                            log.debug("trying to register for notification: server url=" + url + " callbackUrl=" + callbackCredential.getUrl() + " query="
-                                    + query);
+                            log.debug("trying to register for notification: server url=" + url + " callbackUrl=" + callbackCredential.getUrl()
+                                + " query=" + query);
                             try {
                                 registerForNotifications(urlCredential, callbackCredential, query);
                             } catch (Exception ex) {
@@ -652,8 +684,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         JSONObject hubRequest = new JSONObject();
         hubRequest.put("callback", callback.getUrl());
         hubRequest.put("query", query);
-        m_scriptedClient.postRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub", hubRequest.toString(), urlCredential.getUsername(),
-                urlCredential.getPassword());
+        m_scriptedClient.postRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub", hubRequest.toString(), 
+        		urlCredential.getUsername(), urlCredential.getPassword());
     }
 
     /* returns this beanshell declaration so that its methods can be invoked */

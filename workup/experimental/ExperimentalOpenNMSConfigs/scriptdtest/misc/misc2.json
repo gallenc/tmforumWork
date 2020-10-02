@@ -1,0 +1,15 @@
+{
+	"reason": "One or more problems are affecting business service '374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6'.\n        ",
+	"affectedResource": [
+		{
+			"id": "374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6",
+			"href": null
+		}
+	],
+	"originatingSystem": "opennms-notset",
+	"affectedService": [],
+	"description": "<p>There are currently one or more problems affecting business service '374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6'. Root cause: reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'.\n            args(4): spmAffectedResources=\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\" businessServiceId=\"38\" businessServiceName=\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\" rootCause=\"reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'\"<\/p>",
+	"correlationId": "uei.opennms.org\/bsm\/serviceProblem:38",
+	"category": " equipment",
+	"priority": "1"
+}
