@@ -14,7 +14,12 @@
       import java.util.List;
 
       source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
-      scriptedClient = scriptedApacheHttpAsyncClient();      
+      scriptedClient = scriptedApacheHttpAsyncClient();
+      
+      /* set time out for async client http requests to 5 seconds */
+      /* scriptedClient.setTimeout(5000); */
+      
+      scriptedClient.setTimeout(5000);
       
       source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
       spmForwarder = scriptedEventSPMForwarder();

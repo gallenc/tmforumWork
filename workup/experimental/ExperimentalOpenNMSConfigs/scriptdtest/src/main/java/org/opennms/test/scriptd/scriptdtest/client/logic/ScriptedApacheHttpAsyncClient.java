@@ -62,9 +62,11 @@ public class ScriptedApacheHttpAsyncClient {
     
     /* Apache HttpAsync setSocketTimeout(TIMEOUT).setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT) */
     /* 5 seconds timeout */
-    int TIMEOUT = 5000;
+    int TIMEOUT=5000;
+    
+    int m_timeout = TIMEOUT;
 
-    CloseableHttpAsyncClient m_client = null;
+	CloseableHttpAsyncClient m_client = null;
 
     BlockingQueue m_jsonQueue = new LinkedBlockingQueue(BOUND);
 
@@ -73,6 +75,10 @@ public class ScriptedApacheHttpAsyncClient {
     MessageHandler m_messageHandler = new MessageHandler();
 
     CredentialsProvider m_defaultCredentialsProvider = null;
+    
+    public void setTimeout(int timeout) {
+    	m_timeout = timeout;
+	}
 
     public void setDefaultCredentialsProvider(CredentialsProvider defaultCredentialsProvider) {
         this.m_defaultCredentialsProvider = defaultCredentialsProvider;
@@ -257,12 +263,13 @@ public class ScriptedApacheHttpAsyncClient {
 
             /* default request config */
             RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT)
-                    .setSocketTimeout(TIMEOUT).setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT).build();
+                    .setSocketTimeout(m_timeout).setConnectTimeout(m_timeout).setConnectionRequestTimeout(m_timeout).build();
 
             /* Set Up async client */
             HttpAsyncClientBuilder clientBuilder = HttpAsyncClients.custom()
                     .setSSLHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
-                    .setSSLContext(sslContext).setDefaultRequestConfig(requestConfig);
+                    .setSSLContext(sslContext)
+                    .setDefaultRequestConfig(requestConfig);
 
             /* set default credentials provider if present. */
             if (m_defaultCredentialsProvider != null) {
@@ -332,8 +339,7 @@ public class ScriptedApacheHttpAsyncClient {
                     
                     String content = contentbuff.toString();
 
-                    log.debug(" reply content status: " + status + " request: " + request.getRequestLine()
-                            + " content: " + content);
+                    log.debug(" reply content status: " + status + " request: " + request.getRequestLine() + " content: " + content);
 
                     JSONObject message = new JSONObject();
                     message.put("messageSource", "asyncClient");
@@ -357,13 +363,11 @@ public class ScriptedApacheHttpAsyncClient {
                                 message.put("jsonobject", (JSONObject) item);
                             }
                         } catch (Exception ex) {
-                            log.warn("cannot parse server response  status: " + status + " request: "
-                                    + request.getRequestLine() + " content " + content);
+                            log.warn("cannot parse server response  status: " + status + " request: " + request.getRequestLine() + " content " + content);
                         }
                     }
 
-                    log.debug(" Response message status: " + status + " request: " + request.getRequestLine()
-                            + " message " + message.toString());
+                    log.debug(" Response message status: " + status + " request: " + request.getRequestLine() + " message " + message.toString());
 
                     boolean notFull = m_jsonQueue.offer(message);
                     if (!notFull) {
@@ -400,10 +404,7 @@ public class ScriptedApacheHttpAsyncClient {
 
         if (username != null && !username.isEmpty()) {
 
-            /*
-             * set up basic authentication specifically for this request if username
-             * specified
-             */
+            /* set up basic authentication specifically for this request only if username specified */
             CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password);
             credentialsProvider.setCredentials(AuthScope.ANY, creds);
