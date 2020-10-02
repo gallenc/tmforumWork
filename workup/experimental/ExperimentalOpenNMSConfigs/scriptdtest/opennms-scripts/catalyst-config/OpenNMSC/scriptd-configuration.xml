@@ -18,7 +18,8 @@
       /* set time out for async client http requests to 5 seconds */
       /* scriptedClient.setTimeout(5000); */
       
-      scriptedClient.setTimeout(5000);
+      /* cortex set to 10 seconds */
+      scriptedClient.setTimeout(10000);
       
       source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
       spmForwarder = scriptedEventSPMForwarder();
