@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- scriptd-config.xml revision 7.0 -->
 <!-- OpenNMSC catalyst  10.7.23.219 -->
-<!-- cortexA catalyst   10.7.23.204:10000 -->
+<!-- cortexA catalyst   10.7.23.204:10000 / 3.15.141.111:10000 -->
 <scriptd-configuration>
     <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
     <start-script language="beanshell">
@@ -44,7 +44,7 @@
       /* set name of this originating party in sent spm calls */
       /* spmForwarder.setThisOriginatorParty("party1"); */
             
-      spmForwarder.setThisOriginatorParty("OpenNMSC_party1");
+      spmForwarder.setThisOriginatorParty("8A3BA497-8B70-4A13-AB2D-593ED58EB232");
       
       /* set base href for party manager in sent spm calls */
       /* spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/"); */
