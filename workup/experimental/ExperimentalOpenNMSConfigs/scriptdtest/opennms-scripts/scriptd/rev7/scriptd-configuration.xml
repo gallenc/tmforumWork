@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <!-- scriptd-config.xml revision 7.0 -->
-<!-- OpenNMSC catalyst  10.7.23.219 -->
-<!-- cortexA catalyst   10.7.23.204:10000 -->
 <scriptd-configuration>
     <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
     <start-script language="beanshell">
@@ -18,8 +16,7 @@
       /* set time out for async client http requests to 5 seconds */
       /* scriptedClient.setTimeout(5000); */
       
-      /* cortex set to 20 seconds */
-      scriptedClient.setTimeout(20000);
+      scriptedClient.setTimeout(5000);
       
       source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
       spmForwarder = scriptedEventSPMForwarder();
@@ -32,40 +29,38 @@
       /* spmHubUrl1="http://tmf656-test1.centralus.cloudapp.azure.com:8080"; */
       /* spmHubUrl1="http://localhost:8080"; */
 
-      /* cortexA */
-      /* "https://10.7.23.204:10000/tmf-api/serviceProblemManagement/v3/serviceProblem" */
-      spmHubUrl1="https://10.7.23.204:10000";
+      spmHubUrl1="http://localhost:8080";
 
       /* set name of this originating system in sent spm calls */
       /* spmForwarder.setThisOriginatingSystem("testOpenNMS"); */
       
-      spmForwarder.setThisOriginatingSystem("OpenNMSC");
+      spmForwarder.setThisOriginatingSystem("testOpenNMS");
       
       /* set name of this originating party in sent spm calls */
       /* spmForwarder.setThisOriginatorParty("party1"); */
             
-      spmForwarder.setThisOriginatorParty("OpenNMSC_party1");
+      spmForwarder.setThisOriginatorParty("party1");
       
       /* set base href for party manager in sent spm calls */
       /* spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/"); */
 
-      spmForwarder.setPartyManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/partyManagement/v3/party/");
+      spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/");
      
       /* set base href for service inventory manager in sent spm calls */
       /* spmForwarder.setServiceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/"); */
 
-      spmForwarder.setServiceInventoryManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/serviceInventoryManagement/v3/service/");
+      spmForwarder.setServiceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/");
 
       /* set base href for resource inventory manager in sent spm calls */
       /* spmForwarder.setResourceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/resourceInventoryManagement/v3/resource/"); */
 
-      spmForwarder.setResourceInventoryManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/resourceInventoryManagement/v3/resource/");
+      spmForwarder.setResourceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/resourceInventoryManagement/v3/resource/");
 
       /* set urls and credentials for spm hosts constructor variables : UrlCredential(String url, String username, String password) */
       /* username and password are basic auth credentials for posting notifications to the server (not currently used) */
       /* url1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", null ); */
 
-      url1= urlCredential(spmHubUrl1 , "username", "password", null );
+      url1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", null );
 
       List urlCredentials = new ArrayList();
       urlCredentials.add(url1);
@@ -118,15 +113,11 @@
       /* String query1=""; */
       /* notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 ); */
 
-      /* listens for watchdog notifications from cortexA */
-      notificationCredential1= urlCredential(spmHubUrl1, "username", "password", "serviceProblem.id=00000000-0000-0000-0000-000000000000" );
-
-      /* listens for filtered notifications from cortexA */
-      notificationCredential2= urlCredential(spmHubUrl1, "username", "password", "affectedResource.id=7603F67D-631E-4A46-8FA7-52B0199A7E3F" );
+      String query1="";
+      notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 );
 
       List notificationCredentials = new ArrayList();
-      /* notificationCredentials.add(notificationCredential1); */
-      notificationCredentials.add(notificationCredential2);
+      notificationCredentials.add(notificationCredential1);
       
       /* set urls and credentials for notification call back constructor variables : UrlCredential(String url, String username, String password, String query) */
       /* username and password are basic auth credentials for posting notifications back to OpenNMS (not currently used) */
@@ -134,8 +125,7 @@
       /* callbackCredential = urlCredential(spmHubUrl1 + "/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null ); */
       /* String opennmsSpmListenerUrl= "http://localhost:8981/opennms/tmf-api/generic-listener/notification"; */
 
-      /* OpenNMSC listener http://10.7.23.219:8981/opennms/tmf-api/serviceProblemManagement/v3 */
-      String opennmsSpmListenerUrl= "http://10.7.23.219:8981/opennms/tmf-api/serviceProblemManagement/v3";
+      String opennmsSpmListenerUrl= "http://localhost:8981/opennms/tmf-api/generic-listener/notification";
 
       callbackCredential = urlCredential(opennmsSpmListenerUrl, "username", "password", null );
 
