@@ -100,12 +100,12 @@
           
           event = Event.copyFrom(ievent);
           ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
-          interface = event.getInterface();
+          ipinterface = event.getInterface();
             
           jsonObject = new JSONObject();
           jsonObject.put("NAME", "Catalyst-Link-Up");
           arguments = new JSONObject();
-          arguments.put("DEVICE-ID", interface);
+          arguments.put("DEVICE-ID", ipinterface);
           arguments.put("PORT-ID", ifName);
           jsonObject.put("ARGUMENTS", arguments);
           jsonMessage = jsonObject.toString);
