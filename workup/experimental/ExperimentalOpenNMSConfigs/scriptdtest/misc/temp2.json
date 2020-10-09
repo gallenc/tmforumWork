@@ -1,0 +1,22 @@
+
+problem when resource is not found but is supposed to be in cortex
+
+curl -X POST "https://10.7.23.204:10000/tmf-api/serviceProblemManagement/v3/serviceProblem" -H  "accept: application/json;charset=utf-8" -H  "Content-Type: application/json;charset=utf-8" -d "{\"reason\":\"One or more problems are affecting business service '374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6'\",\"affectedResource\":[{\"id\":\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\",\"href\":\"https:\\/\\/3.15.141.111:10000\\/tmf-api\\/resourceInventoryManagement\\/v3\\/resource\\/374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\"}],\"originatingSystem\":\"OpenNMSC\",\"affectedService\":[],\"description\":\"hello\",\"correlationId\":\"uei.opennms.org\\/bsm\\/serviceProblem:38\",\"originatorParty\":{\"id\":\"OpenNMSC_party1\",\"href\":\"https:\\/\\/4.15.141.111:10000\\/tmf-api\\/partyManagement\\/v3\\/party\\/OpenNMSC_party1\"},\"category\":\" equipment\",\"priority\":\"1\"}"  --insecure -i
+HTTP/1.1 500 Internal Server Error
+Content-Length: 205
+Content-Type: application/json; charset=utf-8
+Server: Microsoft-HTTPAPI/2.0
+Date: Fri, 02 Oct 2020 17:39:06 GMT
+
+{ "code":500,"reason":"Internal Server Error","message":"Not found: Resource id 374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6","status":500,"referenceError":null,"@baseType":null,"@schemaLocation":null,"@type":null}
+
+problem when the href of the party is the url of cortex and party is not known
+
+curl -X POST "https://10.7.23.204:10000/tmf-api/servson;charset=utf-8" -H  "Content-Type: application/json;charset=utf-8" -d "{\"reason\":\"One or more problems are affecting business service '374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6'\",\"affectedResource\":[{\"id\":\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\",\"href\":\"https:\\/\\/3.15.141.111:10000\\/tmf-api\\/resourceInventoryManagement\\/v3\\/resource\\/374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\"}],\"originatingSystem\":\"OpenNMSC\",\"affectedService\":[],\"description\":\"hello\",\"correlationId\":\"uei.opennms.org\\/bsm\\/serviceProblem:38\",\"originatorParty\":{\"id\":\"OpenNMSC_party1\",\"href\":\"https:\\/\\/3.15.141.111:10000\\/tmf-api\\/partyManagement\\/v3\\/party\\/OpenNMSC_party1\"},\"category\":\" equipment\",\"priority\":\"1\"}"  --insecure -i
+HTTP/1.1 500 Internal Server Error
+Content-Length: 331
+Content-Type: application/json; charset=utf-8
+Server: Microsoft-HTTPAPI/2.0
+Date: Fri, 02 Oct 2020 17:42:10 GMT
+
+{"code":500,"reason":"Internal Server Error","message":"Error executing SQL Query SELECT ID\r\nFROM [dbo].[Party]\r\nWHERE [id] = 'OpenNMSC_party1': There is already an open DataReader associated with this Command which must be closed first.","status":500,"referenceError":null,"@baseType":null,"@schemaLocation":null,"@type":null}[centos@opennmsC ~]$

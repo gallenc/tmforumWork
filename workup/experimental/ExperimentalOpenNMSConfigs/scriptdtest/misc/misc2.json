@@ -3,13 +3,17 @@
 	"affectedResource": [
 		{
 			"id": "374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6",
-			"href": null
+			"href": "https:\/\/3.15.141.111:10000\/tmf-api\/resourceInventoryManagement\/v3\/resource\/374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6"
 		}
 	],
-	"originatingSystem": "opennms-notset",
+	"originatingSystem": "OpenNMSC",
 	"affectedService": [],
-	"description": "<p>There are currently one or more problems affecting business service '374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6'. Root cause: reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'.\n            args(4): spmAffectedResources=\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\" businessServiceId=\"38\" businessServiceName=\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\" rootCause=\"reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'\"<\/p>",
+	"description": "<p>There are currently one or more problems affecting business service '374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6'. Root cause: reduction key 'uei.opennms.org\/nodes\/nodeDown::1'.\n            args(4): spmAffectedResources=\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\" businessServiceId=\"38\" businessServiceName=\"374FD2A1-7E64-4E89-B1ED-43B48D1FA7A6\" rootCause=\"reduction key 'uei.opennms.org\/nodes\/nodeDown::1'\"<\/p>",
 	"correlationId": "uei.opennms.org\/bsm\/serviceProblem:38",
+	"originatorParty": {
+		"id": "OpenNMSC_party1",
+		"href": "https:\/\/3.15.141.111:10000\/tmf-api\/partyManagement\/v3\/party\/OpenNMSC_party1"
+	},
 	"category": " equipment",
 	"priority": "1"
 }
