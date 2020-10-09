@@ -106,7 +106,7 @@
 
       log.debug("start script starting message listener");
       scriptedClient.startListener();
-      log.debug("start script starting spm client");
+      log.debug("start script starting httpAsyncClient");
       scriptedClient.startClient();
 
       log.debug("start script starting spm notification listening http server");

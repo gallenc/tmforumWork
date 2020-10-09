@@ -47,6 +47,11 @@
       cortexUrl="https://10.7.23.204:10000/api/flow/startflowAsync";
       cortexUsername="username";
       cortexPassword="password";
+      
+      log.debug("start script starting message listener");
+      scriptedClient.startListener();
+      log.debug("start script starting httpAsyncClient");
+      scriptedClient.startClient();
 
       log.debug("end of start script");
 
