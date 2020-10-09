@@ -92,7 +92,7 @@
           jsonObject.put("ARGUMENTS", arguments);
           jsonMessage = jsonObject.toString();
 
-          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" jsonMessage);
+          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" + jsonMessage);
           scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword);
             
       } else if ("uei.opennms.org/translator/traps/SNMP_Link_Up".equals(ievent.getUei())) {
@@ -110,7 +110,7 @@
           jsonObject.put("ARGUMENTS", arguments);
           jsonMessage = jsonObject.toString();
 
-          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" jsonMessage);
+          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" + jsonMessage);
           scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword);
             
       } else {
