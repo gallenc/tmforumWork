@@ -32,8 +32,6 @@
       log = bsf.lookupBean("log");
       log.debug("running start script");
 
-      import org.opennms.netmgt.xml.event.Event;
-
       source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
       scriptedClient = scriptedApacheHttpAsyncClient();
       
@@ -68,53 +66,58 @@
 
     <event-script language="beanshell">
 
-        log = bsf.lookupBean("log");
-        log.debug("running on event script");
+
+      import org.opennms.netmgt.xml.event.Event;
+      import org.json.simple.JSONArray;
+      import org.json.simple.JSONObject;
+      
+      log = bsf.lookupBean("log");
+      log.debug("running on event script");
         
-        ievent = bsf.lookupBean("event");
-        node = bsf.lookupBean("node");
+      ievent = bsf.lookupBean("event");
+      node = bsf.lookupBean("node");
 
-        if ("uei.opennms.org/translator/traps/SNMP_Link_Down".equals(ievent.getUei())) {
-            log.debug("event-script received SNMP_Link_Down event:" + ievent + " node:"+node);
+      if ("uei.opennms.org/translator/traps/SNMP_Link_Down".equals(ievent.getUei())) {
+          log.debug("event-script received SNMP_Link_Down event:" + ievent + " node:"+node);
             
-            event = Event.copyFrom(ievent);
-            ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
-            interface = event.getInterface()
+          event = Event.copyFrom(ievent);
+          ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
+          interface = event.getInterface();
             
-            jsonObject = new JSONObject();
-            jsonObject.put("NAME", "Catalyst-Link-Down");
-            arguments = new JSONObject();
-            arguments.put("DEVICE-ID", interface);
-            arguments.put("PORT-ID", ifName);
-            jsonObject.put("ARGUMENTS", arguments);
-            jsonMessage = jsonObject.toString);
+          jsonObject = new JSONObject();
+          jsonObject.put("NAME", "Catalyst-Link-Down");
+          arguments = new JSONObject();
+          arguments.put("DEVICE-ID", interface);
+          arguments.put("PORT-ID", ifName);
+          jsonObject.put("ARGUMENTS", arguments);
+          jsonMessage = jsonObject.toString);
 
-            log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" jsonMessage);
-            scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword)
+          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" jsonMessage);
+          scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword);
             
-        } else if ("uei.opennms.org/translator/traps/SNMP_Link_Up".equals(ievent.getUei())) {
-            log.debug("event-script received SNMP_Link_Up event:" + ievent + " node:"+node);
+      } else if ("uei.opennms.org/translator/traps/SNMP_Link_Up".equals(ievent.getUei())) {
+          log.debug("event-script received SNMP_Link_Up event:" + ievent + " node:"+node);
+          
+          event = Event.copyFrom(ievent);
+          ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
+          interface = event.getInterface();
             
-            event = Event.copyFrom(ievent);
-            ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
-            interface = event.getInterface()
-            
-            jsonObject = new JSONObject();
-            jsonObject.put("NAME", "Catalyst-Link-Up");
-            arguments = new JSONObject();
-            arguments.put("DEVICE-ID", interface);
-            arguments.put("PORT-ID", ifName);
-            jsonObject.put("ARGUMENTS", arguments);
-            jsonMessage = jsonObject.toString);
+          jsonObject = new JSONObject();
+          jsonObject.put("NAME", "Catalyst-Link-Up");
+          arguments = new JSONObject();
+          arguments.put("DEVICE-ID", interface);
+          arguments.put("PORT-ID", ifName);
+          jsonObject.put("ARGUMENTS", arguments);
+          jsonMessage = jsonObject.toString);
 
-            log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" jsonMessage);
-            scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword)
+          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" jsonMessage);
+          scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword);
             
-        } else {
-            log.debug("event-script received event:" + ievent + " node:"+node);
-        }
+      } else {
+          log.debug("event-script received event:" + ievent + " node:"+node);
+      }
 
-        log.debug("end of on event script");
+      log.debug("end of on event script");
 
     </event-script>
 
