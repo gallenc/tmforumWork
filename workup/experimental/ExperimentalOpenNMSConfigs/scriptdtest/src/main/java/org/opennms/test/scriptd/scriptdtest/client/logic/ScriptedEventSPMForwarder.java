@@ -747,7 +747,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     	try {
     		transTemplate.execute(transactionCallbackWithoutResult);
-    	} catch (final RuntimeException e) {
+    	} catch (RuntimeException e) {
     		log.error("updateAlarmDetails problem calling transaction",e);
     	}
 
