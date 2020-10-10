@@ -736,7 +736,7 @@ scriptedEventSPMForwarder() {
         	TransactionTemplate transTemplate = BeanUtils.getBean(bf, "transactionTemplate",TransactionTemplate.class);
         	
     		transTemplate.execute(new TransactionCallbackWithoutResult() {
-    			@Override
+    			/* @Override not in bsh */
     			public void doInTransactionWithoutResult(final TransactionStatus status) {
     				try { 
     					OnmsAlarm onmsAlarm = alarmDao.findByReductionKey(reductionKey);
