@@ -467,7 +467,11 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     						details.put("spmHREF", event.getParm("spmHREF").getValue().toString());
     					}
     					log.debug("ServiceProblem Reply : updating OpenNMS alarm details for reductionKey ="+reductionKey);
-        				updateAlarmDetails(reductionKey, details);
+    	                try {
+    						updateAlarmDetails(reductionKey, details);
+   	                    } catch (Throwable t) {
+    						log.debug("problem updatingAlarmDetails", t);
+   	                    }
     				}
 
     				log.debug("Persisting event to OpenNMS:" + event.toString());
@@ -720,6 +724,11 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     	/* not using typed or anonymous callback because of beanshell */
     	TransactionCallbackWithoutResult transactionCallbackWithoutResult = new TransactionCallbackWithoutResult() {
+    		
+    		{
+    		   log.debug("updateAlarmDetails created new transactionCallbackWithoutResult");
+    		}
+    		
     		@Override
     		public void doInTransactionWithoutResult(final TransactionStatus status) {
     			try { 
@@ -747,7 +756,9 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     	};
 
     	try {
+    		log.debug("updateAlarmDetails executing transactionCallbackWithoutResult");
     		transTemplate.execute(transactionCallbackWithoutResult);
+    		log.debug("updateAlarmDetails return from transactionCallbackWithoutResult");
     	} catch (RuntimeException e) {
     		log.error("updateAlarmDetails problem calling transaction",e);
     	}
