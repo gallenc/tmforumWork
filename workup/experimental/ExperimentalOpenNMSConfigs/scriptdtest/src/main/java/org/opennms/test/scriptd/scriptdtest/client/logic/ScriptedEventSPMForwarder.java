@@ -466,6 +466,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     					if (event.getParm("spmHREF")!=null) {
     						details.put("spmHREF", event.getParm("spmHREF").getValue().toString());
     					}
+    					log.debug("ServiceProblem Reply : updating OpenNMS alarm details for reductionKey ="+reductionKey);
         				updateAlarmDetails(reductionKey, details);
     				}
 
