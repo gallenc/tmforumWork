@@ -739,7 +739,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     				} else {
     					log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
     				}
-    			} catch (final RuntimeException e) {
+    			} catch (RuntimeException e) {
     				log.error("updateAlarmDetails problem within transaction:",e);
     			}
     		}
