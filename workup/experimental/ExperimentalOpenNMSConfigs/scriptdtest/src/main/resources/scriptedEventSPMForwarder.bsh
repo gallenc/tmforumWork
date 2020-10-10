@@ -736,7 +736,7 @@ scriptedEventSPMForwarder() {
     	/* not using typed or anonymous callback because of beanshell */
     	TransactionCallbackWithoutResult transactionCallbackWithoutResult = new TransactionCallbackWithoutResult() {
     		/* @Override */
-    		public void doInTransactionWithoutResult(final TransactionStatus status) {
+    		public void doInTransactionWithoutResult(TransactionStatus status) {
     			try { 
     				OnmsAlarm onmsAlarm = alarmDao.findByReductionKey(reductionKey);
     				if (onmsAlarm!=null) {
