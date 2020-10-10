@@ -713,39 +713,40 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     }
     
     public void updateAlarmDetails(String reductionKey, Map details) {
-    	
-    	try {
-        	BeanFactoryReference bf = BeanUtils.getBeanFactory("daoContext");
-        	final AlarmDao alarmDao = BeanUtils.getBean(bf,"alarmDao", AlarmDao.class);
-        	TransactionTemplate transTemplate = BeanUtils.getBean(bf, "transactionTemplate",TransactionTemplate.class);
-        	
-    		transTemplate.execute(new TransactionCallbackWithoutResult() {
-    			@Override
-    			public void doInTransactionWithoutResult(final TransactionStatus status) {
-    				try { 
-    					OnmsAlarm onmsAlarm = alarmDao.findByReductionKey(reductionKey);
-    					if (onmsAlarm!=null) {
-    						/* not using generics because not supported in beanshell */
-    						Map alarmDetails = onmsAlarm.getDetails();
-    						Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
-    						while(alarmDetailsIterator.hasNext()) {
-    							String detailKey = (String) alarmDetailsIterator.next();
-    							String detailValue=(String) details.get(detailKey);
-    							log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
-    							alarmDetails.put(detailKey, detailValue);
-    						}
-    						alarmDao.update(onmsAlarm);
-    						alarmDao.flush();
-    						log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
-    					} else {
-    						log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
-    					}
-    				} catch (final RuntimeException e) {
-    					log.error("updateAlarmDetails problem within transaction:",e);
-    				}
-    			}
-    		});
+    	BeanFactoryReference bf = BeanUtils.getBeanFactory("daoContext");
+    	final AlarmDao alarmDao = BeanUtils.getBean(bf,"alarmDao", AlarmDao.class);
+    	TransactionTemplate transTemplate = BeanUtils.getBean(bf, "transactionTemplate",TransactionTemplate.class);
 
+    	/* not using typed or anonymous callback because of beanshell */
+    	TransactionCallbackWithoutResult transactionCallbackWithoutResult = new TransactionCallbackWithoutResult() {
+    		@Override
+    		public void doInTransactionWithoutResult(final TransactionStatus status) {
+    			try { 
+    				OnmsAlarm onmsAlarm = alarmDao.findByReductionKey(reductionKey);
+    				if (onmsAlarm!=null) {
+    					/* not using generics because not supported in beanshell */
+    					Map alarmDetails = onmsAlarm.getDetails();
+    					Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
+    					while(alarmDetailsIterator.hasNext()) {
+    						String detailKey = (String) alarmDetailsIterator.next();
+    						String detailValue=(String) details.get(detailKey);
+    						log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
+    						alarmDetails.put(detailKey, detailValue);
+    					}
+    					alarmDao.update(onmsAlarm);
+    					alarmDao.flush();
+    					log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
+    				} else {
+    					log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
+    				}
+    			} catch (final RuntimeException e) {
+    				log.error("updateAlarmDetails problem within transaction:",e);
+    			}
+    		}
+    	};
+
+    	try {
+    		transTemplate.execute(transactionCallbackWithoutResult);
     	} catch (final RuntimeException e) {
     		log.error("updateAlarmDetails problem calling transaction",e);
     	}
