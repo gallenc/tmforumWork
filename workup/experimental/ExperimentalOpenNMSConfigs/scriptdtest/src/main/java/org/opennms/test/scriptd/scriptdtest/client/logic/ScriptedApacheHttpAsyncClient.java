@@ -1,6 +1,6 @@
 /* Asynchronous Apache HTTP Client which is used as basis for bean shell script  */
 /* Author: Craig Gallen */
-/* Version : 1.0 */
+/* Version : 1.8 */
 
 package org.opennms.test.scriptd.scriptdtest.client.logic;
 

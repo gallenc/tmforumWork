@@ -1,6 +1,6 @@
 /* Asynchronous Apache HTTP Server Original code for bean shell script for OpenNMS */
 /* Author: Craig Gallen */
-/* Version : 1.0 */
+/* Version : 1.8 */
 package org.opennms.test.scriptd.scriptdtest.client.logic;
 
 import java.io.BufferedReader;

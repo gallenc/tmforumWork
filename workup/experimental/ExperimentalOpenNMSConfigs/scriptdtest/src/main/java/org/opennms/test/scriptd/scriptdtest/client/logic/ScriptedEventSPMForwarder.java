@@ -1,13 +1,11 @@
 /* Scripted SPM Event Forwarder - original class */
 /* Author: Craig Gallen */
-/* Version : 1.0 */
+/* Version : 1.8 */
 
 package org.opennms.test.scriptd.scriptdtest.client.logic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,6 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -30,6 +29,14 @@ import org.opennms.netmgt.model.events.EventBuilder;
 import org.opennms.netmgt.xml.event.AlarmData;
 import org.opennms.netmgt.xml.event.Event;
 import org.opennms.netmgt.xml.event.Logmsg;
+
+import org.opennms.core.spring.BeanUtils;
+import org.opennms.netmgt.dao.api.AlarmDao;
+import org.opennms.netmgt.model.OnmsAlarm;
+import org.springframework.beans.factory.access.BeanFactoryReference;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
@@ -406,173 +413,190 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     @Override
     public synchronized void handleIncomingMessage(JSONObject message) {
 
-        log.debug("handleIncomingMessage called,  message=" + message);
+    	log.debug("handleIncomingMessage called,  message=" + message);
 
-        String messageSource = (String) message.get("messageSource");
-        String requestMethod = (String) message.get("requestMethod");
-        String requestHost = (String) message.get("requestHost");
-        String requestPath = (String) message.get("requestPath");
-        String requestRawUrl = (String) message.get("requestRawUrl");
-        String status = (message.get("status") == null) ? null : message.get("status").toString();
-        JSONObject jsonobject = (JSONObject) message.get("jsonobject");
-        JSONArray jsonarray = (JSONArray) message.get("jsonarray");
+    	String messageSource = (String) message.get("messageSource");
+    	String requestMethod = (String) message.get("requestMethod");
+    	String requestHost = (String) message.get("requestHost");
+    	String requestPath = (String) message.get("requestPath");
+    	String requestRawUrl = (String) message.get("requestRawUrl");
+    	String status = (message.get("status") == null) ? null : message.get("status").toString();
+    	JSONObject jsonobject = (JSONObject) message.get("jsonobject");
+    	JSONArray jsonarray = (JSONArray) message.get("jsonarray");
 
-        /* check if message comes as reply from a push message from asyncClyent */
-        if ("asyncClient".equals(messageSource)) {
+    	/* check if message comes as reply from a push message from asyncClyent */
+    	if ("asyncClient".equals(messageSource)) {
 
-            /* possible spm sent messages */
-            /* POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
-            /* PATCH /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
-            /* DELETE /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
+    		/* possible spm sent messages */
+    		/* POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
+    		/* PATCH /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
+    		/* DELETE /tmf-api/serviceProblemManagement/v3/serviceProblem/2 */
 
-            if ("200".equals(status) || "201".equals(status) || "204".equals(status)) {
-                /* find out what message replied to */
+    		if ("200".equals(status) || "201".equals(status) || "204".equals(status)) {
+    			/* find out what message replied to */
 
-                /* check for reply to register for events */
-                if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/hub") && "POST".equals(requestMethod)
-                        && jsonobject != null) {
+    			/* check for reply to register for events */
+    			if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/hub") && "POST".equals(requestMethod)
+    					&& jsonobject != null) {
 
-                    log.debug("successfully registered for messages: " + requestPath + " reply:" + jsonobject.toString() + " requestRawUrl=" + requestRawUrl);
-                    String id = (String) jsonobject.get("id");
-                    String url = requestRawUrl.substring(0, requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
-                    log.debug("registering listener for : url=" + url + " id=" + id);
-                    m_registered_listeners.put(url, id);
-                }
+    				log.debug("successfully registered for messages: " + requestPath + " reply:" + jsonobject.toString() + " requestRawUrl=" + requestRawUrl);
+    				String id = (String) jsonobject.get("id");
+    				String url = requestRawUrl.substring(0, requestRawUrl.indexOf("/tmf-api/serviceProblemManagement/v3/hub"));
+    				log.debug("registering listener for : url=" + url + " id=" + id);
+    				m_registered_listeners.put(url, id);
+    			}
 
-                /* check for reply to create service problem POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
-                else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem") && "POST".equals(requestMethod)
-                        && jsonobject != null) {
+    			/* check for reply to create service problem POST /tmf-api/serviceProblemManagement/v3/serviceProblem */
+    			else if (requestPath != null && requestPath.contains("/tmf-api/serviceProblemManagement/v3/serviceProblem") && "POST".equals(requestMethod)
+    					&& jsonobject != null) {
 
-                    String uei = SERVICE_PROBLEM_REPLY_UEI;
-                    Event event = onmsEventFromServiceProblem(uei, jsonobject);
-                    log.debug("Persisting event to OpenNMS:" + event.toString());
+    				String uei = SERVICE_PROBLEM_REPLY_UEI;
+    				Event event = onmsEventFromServiceProblem(uei, jsonobject);
 
-                    try {
-                        EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_REPLY event through ipcManager");
-                    } catch (Throwable t) {
-                        log.debug("problem sending event to OpenNMS:", t);
-                    }
+    				/* update alarm with same correlationId as spm with spm details in event */
+    				if (event.getParm("spmCorrelationId")!=null) {
+                        Map details = new HashMap();
+    					
+    					String reductionKey = event.getParm("spmCorrelationId").getValue().toString();
+    					details.put("spmCorrelationId",reductionKey);
+    					
+    					if (event.getParm("spmID")!=null) {
+    						details.put("spmID", event.getParm("spmID").getValue().toString());
+    					}
+    					if (event.getParm("spmHREF")!=null) {
+    						details.put("spmHREF", event.getParm("spmHREF").getValue().toString());
+    					}
+        				updateAlarmDetails(reductionKey, details);
+    				}
 
-                } else {
-                    /* just log reply from any other method or request */
-                    log.debug("Unused reply from SPM interface: " + message.toString());
-                }
+    				log.debug("Persisting event to OpenNMS:" + event.toString());
 
-            } else {
-                /* create event for error reply */
-                log.debug("Error Reply from SPM interface: " + message.toString());
-            }
+    				try {
+    					EventIpcManagerFactory.getIpcManager().sendNow(event);
+    					log.debug("sent SERVICE_PROBLEM_REPLY event through ipcManager");
+    				} catch (Throwable t) {
+    					log.debug("problem sending event to OpenNMS:", t);
+    				}
 
-            /* check if message comes as input from httpServer */
-        } else if ("httpServer".equals(messageSource)) {
+    			} else {
+    				/* just log reply from any other method or request */
+    				log.debug("Unused reply from SPM interface: " + message.toString());
+    			}
 
-            log.debug("Http server received message: " + message.toString());
-            String spmEventType = null;
-            JSONObject spmServiceProblem = null;
-            String spmServiceProblemId = null;
-            String spmOriginatingSystem = null;
-            String spmStatus = null;
-            Long spmPriority = null;
-            if (jsonobject != null) {
-            	try {
-                   spmEventType = (String) jsonobject.get("eventType");
-                   JSONObject spmEvent = (JSONObject) jsonobject.get("event");
-                   spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
-                   spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
-                   spmOriginatingSystem = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("originatingSystem");
-                   spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("status");
-                   spmPriority = (spmServiceProblem == null) ? null : (Long) spmServiceProblem.get("priority");
-            	} catch (Exception e) {
-            		log.error("problem reading message posted to httpServer", e);
-            	}
-            }
-            if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
-                log.debug("cannot recognise message as SPM event."
-                        + " spmEventType: " + spmEventType 
-                        + " spmServiceProblemId: " + spmServiceProblemId
-                        + " spmServiceProblem: " + spmServiceProblem 
-                        + " Message: " + message.toString());
-            } else {
+    		} else {
+    			/* create event for error reply */
+    			log.debug("Error Reply from SPM interface: " + message.toString());
+    		}
 
-                String uei = null;
-                Event event = null;
+    		/* check if message comes as input from httpServer */
+    	} else if ("httpServer".equals(messageSource)) {
 
-                switch (spmEventType) {
-                /* TMF SPM Service Problem event types */
-                case SERVICE_PROBLEM_CREATE_NOTIFICATION:
-                    if (m_thisOriginatingSystem.equals(spmOriginatingSystem)) {
-                        log.debug("not handling spm create notification which carries a create from our own originatingSystem=" + spmOriginatingSystem);
-                        break;
-                    }
-                    uei = SERVICE_PROBLEM_UEI;
-                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
-                    log.debug("Persisting event to OpenNMS:" + event.toString());
-                    try {
-                        EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
-                    } catch (Throwable t) {
-                        log.debug("problem sending event to OpenNMS:", t);
-                    }
-                    break;
-                case SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION:
-                	// check if state is now Closed or Cancelled
-                	if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
-                		uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
-                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
-                		event.setSeverity("Cleared");
-                	} else {
-                		uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
-                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
-                	}
+    		log.debug("Http server received message: " + message.toString());
+    		String spmEventType = null;
+    		JSONObject spmServiceProblem = null;
+    		String spmServiceProblemId = null;
+    		String spmOriginatingSystem = null;
+    		String spmStatus = null;
+    		Long spmPriority = null;
+    		if (jsonobject != null) {
+    			try {
+    				spmEventType = (String) jsonobject.get("eventType");
+    				JSONObject spmEvent = (JSONObject) jsonobject.get("event");
+    				spmServiceProblem = (spmEvent == null) ? null : (JSONObject) spmEvent.get("serviceProblem");
+    				spmServiceProblemId = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("id");
+    				spmOriginatingSystem = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("originatingSystem");
+    				spmStatus = (spmServiceProblem == null) ? null : (String) spmServiceProblem.get("status");
+    				spmPriority = (spmServiceProblem == null) ? null : (Long) spmServiceProblem.get("priority");
+    			} catch (Exception e) {
+    				log.error("problem reading message posted to httpServer", e);
+    			}
+    		}
+    		if (spmEventType == null || spmServiceProblem == null || spmServiceProblemId == null) {
+    			log.debug("cannot recognise message as SPM event."
+    					+ " spmEventType: " + spmEventType 
+    					+ " spmServiceProblemId: " + spmServiceProblemId
+    					+ " spmServiceProblem: " + spmServiceProblem 
+    					+ " Message: " + message.toString());
+    		} else {
 
-                    log.debug("Persisting event to OpenNMS:" + event.toString());
-                    try {
-                        EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("received SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION sent "+uei+" event through ipcManager");
-                    } catch (Throwable t) {
-                        log.debug("problem sending event to OpenNMS:", t);
-                    }
-                    break;
-                case SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION:
-                	// check if state is now Closed or Cancelled
-                	if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
-                		uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
-                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
-                		event.setSeverity("Cleared");
-                	} else {
-                		uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
-                        event = onmsEventFromServiceProblem(uei, spmServiceProblem);
-                	}
+    			String uei = null;
+    			Event event = null;
 
-                    log.debug("Persisting event to OpenNMS:" + event.toString());
-                    try {
-                        EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("received SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION sent "+uei+" event through ipcManager");
-                    } catch (Throwable t) {
-                        log.debug("problem sending event to OpenNMS:", t);
-                    }
-                    break;
-                case SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION:
-                    uei = SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI;
-                    event = onmsEventFromServiceProblem(uei, spmServiceProblem);
-                    log.debug("Persisting event to OpenNMS:" + event.toString());
-                    try {
-                        EventIpcManagerFactory.getIpcManager().sendNow(event);
-                        log.debug("sent SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION event through ipcManager");
-                    } catch (Throwable t) {
-                        log.debug("problem sending event to OpenNMS:", t);
-                    }
-                    break;
-                default:
-                    log.debug("unknown SPM event type. spmEventType: " + spmEventType);
-                }
-            }
+    			switch (spmEventType) {
+    			/* TMF SPM Service Problem event types */
+    			case SERVICE_PROBLEM_CREATE_NOTIFICATION:
+    				if (m_thisOriginatingSystem.equals(spmOriginatingSystem)) {
+    					log.debug("not handling spm create notification which carries a create from our own originatingSystem=" + spmOriginatingSystem);
+    					break;
+    				}
+    				uei = SERVICE_PROBLEM_UEI;
+    				event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+    				log.debug("Persisting event to OpenNMS:" + event.toString());
+    				try {
+    					EventIpcManagerFactory.getIpcManager().sendNow(event);
+    					log.debug("sent SERVICE_PROBLEM_CREATE_NOTIFICATION event through ipcManager");
+    				} catch (Throwable t) {
+    					log.debug("problem sending event to OpenNMS:", t);
+    				}
+    				break;
+    			case SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION:
+    				// check if state is now Closed or Cancelled
+    				if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
+    					uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
+    					event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+    					event.setSeverity("Cleared");
+    				} else {
+    					uei = SERVICE_PROBLEM_STATE_CHANGE_UEI;
+    					event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+    				}
 
-        } else {
-            /* unknown message source */
-            log.debug("message received from unknown internal source:" + messageSource + " message: " + message.toString());
-        }
+    				log.debug("Persisting event to OpenNMS:" + event.toString());
+    				try {
+    					EventIpcManagerFactory.getIpcManager().sendNow(event);
+    					log.debug("received SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION sent "+uei+" event through ipcManager");
+    				} catch (Throwable t) {
+    					log.debug("problem sending event to OpenNMS:", t);
+    				}
+    				break;
+    			case SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION:
+    				// check if state is now Closed or Cancelled
+    				if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
+    					uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
+    					event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+    					event.setSeverity("Cleared");
+    				} else {
+    					uei = SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_UEI;
+    					event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+    				}
+
+    				log.debug("Persisting event to OpenNMS:" + event.toString());
+    				try {
+    					EventIpcManagerFactory.getIpcManager().sendNow(event);
+    					log.debug("received SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION sent "+uei+" event through ipcManager");
+    				} catch (Throwable t) {
+    					log.debug("problem sending event to OpenNMS:", t);
+    				}
+    				break;
+    			case SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION:
+    				uei = SERVICE_PROBLEM_INFORMATION_REQUIRED_UEI;
+    				event = onmsEventFromServiceProblem(uei, spmServiceProblem);
+    				log.debug("Persisting event to OpenNMS:" + event.toString());
+    				try {
+    					EventIpcManagerFactory.getIpcManager().sendNow(event);
+    					log.debug("sent SERVICE_PROBLEM_INFORMATION_REQUIRED_NOTIFICATION event through ipcManager");
+    				} catch (Throwable t) {
+    					log.debug("problem sending event to OpenNMS:", t);
+    				}
+    				break;
+    			default:
+    				log.debug("unknown SPM event type. spmEventType: " + spmEventType);
+    			}
+    		}
+
+    	} else {
+    		/* unknown message source */
+    		log.debug("message received from unknown internal source:" + messageSource + " message: " + message.toString());
+    	}
 
     }
 
@@ -686,6 +710,46 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         hubRequest.put("query", query);
         m_scriptedClient.postRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub", hubRequest.toString(), 
         		urlCredential.getUsername(), urlCredential.getPassword());
+    }
+    
+    public void updateAlarmDetails(String reductionKey, Map details) {
+    	
+    	try {
+        	BeanFactoryReference bf = BeanUtils.getBeanFactory("daoContext");
+        	final AlarmDao alarmDao = BeanUtils.getBean(bf,"alarmDao", AlarmDao.class);
+        	TransactionTemplate transTemplate = BeanUtils.getBean(bf, "transactionTemplate",TransactionTemplate.class);
+        	
+    		transTemplate.execute(new TransactionCallbackWithoutResult() {
+    			@Override
+    			public void doInTransactionWithoutResult(final TransactionStatus status) {
+    				try { 
+    					OnmsAlarm onmsAlarm = alarmDao.findByReductionKey(reductionKey);
+    					if (onmsAlarm!=null) {
+    						/* not using generics because not supported in beanshell */
+    						Map alarmDetails = onmsAlarm.getDetails();
+    						Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
+    						while(alarmDetailsIterator.hasNext()) {
+    							String detailKey = (String) alarmDetailsIterator.next();
+    							String detailValue=(String) details.get(detailKey);
+    							log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
+    							alarmDetails.put(detailKey, detailValue);
+    						}
+    						alarmDao.update(onmsAlarm);
+    						alarmDao.flush();
+    						log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
+    					} else {
+    						log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
+    					}
+    				} catch (final RuntimeException e) {
+    					log.error("updateAlarmDetails problem within transaction:",e);
+    				}
+    			}
+    		});
+
+    	} catch (final RuntimeException e) {
+    		log.error("updateAlarmDetails problem calling transaction",e);
+    	}
+
     }
 
     /* returns this beanshell declaration so that its methods can be invoked */
