@@ -38,9 +38,16 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.function.Supplier;
+import org.opennms.netmgt.dao.api.SessionUtils;
+
 public class ScriptedEventSPMForwarder extends MessageHandler {
     static final Logger log = LoggerFactory.getLogger(ScriptedEventSPMForwarder.class);
-
+    
+    BeanFactoryReference m_bf = BeanUtils.getBeanFactory("daoContext");
+    AlarmDao m_alarmDao = BeanUtils.getBean(m_bf,"alarmDao", AlarmDao.class);
+    SessionUtils m_sessionUtils = BeanUtils.getBean(m_bf, "sessionUtils", SessionUtils.class);
+    
     /* Standard OpenNMS BSM events */
     static final String BSM_SERVICE_PROBLEM_UEI = "uei.opennms.org/bsm/serviceProblem";
     static final String BSM_SERVICE_OPERATIONAL_STATUS_CHANGED_UEI = "uei.opennms.org/bsm/serviceOperationalStatusChanged";
@@ -259,17 +266,30 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     }
 
     public void handleEvent(IEvent ievent, OnmsNode node) {
-        if (BSM_SERVICE_PROBLEM_UEI.equals(ievent.getUei())) {
-            log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent + " node:" + node);
-            createServiceProblem(ievent);
 
-        } else if (BSM_SERVICE_OPERATIONAL_STATUS_CHANGED_UEI.equals(ievent.getUei())) {
-            log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:" + node);
+    	/* this runs beanshell within transaction when scriptd transactional=false not using lambdas for beanshell */
+    	m_sessionUtils.withTransaction(new Supplier(){
 
-        } else if (BSM_SERVICE_PROBLEM_RESOLVED_UEI.equals(ievent.getUei())) {
-            log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
-            resolveServiceProblem(ievent);
-        }
+    		public Object get() {
+    			try {
+    				if (BSM_SERVICE_PROBLEM_UEI.equals(ievent.getUei())) {
+    					log.debug("handleEvent script received SERVICE_PROBLEM event:" + ievent + " node:" + node);
+    					createServiceProblem(ievent);
+
+    				} else if (BSM_SERVICE_OPERATIONAL_STATUS_CHANGED_UEI.equals(ievent.getUei())) {
+    					log.debug("handleEvent script received SERVICE_OPERATIONAL_STATUS_CHANGED event:" + ievent + " node:" + node);
+
+    				} else if (BSM_SERVICE_PROBLEM_RESOLVED_UEI.equals(ievent.getUei())) {
+    					log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
+    					resolveServiceProblem(ievent);
+    				}
+    			} catch (Exception e) {
+    				log.error("handleEvent error when running in transaction ",e );
+    			}
+    			return null;
+    		}
+
+    	});
 
     }
     
@@ -456,19 +476,19 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     				/* update alarm with same correlationId as spm with spm details in event */
     				if (event.getParm("spmCorrelationId")!=null) {
                         Map details = new HashMap();
-    					
-    					String reductionKey = event.getParm("spmCorrelationId").getValue().toString();
+
+    					String reductionKey = event.getParm("spmCorrelationId").getValue().getContent();
     					details.put("spmCorrelationId",reductionKey);
-    					
+
     					if (event.getParm("spmID")!=null) {
-    						details.put("spmID", event.getParm("spmID").getValue().toString());
+    						details.put("spmID", event.getParm("spmID").getValue().getContent());
     					}
     					if (event.getParm("spmHREF")!=null) {
-    						details.put("spmHREF", event.getParm("spmHREF").getValue().toString());
+    						details.put("spmHREF", event.getParm("spmHREF").getValue().getContent());
     					}
     					log.debug("ServiceProblem Reply : updating OpenNMS alarm details for reductionKey ="+reductionKey);
     	                try {
-    						updateAlarmDetails(reductionKey, details);
+    						/* updateAlarmDetails(reductionKey, details); */
    	                    } catch (Throwable t) {
     						log.debug("problem updatingAlarmDetails", t);
    	                    }
