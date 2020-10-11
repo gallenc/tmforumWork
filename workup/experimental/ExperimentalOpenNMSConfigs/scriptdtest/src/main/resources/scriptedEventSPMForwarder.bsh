@@ -490,14 +490,14 @@ scriptedEventSPMForwarder() {
     				if (event.getParm("spmCorrelationId")!=null) {
                         Map details = new HashMap();
     					
-    					String reductionKey = event.getParm("spmCorrelationId").getValue().toString();
+    					String reductionKey = event.getParm("spmCorrelationId").getValue().getContent();
     					details.put("spmCorrelationId",reductionKey);
     					
     					if (event.getParm("spmID")!=null) {
-    						details.put("spmID", event.getParm("spmID").getValue().toString());
+    						details.put("spmID", event.getParm("spmID").getValue().getContent());
     					}
     					if (event.getParm("spmHREF")!=null) {
-    						details.put("spmHREF", event.getParm("spmHREF").getValue().toString());
+    						details.put("spmHREF", event.getParm("spmHREF").getValue().getContent());
     					}
     					log.debug("ServiceProblem Reply : updating OpenNMS alarm details for reductionKey ="+reductionKey);
     	                try {
