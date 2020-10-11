@@ -475,7 +475,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     				/* update alarm with same correlationId as spm with spm details in event */
     				if (event.getParm("spmCorrelationId")!=null) {
-                        Map details = new HashMap();
+    					Map details = new HashMap();
 
     					String reductionKey = event.getParm("spmCorrelationId").getValue().getContent();
     					details.put("spmCorrelationId",reductionKey);
@@ -487,11 +487,28 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     						details.put("spmHREF", event.getParm("spmHREF").getValue().getContent());
     					}
     					log.debug("ServiceProblem Reply : updating OpenNMS alarm details for reductionKey ="+reductionKey);
-    	                try {
-    						/* updateAlarmDetails(reductionKey, details); */
-   	                    } catch (Throwable t) {
+    					try {
+    						/* updateAlarmDetails(reductionKey, details); TODO REMOVE */
+    						OnmsAlarm onmsAlarm = m_alarmDao.findByReductionKey(reductionKey);
+    						if (onmsAlarm!=null) {
+    							/* not using generics because not supported in beanshell */
+    							Map alarmDetails = onmsAlarm.getDetails();
+    							Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
+    							while(alarmDetailsIterator.hasNext()) {
+    								String detailKey = (String) alarmDetailsIterator.next();
+    								String detailValue=(String) details.get(detailKey);
+    								log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
+    								alarmDetails.put(detailKey, detailValue);
+    							}
+    							m_alarmDao.update(onmsAlarm);
+    							m_alarmDao.flush();
+    							log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
+    						} else {
+    							log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
+    						}
+    					} catch (Throwable t) {
     						log.debug("problem updatingAlarmDetails", t);
-   	                    }
+    					}
     				}
 
     				log.debug("Persisting event to OpenNMS:" + event.toString());
