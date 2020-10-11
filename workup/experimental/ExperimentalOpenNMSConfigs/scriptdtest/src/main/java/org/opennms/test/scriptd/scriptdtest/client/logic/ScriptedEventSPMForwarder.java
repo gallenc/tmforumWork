@@ -718,6 +718,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     }
     
     public void updateAlarmDetails(String reductionKey, Map details) {
+    	log.debug("updateAlarmDetails called for reductionKey="+reductionKey);
+
     	BeanFactoryReference bf = BeanUtils.getBeanFactory("daoContext");
     	final AlarmDao alarmDao = BeanUtils.getBean(bf,"alarmDao", AlarmDao.class);
     	TransactionTemplate transTemplate = BeanUtils.getBean(bf, "transactionTemplate",TransactionTemplate.class);
