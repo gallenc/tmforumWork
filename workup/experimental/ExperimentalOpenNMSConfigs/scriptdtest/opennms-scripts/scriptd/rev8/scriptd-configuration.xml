@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!-- scriptd-config.xml revision 7.0 -->
-<scriptd-configuration>
+<!-- scriptd-config.xml revision 8.0 -->
+<scriptd-configuration transactional="false" >
     <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
     <start-script language="beanshell">
 
