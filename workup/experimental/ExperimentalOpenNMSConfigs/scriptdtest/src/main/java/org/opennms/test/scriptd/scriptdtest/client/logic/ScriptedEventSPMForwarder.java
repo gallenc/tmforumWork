@@ -298,7 +298,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     	log.debug("resolveServiceProblem script received immutable event:" + ievent);
     	Event event = Event.copyFrom(ievent);
 
-    	String reductionKey = (event.getAlarmData() != null) ? null : event.getAlarmData().getReductionKey();
+    	String reductionKey = (event.getAlarmData() == null) ? null : event.getAlarmData().getReductionKey();
     	if (reductionKey == null) {
     		log.debug("resolveServiceProblem cannot resolve serviceProblem as event reductionKey=null");
     		return;
