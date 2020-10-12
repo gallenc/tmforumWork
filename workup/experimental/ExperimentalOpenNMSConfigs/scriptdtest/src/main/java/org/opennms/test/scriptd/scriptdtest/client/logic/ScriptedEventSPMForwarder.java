@@ -504,6 +504,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     		    								log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
     		    								alarmDetails.put(detailKey, detailValue);
     		    							}
+    		    							onmsAlarm.setDetails(alarmDetails);
     		    							m_alarmDao.update(onmsAlarm);
     		    							m_alarmDao.flush();
     		    							log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
