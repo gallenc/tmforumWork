@@ -347,14 +347,16 @@ scriptedEventSPMForwarder() {
             }
 
     		/* send patch to all spm servers matching spmHREF */
-            for (UrlCredential urlCredential : m_urlCredentials) {
+            /* remove type for beanshell */
+            for (urlCredential : m_urlCredentials) {
                 String baseUrl = urlCredential.getUrl();
                 String username = urlCredential.getUsername();
                 String password = urlCredential.getPassword();
                 
                 if(spmHREF!=null && spmHREF.contains(baseUrl)) try {
                 	
-                	JSONObject serviceProblemPatch = new JSONObject();
+                	/* remove type for beanshell */
+                	serviceProblemPatch = new JSONObject();
                 	serviceProblemPatch.put("id", spmID);
                 	serviceProblemPatch.put("href", spmHREF);
                 	serviceProblemPatch.put("status", "Resolved");
