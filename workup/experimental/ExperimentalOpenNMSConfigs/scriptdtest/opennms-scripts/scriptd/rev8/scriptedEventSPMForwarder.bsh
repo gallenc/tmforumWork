@@ -296,8 +296,8 @@ scriptedEventSPMForwarder() {
     					log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
     					resolveServiceProblem(ievent);
     				}
-    			} catch (Exception e) {
-    				log.error("handleEvent error when running in transaction ",e );
+    			} catch (Throwable t) {
+    				log.error("handleEvent error when running in transaction ", t );
     			}
     			return null;
     		}
@@ -343,6 +343,7 @@ scriptedEventSPMForwarder() {
         	/* patch service problem for spmHREF using correct credentials */
             if (m_urlCredentials.size() == 0) {
                 log.warn("no baseUrls set. Cannot send service problem patch.");
+    			return;
             }
 
     		/* send patch to all spm servers matching spmHREF */
@@ -369,8 +370,8 @@ scriptedEventSPMForwarder() {
                     log.error("problem patching service problem ", e2);
                 }
             }
-         } catch (Exception e) {
-            log.debug("resolveServiceProblem problem patching service problem", e);
+         } catch (Throwable t) {
+            log.debug("resolveServiceProblem problem patching service problem", t);
          }
     }
 

@@ -283,8 +283,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     					log.debug("handleEvent script received SERVICE_PROBLEM_RESOLVED event:" + ievent + " node:" + node);
     					resolveServiceProblem(ievent);
     				}
-    			} catch (Exception e) {
-    				log.error("handleEvent error when running in transaction ",e );
+    			} catch (Throwable t) {
+    				log.error("handleEvent error when running in transaction ", t );
     			}
     			return null;
     		}
@@ -331,6 +331,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     		/* patch service problem for spmHREF using correct credentials */
     		if (m_urlCredentials.size() == 0) {
     			log.warn("no baseUrls set. Cannot send service problem patch.");
+    			return;
     		}
 
     		/* send patch to all spm servers matching spmHREF */
@@ -341,24 +342,25 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
 
     			if (spmHREF != null && spmHREF.contains(baseUrl)) try {
 
-    					JSONObject serviceProblemPatch = new JSONObject();
-    					serviceProblemPatch.put("id", spmID);
-    					serviceProblemPatch.put("href", spmHREF);
-    					serviceProblemPatch.put("status", "Resolved");
-    					serviceProblemPatch.put("statusChangeReason", "service problem resolved in OpenNMS");
+    				JSONObject serviceProblemPatch = new JSONObject();
+    				serviceProblemPatch.put("id", spmID);
+    				serviceProblemPatch.put("href", spmHREF);
+    				serviceProblemPatch.put("status", "Resolved");
+    				serviceProblemPatch.put("statusChangeReason", "service problem resolved in OpenNMS");
 
-    					log.debug("resolveServiceProblem resolving service problem HREF : " + spmHREF);
-    					String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
+    				log.debug("resolveServiceProblem resolving service problem HREF : " + spmHREF);
+    				String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
 
-    					/* patch http request */
-    					m_scriptedClient.patchRequest(url, serviceProblemPatch.toString(), username, password);
+    				/* patch http request */
+    				m_scriptedClient.patchRequest(url, serviceProblemPatch.toString(), username, password);
 
-    				} catch (Exception e2) {
-    					log.error("problem patching service problem ", e2);
-    				}
+    			} catch (Exception e2) {
+    				log.error("problem patching service problem ", e2);
+    			}
     		}
-    	} catch (Exception e) {
-    		log.debug("resolveServiceProblem problem patching service problem", e);
+    		
+    	} catch (Throwable t) {
+    		log.debug("resolveServiceProblem problem patching service problem", t);
     	}
     }
 
