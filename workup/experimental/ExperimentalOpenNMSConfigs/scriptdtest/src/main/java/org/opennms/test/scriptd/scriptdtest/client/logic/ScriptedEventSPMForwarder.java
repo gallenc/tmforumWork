@@ -488,24 +488,36 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     					}
     					log.debug("ServiceProblem Reply : updating OpenNMS alarm details for reductionKey ="+reductionKey);
     					try {
-    						/* updateAlarmDetails(reductionKey, details); TODO REMOVE */
-    						OnmsAlarm onmsAlarm = m_alarmDao.findByReductionKey(reductionKey);
-    						if (onmsAlarm!=null) {
-    							/* not using generics because not supported in beanshell */
-    							Map alarmDetails = onmsAlarm.getDetails();
-    							Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
-    							while(alarmDetailsIterator.hasNext()) {
-    								String detailKey = (String) alarmDetailsIterator.next();
-    								String detailValue=(String) details.get(detailKey);
-    								log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
-    								alarmDetails.put(detailKey, detailValue);
-    							}
-    							m_alarmDao.update(onmsAlarm);
-    							m_alarmDao.flush();
-    							log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
-    						} else {
-    							log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
-    						}
+    						
+    						m_sessionUtils.withTransaction(new Supplier(){
+
+    				    		public Object get() {
+    				    			try {
+    				    				OnmsAlarm onmsAlarm = m_alarmDao.findByReductionKey(reductionKey);
+    		    						if (onmsAlarm!=null) {
+    		    							/* not using generics because not supported in beanshell */
+    		    							Map alarmDetails = onmsAlarm.getDetails();
+    		    							Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
+    		    							while(alarmDetailsIterator.hasNext()) {
+    		    								String detailKey = (String) alarmDetailsIterator.next();
+    		    								String detailValue=(String) details.get(detailKey);
+    		    								log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
+    		    								alarmDetails.put(detailKey, detailValue);
+    		    							}
+    		    							m_alarmDao.update(onmsAlarm);
+    		    							m_alarmDao.flush();
+    		    							log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
+    		    						} else {
+    		    							log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
+    		    						}
+    				    			} catch (Exception e) {
+    				    				log.error("handleEvent error when running in transaction ",e );
+    				    			}
+    				    			return null;
+    				    		}
+
+    				    	});
+  						
     					} catch (Throwable t) {
     						log.debug("problem updatingAlarmDetails", t);
     					}
@@ -752,56 +764,6 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
         hubRequest.put("query", query);
         m_scriptedClient.postRequest(urlCredential.getUrl() + "/tmf-api/serviceProblemManagement/v3/hub", hubRequest.toString(), 
         		urlCredential.getUsername(), urlCredential.getPassword());
-    }
-    
-    public void updateAlarmDetails(String reductionKey, Map details) {
-    	log.debug("updateAlarmDetails called for reductionKey="+reductionKey);
-
-    	BeanFactoryReference bf = BeanUtils.getBeanFactory("daoContext");
-    	final AlarmDao alarmDao = BeanUtils.getBean(bf,"alarmDao", AlarmDao.class);
-    	TransactionTemplate transTemplate = BeanUtils.getBean(bf, "transactionTemplate",TransactionTemplate.class);
-
-    	/* not using typed or anonymous callback because of beanshell */
-    	TransactionCallbackWithoutResult transactionCallbackWithoutResult = new TransactionCallbackWithoutResult() {
-    		
-    		{
-    		   log.debug("updateAlarmDetails created new transactionCallbackWithoutResult");
-    		}
-    		
-    		@Override
-    		public void doInTransactionWithoutResult(final TransactionStatus status) {
-    			try { 
-    				OnmsAlarm onmsAlarm = alarmDao.findByReductionKey(reductionKey);
-    				if (onmsAlarm!=null) {
-    					/* not using generics because not supported in beanshell */
-    					Map alarmDetails = onmsAlarm.getDetails();
-    					Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
-    					while(alarmDetailsIterator.hasNext()) {
-    						String detailKey = (String) alarmDetailsIterator.next();
-    						String detailValue=(String) details.get(detailKey);
-    						log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
-    						alarmDetails.put(detailKey, detailValue);
-    					}
-    					alarmDao.update(onmsAlarm);
-    					alarmDao.flush();
-    					log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
-    				} else {
-    					log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
-    				}
-    			} catch (RuntimeException e) {
-    				log.error("updateAlarmDetails problem within transaction:",e);
-    			}
-    		}
-    	};
-
-    	try {
-    		log.debug("updateAlarmDetails executing transactionCallbackWithoutResult");
-    		transTemplate.execute(transactionCallbackWithoutResult);
-    		log.debug("updateAlarmDetails return from transactionCallbackWithoutResult");
-    	} catch (RuntimeException e) {
-    		log.error("updateAlarmDetails problem calling transaction",e);
-    	}
-
     }
 
     /* returns this beanshell declaration so that its methods can be invoked */
