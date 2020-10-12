@@ -497,7 +497,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     		    						if (onmsAlarm!=null) {
     		    							/* not using generics because not supported in beanshell */
     		    							Map alarmDetails = onmsAlarm.getDetails();
-    		    							Iterator alarmDetailsIterator = alarmDetails.keySet().iterator();
+    		    							Iterator alarmDetailsIterator = details.keySet().iterator();
     		    							while(alarmDetailsIterator.hasNext()) {
     		    								String detailKey = (String) alarmDetailsIterator.next();
     		    								String detailValue=(String) details.get(detailKey);
