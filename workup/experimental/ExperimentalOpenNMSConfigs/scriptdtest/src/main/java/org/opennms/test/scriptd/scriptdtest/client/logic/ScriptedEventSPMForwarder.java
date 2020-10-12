@@ -295,51 +295,71 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     
     /* note this only works for single href */
     public void resolveServiceProblem(IEvent ievent) {
-        log.debug("resolveServiceProblem script received immutable event:" + ievent);
-        Event event = Event.copyFrom(ievent);
-        String spmHREF = (event.getParm("spmHREF") == null) ? null : event.getParm("spmHREF").getValue().getContent();
-        String spmID = (event.getParm("spmID") == null) ? null : event.getParm("spmID").getValue().getContent();
-        
-        if ( spmHREF == null ) {
-        	log.debug("resolveServiceProblem cannot resolve serviceProblem as event has no spmHREF");
-        	return;
-        }
-        
-        try {
-        	log.debug("resolveServiceProblem trying to resolve problem with spmHREF="+spmHREF);
+    	log.debug("resolveServiceProblem script received immutable event:" + ievent);
+    	Event event = Event.copyFrom(ievent);
 
-        	/* patch service problem for spmHREF using correct credentials */
-            if (m_urlCredentials.size() == 0) {
-                log.warn("no baseUrls set. Cannot send service problem patch.");
-            }
+    	String reductionKey = (event.getAlarmData() != null) ? null : event.getAlarmData().getReductionKey();
+    	if (reductionKey == null) {
+    		log.debug("resolveServiceProblem cannot resolve serviceProblem as event reductionKey=null");
+    		return;
+    	}
 
-            /* send patch to all spm server matching spmHREF */
-            for (UrlCredential urlCredential : m_urlCredentials) {
-                String baseUrl = urlCredential.getUrl();
-                String username = urlCredential.getUsername();
-                String password = urlCredential.getPassword();
-                
-                if(spmHREF!=null && spmHREF.contains(baseUrl)) try {
-                	
-                	JSONObject serviceProblemPatch = new JSONObject();
-                	serviceProblemPatch.put("id", spmID);
-                	serviceProblemPatch.put("href", spmHREF);
-                	serviceProblemPatch.put("status", "Resolved");
-                	serviceProblemPatch.put("statusChangeReason", "service problem resolved in OpenNMS");
+    	try {
 
-                    log.debug("resolveServiceProblem resolving service problem HREF : " + spmHREF);
-                    String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
+    		OnmsAlarm onmsAlarm = m_alarmDao.findByReductionKey(reductionKey);
+    		if (onmsAlarm==null) {
+    			log.debug("resolveServiceProblem cannot resolve serviceProblem as cannot find alarm with event reductionKey="+reductionKey);
+    			return;
+    		}
 
-                    /* patch http request */
-                    m_scriptedClient.patchRequest(url, serviceProblemPatch.toString(), username, password);
+    		Map alarmDetails = onmsAlarm.getDetails();
 
-                } catch (Exception e2) {
-                    log.error("problem patching service problem ", e2);
-                }
-            }
-         } catch (Exception e) {
-            log.debug("resolveServiceProblem problem patching service problem", e);
-         }
+    		String spmID = (String) alarmDetails.get("spmID");
+    		String spmHREF = (String) alarmDetails.get("spmHREF");
+    		String spmCorrelationId = (String) alarmDetails.get("spmCorrelationId");
+
+    		log.debug("resolveServiceProblem found alarm with event reductionKey="+reductionKey+" alarmId="
+    				+ onmsAlarm.getId()+ " details: spmID="+spmID+" spmCorrelationId="+spmCorrelationId+" spmHREF="+spmHREF);
+
+    		if (spmHREF == null) {
+    			log.debug("resolveServiceProblem cannot resolve serviceProblem as alarm has no spmHREF");
+    			return;
+    		}
+
+    		log.debug("resolveServiceProblem trying to resolve problem with spmHREF=" + spmHREF);
+
+    		/* patch service problem for spmHREF using correct credentials */
+    		if (m_urlCredentials.size() == 0) {
+    			log.warn("no baseUrls set. Cannot send service problem patch.");
+    		}
+
+    		/* send patch to all spm servers matching spmHREF */
+    		for (UrlCredential urlCredential : m_urlCredentials) {
+    			String baseUrl = urlCredential.getUrl();
+    			String username = urlCredential.getUsername();
+    			String password = urlCredential.getPassword();
+
+    			if (spmHREF != null && spmHREF.contains(baseUrl)) try {
+
+    					JSONObject serviceProblemPatch = new JSONObject();
+    					serviceProblemPatch.put("id", spmID);
+    					serviceProblemPatch.put("href", spmHREF);
+    					serviceProblemPatch.put("status", "Resolved");
+    					serviceProblemPatch.put("statusChangeReason", "service problem resolved in OpenNMS");
+
+    					log.debug("resolveServiceProblem resolving service problem HREF : " + spmHREF);
+    					String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem";
+
+    					/* patch http request */
+    					m_scriptedClient.patchRequest(url, serviceProblemPatch.toString(), username, password);
+
+    				} catch (Exception e2) {
+    					log.error("problem patching service problem ", e2);
+    				}
+    		}
+    	} catch (Exception e) {
+    		log.debug("resolveServiceProblem problem patching service problem", e);
+    	}
     }
 
     public void createServiceProblem(IEvent ievent) {
@@ -501,13 +521,15 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     		    							while(alarmDetailsIterator.hasNext()) {
     		    								String detailKey = (String) alarmDetailsIterator.next();
     		    								String detailValue=(String) details.get(detailKey);
-    		    								log.debug("updateAlarmDetails updating alarm with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
+    		    								log.debug("updateAlarmDetails updating alarm alarmId="+onmsAlarm.getId()
+    		    										+ " with reductionKey="+reductionKey + " with new detail: detailKey="+detailKey+" detailValue="+detailValue);
     		    								alarmDetails.put(detailKey, detailValue);
     		    							}
     		    							onmsAlarm.setDetails(alarmDetails);
     		    							m_alarmDao.update(onmsAlarm);
     		    							m_alarmDao.flush();
-    		    							log.debug("updateAlarmDetails updated alarm with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
+    		    							log.debug("updateAlarmDetails updated alarm alarmId="+onmsAlarm.getId()
+    		    									+ " with reductionKey="+reductionKey + " alarm.toString()="+onmsAlarm.toString());
     		    						} else {
     		    							log.debug("updateAlarmDetails cannot find alarm with reductionKey="+reductionKey );
     		    						}
@@ -524,7 +546,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     					}
     				}
 
-    				log.debug("Persisting event to OpenNMS:" + event.toString());
+    				log.debug("Persisting SERVICE_PROBLEM_REPLY event to OpenNMS:" + event.toString());
 
     				try {
     					EventIpcManagerFactory.getIpcManager().sendNow(event);
