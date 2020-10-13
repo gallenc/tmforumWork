@@ -113,3 +113,13 @@ To see logs as they occur use
 ```
 tail -f \opt\opennms\logs\scriptd.log 
 ```
+
+# setting up business service monitoring in OpenNMS
+Any defined business service can generate a service problem.
+However you must include spmAffectedResources or spmAffectedServices as attribute in definition
+
+spmAffectedServices must be set by bsm business service attributes as comma separated variables with no spaces
+
+spmAffectedResources must be set by bsm business service attributes as comma separated variables with no spaces
+
+if spmAffectedServices or spmAffectedResources are not set we will not process event

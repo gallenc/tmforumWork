@@ -44,12 +44,12 @@
       /* set name of this originating party in sent spm calls */
       /* spmForwarder.setThisOriginatorParty("party1"); */
             
-      spmForwarder.setThisOriginatorParty("E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA");
+      spmForwarder.setThisOriginatorParty("8A3BA497-8B70-4A13-AB2D-593ED58EB232");
       
       /* set base href for party manager in sent spm calls */
       /* spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/"); */
-                                                  
-      spmForwarder.setPartyManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/serviceProblemManagement/v3/Party/");
+
+      spmForwarder.setPartyManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/partyManagement/v3/party/");
      
       /* set base href for service inventory manager in sent spm calls */
       /* spmForwarder.setServiceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/"); */
@@ -123,14 +123,7 @@
       notificationCredential1= urlCredential(spmHubUrl1, "username", "password", "serviceProblem.id=00000000-0000-0000-0000-000000000000" );
 
       /* listens for filtered notifications from cortexA */
-      
-      /* old notificationCredential2= urlCredential(spmHubUrl1, "username", "password", "affectedResource.id=7603F67D-631E-4A46-8FA7-52B0199A7E3F" ); */
-      
-      /* listens for resource notifications IoT-1, IoT-2, IoT-3 &amp; escapes ampersand*/
-      /* notificationCredential2= urlCredential(spmHubUrl1, "username", "password", "affectedResource.id=7603F67D-631E-4A46-8FA7-52B0199A7E3F&amp;affectedResource.id=4CFE4CF3-B012-460E-9100-A70AB1BBA6BA&amp;affectedResource.id=8480257A-9E3F-4B58-B0AD-B3A147BA596F" ); */
-      
-      /* register for all service problems affecting vpn */
-      notificationCredential2= urlCredential(spmHubUrl1, "username", "password", "affectedService.id=E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA" );
+      notificationCredential2= urlCredential(spmHubUrl1, "username", "password", "affectedResource.id=7603F67D-631E-4A46-8FA7-52B0199A7E3F" );
 
       List notificationCredentials = new ArrayList();
       /* notificationCredentials.add(notificationCredential1); */
