@@ -88,11 +88,12 @@
           event = Event.copyFrom(ievent);
           ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
           ipinterface = event.getInterface();
+          nodeName= node.getLabel();
             
           jsonObject = new JSONObject();
           jsonObject.put("NAME", "Catalyst-Link-Down");
           arguments = new JSONObject();
-          arguments.put("DEVICE-ID", ipinterface);
+          arguments.put("DEVICE-ID", nodeName);
           arguments.put("PORT-ID", ifName);
           jsonObject.put("ARGUMENTS", arguments);
           jsonMessage = jsonObject.toString();
