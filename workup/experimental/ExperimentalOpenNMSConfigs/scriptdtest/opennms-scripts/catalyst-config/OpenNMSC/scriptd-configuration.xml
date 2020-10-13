@@ -119,6 +119,7 @@
       /* notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 ); */
 
       /* listens for watchdog notifications from cortexA */
+      /* (for test only) */
       notificationCredential1= urlCredential(spmHubUrl1, "username", "password", "serviceProblem.id=00000000-0000-0000-0000-000000000000" );
 
       /* listens for filtered notifications from cortexA */
