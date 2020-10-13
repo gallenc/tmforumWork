@@ -1,0 +1,14 @@
+<model-import xmlns="http://xmlns.opennms.org/xsd/config/model-import" date-stamp="2020-08-28T20:23:11.013Z" foreign-source="OpenNMS" last-import="2020-08-28T20:27:16.446Z">
+   <node foreign-id="1598273572447" node-label="OpenNMS_B">
+      <interface ip-addr="10.7.23.213" status="1" snmp-primary="P"/>
+   </node>
+   <node foreign-id="1598273622501" node-label="OpenNMS_C">
+      <interface ip-addr="10.7.23.219" status="1" snmp-primary="P"/>
+   </node>
+   <node foreign-id="1598606748716" node-label="OpenNMS_A">
+      <interface ip-addr="10.7.23.209" status="1" snmp-primary="P">
+         <monitored-service service-name="SNMP"/>
+         <monitored-service service-name="OpenNMS-JVM"/>
+      </interface>
+   </node>
+</model-import>

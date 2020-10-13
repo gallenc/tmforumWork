@@ -1,0 +1,8 @@
+<model-import xmlns="http://xmlns.opennms.org/xsd/config/model-import" date-stamp="2020-10-12T13:02:39.324Z" foreign-source="Databases" last-import="2020-08-28T20:03:37.824Z">
+   <node foreign-id="1598273432096" node-label="DB_A">
+      <interface ip-addr="10.7.23.214" status="1" snmp-primary="P"/>
+   </node>
+   <node foreign-id="1598273468670" node-label="DB_B">
+      <interface ip-addr="10.7.23.218" status="1" snmp-primary="P"/>
+   </node>
+</model-import>

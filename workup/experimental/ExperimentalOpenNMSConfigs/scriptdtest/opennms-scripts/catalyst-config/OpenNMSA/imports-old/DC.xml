@@ -1,0 +1,5 @@
+<model-import xmlns="http://xmlns.opennms.org/xsd/config/model-import" date-stamp="2020-08-24T12:38:57.746Z" foreign-source="DC" last-import="2020-08-28T20:03:34.078Z">
+   <node foreign-id="1598272667551" node-label="DC">
+      <interface ip-addr="10.7.23.203" status="1" snmp-primary="P"/>
+   </node>
+</model-import>

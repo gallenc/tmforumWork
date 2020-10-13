@@ -1,0 +1,5 @@
+<model-import xmlns="http://xmlns.opennms.org/xsd/config/model-import" date-stamp="2020-08-25T19:41:17.708Z" foreign-source="GNS3" last-import="2020-08-28T20:03:41.395Z">
+   <node foreign-id="1598384430944" node-label="GNS3">
+      <interface ip-addr="10.7.23.205" status="1" snmp-primary="P"/>
+   </node>
+</model-import>
