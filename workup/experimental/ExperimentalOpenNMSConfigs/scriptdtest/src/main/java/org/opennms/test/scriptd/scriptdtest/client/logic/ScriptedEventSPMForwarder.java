@@ -345,8 +345,8 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     				JSONObject serviceProblemPatch = new JSONObject();
     				serviceProblemPatch.put("id", spmID);
     				serviceProblemPatch.put("href", spmHREF);
-    				serviceProblemPatch.put("status", "Resolved");
-    				serviceProblemPatch.put("statusChangeReason", "service problem resolved in OpenNMS");
+    				serviceProblemPatch.put("status", "Closed");
+    				serviceProblemPatch.put("statusChangeReason", "service problem Cleared in OpenNMS");
 
     				log.debug("resolveServiceProblem resolving service problem spmID="+spmID+ "HREF : " + spmHREF+ " serviceProblemPatch.toString()="+serviceProblemPatch.toString());
     				String url = baseUrl + "/tmf-api/serviceProblemManagement/v3/serviceProblem/"+spmID;
