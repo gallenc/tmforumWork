@@ -333,6 +333,13 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     			log.warn("no baseUrls set. Cannot send service problem patch.");
     			return;
     		}
+    		
+    		/* TODO remove HACK SUBSTITUTING URL*/
+    		if(spmHREF.contains("3.15.141.111")) {
+    			log.warn("TODO REMOVE - SUBSTIUTING 10.7.23.204 FOR 3.15.141.111 in old spmHREF="+spmHREF);
+    			spmHREF = spmHREF.replace("3.15.141.111","10.7.23.204");
+    			log.warn("new spmHREF="+spmHREF);
+    		}
 
     		/* send patch to all spm servers matching spmHREF */
     		/* note no patch can be sent if smpHREF is not in list of credentials */
