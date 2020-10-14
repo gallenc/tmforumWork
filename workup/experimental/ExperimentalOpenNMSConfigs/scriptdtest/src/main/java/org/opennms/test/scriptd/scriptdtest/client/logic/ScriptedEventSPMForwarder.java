@@ -335,6 +335,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     		}
 
     		/* send patch to all spm servers matching spmHREF */
+    		/* note no patch can be sent if smpHREF is not in list of credentials */
     		for (UrlCredential urlCredential : m_urlCredentials) {
     			String baseUrl = urlCredential.getUrl();
     			String username = urlCredential.getUsername();
