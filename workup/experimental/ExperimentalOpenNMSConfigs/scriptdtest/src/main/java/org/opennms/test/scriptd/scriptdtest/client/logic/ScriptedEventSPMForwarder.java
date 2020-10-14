@@ -628,7 +628,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     				break;
     			case SERVICE_PROBLEM_STATE_CHANGE_NOTIFICATION:
     				// check if state is now Closed or Cancelled
-    				if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
+    				if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) || "Resolved".equals(spmStatus) ) {
     					uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
     					event = onmsEventFromServiceProblem(uei, spmServiceProblem);
     					event.setSeverity("Cleared");
@@ -647,7 +647,7 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     				break;
     			case SERVICE_PROBLEM_ATTRIBUTE_VALUE_CHANGE_NOTIFICATION:
     				// check if state is now Closed or Cancelled
-    				if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) ) {
+    				if("Closed".equals(spmStatus) || "Cancelled".equals(spmStatus) || "Resolved".equals(spmStatus) ) {
     					uei = SERVICE_PROBLEM_CLOSED_CANCELLED_OR_DELETED_UEI;
     					event = onmsEventFromServiceProblem(uei, spmServiceProblem);
     					event.setSeverity("Cleared");
