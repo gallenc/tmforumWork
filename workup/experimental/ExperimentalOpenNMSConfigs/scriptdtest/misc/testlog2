@@ -1,0 +1,54 @@
+ Error","message":"Not found: Party id E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA",
+ "status":500,"referenceError":null,
+ "@baseType":null,"@schemaLocation":null,"@type":null}"
+ 
+ "{"reason":"One or more problems are affecting business service 'B842E1F5-43B1-46AE-8530-E15B6B8B6BE3'.\n        ","affectedResource":[{"id":"7603F67D-631E-4A46-8FA7-52B0199A7E3F","href":"https:\/\/3.15.141.111:10000\/tmf-api\/resourceInventoryManagement\/v3\/resource\/7603F67D-631E-4A46-8FA7-52B0199A7E3F"}],"originatingSystem":"OpenNMSC","affectedService":[{"id":"B842E1F5-43B1-46AE-8530-E15B6B8B6BE3","href":"https:\/\/3.15.141.111:10000\/tmf-api\/serviceInventoryManagement\/v3\/service\/B842E1F5-43B1-46AE-8530-E15B6B8B6BE3"},{"id":"E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA","href":"https:\/\/3.15.141.111:10000\/tmf-api\/serviceInventoryManagement\/v3\/service\/E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA"}],"description":"<p>There are currently one or more problems affecting business service 'B842E1F5-43B1-46AE-8530-E15B6B8B6BE3'. Root cause: IP service 'IOT1\/\/192.168.103.13\/SNMP', reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'.\n            args(6): spmAffectedServices=\"B842E1F5-43B1-46AE-8530-E15B6B8B6BE3,E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA\" device=\"IoT-1\" spmAffectedResources=\"7603F67D-631E-4A46-8FA7-52B0199A7E3F\" businessServiceId=\"38\" businessServiceName=\"B842E1F5-43B1-46AE-8530-E15B6B8B6BE3\" rootCause=\"IP service 'IOT1\/\/192.168.103.13\/SNMP', reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'\"<\/p>","correlationId":"uei.opennms.org\/bsm\/serviceProblem:38","originatorParty":{"id":"E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA","href":"https:\/\/3.15.141.111:10000\/tmf-api\/serviceProblemManagement\/v3\/Party\/E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA"},"category":" equipment","priority":"1"}"
+
+
+
+2020-10-14 12:16:38,518 DEBUG [Scriptd-Executor-Thread] o.o.n.s.Executor: handleEvent script received SERVICE_PROBLEM event:ImmutableEvent{uuid='null', dbId=1455, distPoller='null', creationTime=Wed Oct 14 12:16:38 UTC 2020, masterStation='null', mask=null, uei='uei.opennms.org/bsm/serviceProblem', source='Bsmd', nodeid=null, time=Wed Oct 14 12:16:38 UTC 2020, host='null', interfaceAddress=null, interfaceString='null', snmpHost='null', service='null', snmp=null, parms=[ImmutableParm{parmName='affectedResource', value=ImmutableValue{content='8480257A-9E3F-4B58-B0AD-B3A147BA596F', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='affectedServices', value=ImmutableValue{content='351AD10D-9CE0-4171-ADB0-15F0439EA264,E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='device', value=ImmutableValue{content='IoT-3', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='businessServiceId', value=ImmutableValue{content='83', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='businessServiceName', value=ImmutableValue{content='351AD10D-9CE0-4171-ADB0-15F0439EA264', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='rootCause', value=ImmutableValue{content='reduction key 'uei.opennms.org/translator/traps/SNMP_Link_Down:00000000-0000-0000-0000-000000000000:1:1'', type='string', encoding='text', expand=false}}], descr='<p>There are currently one or more problems affecting business service '351AD10D-9CE0-4171-ADB0-15F0439EA264'. Root cause: reduction key 'uei.opennms.org/translator/traps/SNMP_Link_Down:00000000-0000-0000-0000-000000000000:1:1'.
+            args(6): affectedResource="8480257A-9E3F-4B58-B0AD-B3A147BA596F" 
+            affectedServices="351AD10D-9CE0-4171-ADB0-15F0439EA264,E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA" 
+            device="IoT-3" 
+            businessServiceId="83" 
+            businessServiceName="351AD10D-9CE0-4171-ADB0-15F0439EA264" 
+            rootCause="reduction key 'uei.opennms.org/translator/traps/SNMP_Link_Down:00000000-0000-0000-0000-000000000000:1:1'"</p>',
+             logMsg=ImmutableLogMsg{content='One or more problems are affecting business service '351AD10D-9CE0-4171-ADB0-15F0439EA264'.
+        ', notify=true, dest='logndisplay'}
+        , severity='Major', pathOutage='null', 
+        correlation=null, operInstruct='null', 
+        autoActionList=[], operActionList=[], 
+        autoAcknowledge=null, logGroupList=[],
+         tTicket=null, forwardList=[], scriptList=[],
+          ifIndex=null, ifAlias='null', mouseOverText='null', 
+          alarmData=ImmutableAlarmData{reductionKey='uei.opennms.org/bsm/serviceProblem:83', alarmType=1, 
+          clearKey='null', autoClean=false, x733AlarmType='null', x733ProbableCause=null, 
+          updateFieldList=[ImmutableUpdateField{fieldName='severity', updateOnReduction=true, 
+          valueExpression='null'}, ImmutableUpdateField{fieldName='logmsg', updateOnReduction=true, 
+          valueExpression='null'}, ImmutableUpdateField{fieldName='event-label', updateOnReduction=false, valueExpression='null'}, 
+          ImmutableUpdateField{fieldName='descr', updateOnReduction=false, valueExpression='null'}], managedObject=null}} node:null
+
+2020-10-14 12:16:38,518 DEBUG [Scriptd-Executor-Thread] o.o.n.s.Executor: createServiceProblem script received immutable 
+event:ImmutableEvent{uuid='null', dbId=1455, distPoller='null', creationTime=Wed Oct 14 12:16:38 UTC 2020, masterStation='null', mask=null, uei='uei.opennms.org/bsm/serviceProblem', source='Bsmd', nodeid=null, time=Wed Oct 14 12:16:38 UTC 2020, host='null', interfaceAddress=null, interfaceString='null', snmpHost='null', service='null', snmp=null, parms=[ImmutableParm{parmName='affectedResource', value=ImmutableValue{content='8480257A-9E3F-4B58-B0AD-B3A147BA596F', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='affectedServices', value=ImmutableValue{content='351AD10D-9CE0-4171-ADB0-15F0439EA264,E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='device', value=ImmutableValue{content='IoT-3', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='businessServiceId', value=ImmutableValue{content='83', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='businessServiceName', value=ImmutableValue{content='351AD10D-9CE0-4171-ADB0-15F0439EA264', type='string', encoding='text', expand=false}}, ImmutableParm{parmName='rootCause', value=ImmutableValue{content='reduction key 'uei.opennms.org/translator/traps/SNMP_Link_Down:00000000-0000-0000-0000-000000000000:1:1'', type='string', encoding='text', expand=false}}], descr='<p>There are currently one or more problems affecting business service '351AD10D-9CE0-4171-ADB0-15F0439EA264'. Root cause: reduction key 'uei.opennms.org/translator/traps/SNMP_Link_Down:00000000-0000-0000-0000-000000000000:1:1'.
+            args(6): affectedResource="8480257A-9E3F-4B58-B0AD-B3A147BA596F" 
+            affectedServices="351AD10D-9CE0-4171-ADB0-15F0439EA264,E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA" device="IoT-3" 
+            businessServiceId="83" businessServiceName="351AD10D-9CE0-4171-ADB0-15F0439EA264" 
+            rootCause="reduction key 'uei.opennms.org/translator/traps/SNMP_Link_Down:00000000-0000-0000-0000-000000000000:1:1'"</p>', logMsg=ImmutableLogMsg{content='One or more problems are affecting business service '351AD10D-9CE0-4171-ADB0-15F0439EA264'.
+        ', notify=true, dest='logndisplay'}, 
+        severity='Major', pathOutage='null', 
+        correlation=null, operInstruct='null', 
+        autoActionList=[], operActionList=[], 
+        autoAcknowledge=null, logGroupList=[], 
+        tTicket=null, forwardList=[], scriptList=[], 
+        ifIndex=null, ifAlias='null', mouseOverText='null', 
+        alarmData=ImmutableAlarmData{reductionKey='uei.opennms.org/bsm/serviceProblem:83', 
+        alarmType=1, clearKey='null', autoClean=false, x733AlarmType='null', x733ProbableCause=null, 
+        updateFieldList=[ImmutableUpdateField{fieldName='severity', updateOnReduction=true, valueExpression='null'}, 
+        ImmutableUpdateField{fieldName='logmsg', updateOnReduction=true, valueExpression='null'}, 
+        ImmutableUpdateField{fieldName='event-label', updateOnReduction=false, valueExpression='null'}, 
+        ImmutableUpdateField{fieldName='descr', updateOnReduction=false, valueExpression='null'}], managedObject=null}}
+2020-10-14 12:16:38,521 DEBUG [Scriptd-Executor-Thread] o.o.n.s.Executor: createServiceProblem spmAffectedServices=null
+2020-10-14 12:16:38,521 DEBUG [Scriptd-Executor-Thread] o.o.n.s.Executor: createServiceProblem spmAffectedResources=null
+2020-10-14 12:16:38,521 DEBUG [Scriptd-Executor-Thread] o.o.n.s.Executor: createServiceProblem not creating new service problem as spmAffectedServices or spmAffectedResources not defined in bsm business service
+2020-10-14 12:16:38,521 DEBUG [Scriptd-Executor-Thread] o.o.n.s.Executor: end of on event script
+2020-10-14 12:16:38,521 DEBUG [Scriptd-Executor-Thread] o.o.n.s.Executor: Finished executing scripts for: uei.opennms.org/bsm/serviceProblem

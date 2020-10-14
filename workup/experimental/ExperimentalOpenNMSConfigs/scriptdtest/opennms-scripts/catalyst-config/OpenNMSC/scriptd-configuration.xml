@@ -44,7 +44,7 @@
       /* set name of this originating party in sent spm calls */
       /* spmForwarder.setThisOriginatorParty("party1"); */
             
-      spmForwarder.setThisOriginatorParty("E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA");
+      spmForwarder.setThisOriginatorParty("8A3BA497-8B70-4A13-AB2D-593ED58EB232");
       
       /* set base href for party manager in sent spm calls */
       /* spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/"); */

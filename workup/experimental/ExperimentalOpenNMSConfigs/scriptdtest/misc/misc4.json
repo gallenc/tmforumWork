@@ -1,0 +1,29 @@
+ {
+	"reason": "One or more problems are affecting business service 'B842E1F5-43B1-46AE-8530-E15B6B8B6BE3'.\n        ",
+	"affectedResource": [
+		{
+			"id": "7603F67D-631E-4A46-8FA7-52B0199A7E3F",
+			"href": "https:\/\/3.15.141.111:10000\/tmf-api\/resourceInventoryManagement\/v3\/resource\/7603F67D-631E-4A46-8FA7-52B0199A7E3F"
+		}
+	],
+	"originatingSystem": "OpenNMSC",
+	"affectedService": [
+		{
+			"id": "B842E1F5-43B1-46AE-8530-E15B6B8B6BE3",
+			"href": "https:\/\/3.15.141.111:10000\/tmf-api\/serviceInventoryManagement\/v3\/service\/B842E1F5-43B1-46AE-8530-E15B6B8B6BE3"
+		},
+		{
+			"id": "E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA",
+			"href": "https:\/\/3.15.141.111:10000\/tmf-api\/serviceInventoryManagement\/v3\/service\/E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA"
+		}
+	],
+	"description": "<p>There are currently one or more problems affecting business service 'B842E1F5-43B1-46AE-8530-E15B6B8B6BE3'. Root cause: IP service 'IOT1\/\/192.168.103.13\/SNMP', reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'.\n            args(6): spmAffectedServices=\"B842E1F5-43B1-46AE-8530-E15B6B8B6BE3,E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA\" device=\"IoT-1\" spmAffectedResources=\"7603F67D-631E-4A46-8FA7-52B0199A7E3F\" businessServiceId=\"38\" businessServiceName=\"B842E1F5-43B1-46AE-8530-E15B6B8B6BE3\" rootCause=\"IP service 'IOT1\/\/192.168.103.13\/SNMP', reduction key 'uei.opennms.org\/nodes\/interfaceDown::1:192.168.103.13'\"<\/p>",
+	"correlationId": "uei.opennms.org\/bsm\/serviceProblem:38",
+	"originatorParty": {
+		"id": "E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA",
+		"href": "https:\/\/3.15.141.111:10000\/tmf-api\/serviceProblemManagement\/v3\/Party\/E51A0047-A36E-4FFA-A4CE-6C66FA5C07DA"
+	},
+	"category": " equipment",
+	"priority": "1"
+}
+
