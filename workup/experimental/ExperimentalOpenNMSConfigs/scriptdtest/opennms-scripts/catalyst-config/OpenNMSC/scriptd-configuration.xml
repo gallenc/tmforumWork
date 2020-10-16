@@ -47,19 +47,19 @@
       spmForwarder.setThisOriginatorParty("8A3BA497-8B70-4A13-AB2D-593ED58EB232");
       
       /* set base href for party manager in sent spm calls */
-      /* spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/"); */
+      /* spmForwarder.setPartyManagementBaseHrefUrl(spmHubUrl1+"/tmf-api/partyManagement/v3/party/"); */
                                                   
-      spmForwarder.setPartyManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/serviceProblemManagement/v3/Party/");
+      spmForwarder.setPartyManagementBaseHrefUrl(spmHubUrl1+"/tmf-api/partyManagement/v3/Party/");
      
       /* set base href for service inventory manager in sent spm calls */
-      /* spmForwarder.setServiceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/"); */
+      /* spmForwarder.setServiceInventoryManagementBaseHrefUrl(spmHubUrl1+/tmf-api/serviceInventoryManagement/v3/service/"); */
 
-      spmForwarder.setServiceInventoryManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/serviceInventoryManagement/v3/service/");
+      spmForwarder.setServiceInventoryManagementBaseHrefUrl(spmHubUrl1+"/tmf-api/serviceInventoryManagement/v3/service/");
 
       /* set base href for resource inventory manager in sent spm calls */
-      /* spmForwarder.setResourceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/resourceInventoryManagement/v3/resource/"); */
+      /* spmForwarder.setResourceInventoryManagementBaseHrefUrl(spmHubUrl1+"/tmf-api/resourceInventoryManagement/v3/resource/"); */
 
-      spmForwarder.setResourceInventoryManagementBaseHrefUrl("https://3.15.141.111:10000/tmf-api/resourceInventoryManagement/v3/resource/");
+      spmForwarder.setResourceInventoryManagementBaseHrefUrl(spmHubUrl1+"/tmf-api/resourceInventoryManagement/v3/resource/");
 
       /* set urls and credentials for spm hosts constructor variables : UrlCredential(String url, String username, String password) */
       /* username and password are basic auth credentials for posting notifications to the server (not currently used) */
