@@ -10,6 +10,7 @@
 <!-- { -->
 <!--   "NAME": "Catalyst-Link-Down", -->
 <!--   "ARGUMENTS": { -->
+<!--     "NMS-ID" : "OpenNMSB", -->
 <!--     "DEVICE-ID" : "192.168.102.231", -->
 <!--     "PORT-ID" : "Fa0/0" -->
 <!--   } -->
@@ -21,6 +22,7 @@
 <!-- { -->
 <!--   "NAME": "Catalyst-Link-Up", -->
 <!--   "ARGUMENTS": { -->
+<!--     "NMS-ID" : "OpenNMSB", -->
 <!--     "DEVICE-ID" : "192.168.102.231", -->
 <!--     "PORT-ID" : "Fa0/0" -->
 <!--   } -->
@@ -38,6 +40,8 @@
       /* set time out for async client http requests to 20 seconds */
       scriptedClient.setTimeout(20000);
       
+      /* name of fhe opennms system creating the message to cortex */
+      opennmsName="OpenNMSA";
       
       /* ----------------------------------------------------------*/
       /* setting up client credentials for sending event to cortex */
@@ -95,6 +99,7 @@
           arguments = new JSONObject();
           arguments.put("DEVICE-ID", nodeName);
           arguments.put("PORT-ID", ifName);
+          arguments.put("NMS-ID", opennmsName);
           jsonObject.put("ARGUMENTS", arguments);
           jsonMessage = jsonObject.toString();
 
@@ -114,6 +119,7 @@
           arguments = new JSONObject();
           arguments.put("DEVICE-ID", nodeName);
           arguments.put("PORT-ID", ifName);
+          arguments.put("NMS-ID", opennmsName);
           jsonObject.put("ARGUMENTS", arguments);
           jsonMessage = jsonObject.toString();
 
