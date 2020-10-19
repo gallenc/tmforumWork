@@ -348,8 +348,6 @@ public class ScriptedEventSPMForwarder extends MessageHandler {
     				serviceProblemPatch.put("id", spmID);
     				serviceProblemPatch.put("href", spmHREF);
     				serviceProblemPatch.put("status", "Closed");
-    				/*HACK - FIX CORTEX */
-    				serviceProblemPatch.put("reason", "SETTING REASON TEXT ON PROBLEM CLOSED");
     				serviceProblemPatch.put("statusChangeReason", "service problem Cleared in OpenNMS "+m_thisOriginatingSystem);
 
     				log.debug("resolveServiceProblem resolving service problem spmID="+spmID+ "HREF : " + spmHREF+ " serviceProblemPatch.toString()="+serviceProblemPatch.toString());
