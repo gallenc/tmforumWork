@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.opennms.tmforum.swagger</groupId>
+		<artifactId>tmf656-api-sdk-project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>tmf656-simulator-onejar</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+		<onejar-maven-plugin.version>1.4.4</onejar-maven-plugin.version>
+	</properties>
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.opennms.tmforum.swagger</groupId>
+									<artifactId>tmf656-simulator-war</artifactId>
+									<version>${project.version}</version>
+									<type>war</type>
+								</artifactItem>
+							</artifactItems>
+							<overWrite>true</overWrite>
+							<includes>**/*</includes>
+							<outputDirectory>${project.build.outputDirectory}/webapp-war</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- https://mvnrepository.com/artifact/com.jolira/onejar-maven-plugin -->
+			<!-- see http://one-jar.sourceforge.net/ -->
+			<!-- see also https://www.baeldung.com/executable-jar-with-maven -->
+			<plugin>
+				<groupId>com.jolira</groupId>
+				<artifactId>onejar-maven-plugin</artifactId>
+				<version>${onejar-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<configuration>
+							<mainClass>org.opennms.tmforum.tmf256.onejar.EmbeddedJettyServer</mainClass>
+							<onejarVersion>0.97</onejarVersion>
+							<attachToBuild>true</attachToBuild>
+							<filename>${project.artifactId}-onejar.jar</filename>
+						</configuration>
+						<goals>
+							<goal>one-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+
+
+	<dependencies>
+
+		<!-- project dependencies -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.opennms.tmforum.swagger</groupId> -->
+		<!-- <artifactId>tmf656-simulator-war</artifactId> -->
+		<!-- <version>${project.version}</version> -->
+		<!-- <type>war</type> -->
+		<!-- <scope>compile</scope> -->
+		<!-- </dependency> -->
+
+		<dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all</artifactId>
+			<version>${jetty-version}</version>
+			<type>pom</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>apache-jsp</artifactId>
+			<version>${jetty-version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<!-- log4j core -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- running SLF4J over log4j -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+
+</project>

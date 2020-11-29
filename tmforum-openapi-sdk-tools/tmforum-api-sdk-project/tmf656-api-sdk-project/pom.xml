@@ -50,6 +50,7 @@
                 <module>simulator-dao</module>
                 <module>simulator-service</module>
                 <module>simulator-war</module>
+                <module>simulator-onejar</module>
             </modules>
         </profile>
         <!-- if you have already generated the code then use mvn clean install -P no-gen-code to speed up the build -->
