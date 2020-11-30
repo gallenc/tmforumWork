@@ -4,5 +4,5 @@ This is a shared repository for work on the 2020 TM Forum Network As A Service (
 
 [opennms-configuration](../catalyst2020/opennms-configuration) provides example OpenNMS scripts for service problem management
 
-[tmf656-simulator](../catalyst2020/tmf656-simulator) provides s simple TMF656 Service Problem Management simulator
+[tmf656-simulator](../catalyst2020/tmf-656-simulator) provides s simple TMF656 Service Problem Management simulator
 
