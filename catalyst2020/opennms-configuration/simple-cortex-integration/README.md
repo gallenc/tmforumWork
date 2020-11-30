@@ -69,7 +69,7 @@ Logs for this scriptd configuration can be seen by changing the OpenNMS log4j sc
 ```
 \opt\opennms\etc\log4j2.xml
 
-<KeyValuePair key="scriptd"              value="DEBUG" />
+<KeyValuePair key="scriptd" value="DEBUG" />
 
 ```
 
@@ -83,6 +83,11 @@ To see logs as they occur use
 
 ```
 tail -f \opt\opennms\logs\scriptd.log 
+```
+
+After installing the script, start OpenNMS using
+```
+sudo \opt\opennms\bin\opennms start
 ```
 
 
