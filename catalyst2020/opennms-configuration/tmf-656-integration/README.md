@@ -115,11 +115,22 @@ tail -f \opt\opennms\logs\scriptd.log
 ```
 
 # setting up business service monitoring in OpenNMS
-Any defined business service can generate a service problem.
-However you must include spmAffectedResources or spmAffectedServices as attribute in definition
+
+OpenNMS Business Service Monitoring (BSM) is described in the opennms documentation here
+https://docs.opennms.org/opennms/releases/27.0.0/guide-admin/guide-admin.html#ga-bsm
+
+BSM allows a graph of managed objects and / or alarms to be associated hierarchically to problems in OpenNMS
+
+Any defined business service can generate a TMF656 Service Problem.
+
+However you must include spmAffectedResources or spmAffectedServices as attribute in the definition
 
 spmAffectedServices must be set by bsm business service attributes as comma separated variables with no spaces
 
 spmAffectedResources must be set by bsm business service attributes as comma separated variables with no spaces
 
-if spmAffectedServices or spmAffectedResources are not set we will not process event
+if spmAffectedServices or spmAffectedResources are not set we will not process the BSM changed event
+
+For an example see this diagram 
+![alt text](../images/BSMConfig.png "Figure BSMConfig.png")
+
