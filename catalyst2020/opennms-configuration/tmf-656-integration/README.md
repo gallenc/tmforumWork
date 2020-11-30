@@ -132,5 +132,5 @@ spmAffectedResources must be set by bsm business service attributes as comma sep
 if spmAffectedServices or spmAffectedResources are not set we will not process the BSM changed event
 
 For an example see this diagram 
-![alt text](../images/BSMConfig.png "Figure BSMConfig.png")
+![alt text](../tmf-656-integration/images/BSMConfig.png "Figure BSMConfig.png")
 
