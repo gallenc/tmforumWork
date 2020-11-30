@@ -2,7 +2,9 @@
 
 The simulator is built within the tmforum-openapi-sdk-tools project.
 
-A pre-built executable jar is provided in the github releases system.
+A pre-built executable jar is provided in the github releases system. 
+
+see https://github.com/gallenc/tmforumWork/releases/
 
 To run the war use
 ```
