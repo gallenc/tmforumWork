@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!-- scriptd-config.xml revision 8.0 -->
+<scriptd-configuration transactional="false" >
+    <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
+    <start-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running start script");
+      
+      import java.util.ArrayList;
+      import java.util.List;
+
+      source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
+      scriptedClient = scriptedApacheHttpAsyncClient();
+      
+      /* set time out for async client http requests to 5 seconds */
+      /* scriptedClient.setTimeout(5000); */
+      
+      scriptedClient.setTimeout(5000);
+      
+      source("/opt/opennms/etc/scriptedEventSPMForwarder.bsh");
+      spmForwarder = scriptedEventSPMForwarder();
+      
+      /* -----------------------------------------------*/
+      /* setting up client credentials for sending service problems to service problem server */
+      /* -----------------------------------------------*/
+      
+      /* convenience placeholder for SPM server. */
+      /* spmHubUrl1="http://tmf656-test1.centralus.cloudapp.azure.com:8080"; */
+      /* spmHubUrl1="http://localhost:8080"; */
+
+      spmHubUrl1="http://localhost:8080";
+
+      /* set name of this originating system in sent spm calls */
+      /* spmForwarder.setThisOriginatingSystem("testOpenNMS"); */
+      
+      spmForwarder.setThisOriginatingSystem("testOpenNMS");
+      
+      /* set name of this originating party in sent spm calls */
+      /* spmForwarder.setThisOriginatorParty("party1"); */
+            
+      spmForwarder.setThisOriginatorParty("party1");
+      
+      /* set base href for party manager in sent spm calls */
+      /* spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/"); */
+
+      spmForwarder.setPartyManagementBaseHrefUrl("http://localhost:8080/tmf-api/partyManagement/v3/party/");
+     
+      /* set base href for service inventory manager in sent spm calls */
+      /* spmForwarder.setServiceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/"); */
+
+      spmForwarder.setServiceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/serviceInventoryManagement/v3/service/");
+
+      /* set base href for resource inventory manager in sent spm calls */
+      /* spmForwarder.setResourceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/resourceInventoryManagement/v3/resource/"); */
+
+      spmForwarder.setResourceInventoryManagementBaseHrefUrl("http://localhost:8080/tmf-api/resourceInventoryManagement/v3/resource/");
+
+      /* set urls and credentials for spm hosts constructor variables : UrlCredential(String url, String username, String password) */
+      /* username and password are basic auth credentials for posting notifications to the server (not currently used) */
+      /* url1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", null ); */
+
+      url1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", null );
+
+      List urlCredentials = new ArrayList();
+      urlCredentials.add(url1);
+ 
+      spmForwarder.setUrlCredentials(urlCredentials);
+
+      log.debug("setting scripted client for spmForwarder");
+      spmForwarder.setScriptedClient(scriptedClient);
+      
+      log.debug("setting messageHandler for scriptedClient");
+      scriptedClient.setMessageHandler(spmForwarder);
+    
+      /* -----------------------------------------------*/
+      /* setting up http notification listening server  */
+      /* -----------------------------------------------*/
+
+      source("/opt/opennms/etc/scriptedApacheHttpServer.bsh");
+      
+      /* example sets allowed target urls on port 8981 with no https/SSL key file */
+      
+      /* port on which OpenNMS listens for notifications */
+      int port=8981;
+
+      /* allowed target notification url's http(s)://-opennms-ip-address-:port/-targets- */
+      String[] allowedTargets = {
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemAttributeValueChangeNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemCreateNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemInformationRequiredNotification",
+                "/opennms/tmf-api/serviceProblemManagement/v3/listener/serviceProblemStateChangeNotification",
+                "/opennms/tmf-api/generic-listener/notification"
+                };
+
+      /* if https is being used this is the keystore for certificates */
+      String keyStoreFileLocation = null;
+      
+      jsonQueue = scriptedClient.getjsonQueue();
+      
+      scriptedHttpServer = scriptedApacheHttpServer(port, jsonQueue, allowedTargets, keyStoreFileLocation);
+
+      log.debug("start script starting message listener");
+      scriptedClient.startListener();
+      log.debug("start script starting httpAsyncClient");
+      scriptedClient.startClient();
+
+      log.debug("start script starting spm notification listening http server");
+      scriptedHttpServer.start();
+
+      /* set urls and credentials and spm filter queries for spm hosts sending notifications */
+      /* constructor variables : UrlCredential(String url, String username, String password, String query) */
+      /* String query1=""; */
+      /* notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 ); */
+
+      String query1="";
+      notificationCredential1= urlCredential(spmHubUrl1 + "/tmf656-simulator-war", "username", "password", query1 );
+
+      List notificationCredentials = new ArrayList();
+      notificationCredentials.add(notificationCredential1);
+      
+      /* set urls and credentials for notification call back constructor variables : UrlCredential(String url, String username, String password, String query) */
+      /* username and password are basic auth credentials for posting notifications back to OpenNMS (not currently used) */
+      /* this needs to point at the opennms listener but set as simulator for test. Note query is null and is not used here */
+      /* callbackCredential = urlCredential(spmHubUrl1 + "/tmf656-simulator-war"+"/generic-listener/notification", "username", "password", null ); */
+      /* String opennmsSpmListenerUrl= "http://localhost:8981/opennms/tmf-api/generic-listener/notification"; */
+
+      String opennmsSpmListenerUrl= "http://localhost:8981/opennms/tmf-api/generic-listener/notification";
+
+      callbackCredential = urlCredential(opennmsSpmListenerUrl, "username", "password", null );
+
+      log.debug("start script registering to receive notifications");
+      spmForwarder.startRegisterNotifications(notificationCredentials, callbackCredential);
+
+      log.debug("end of start script");
+
+    </start-script>
+
+    <stop-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running beanshell stop script");
+      
+      log.debug("unregistering for notifications ");
+      spmForwarder.stopRegisterNotifications();
+
+      log.debug("stop script waiting for 20 secs");
+      Thread.sleep(20000); 
+      log.debug("stop script finished waiting");
+
+      log.debug("stop script stop listener");
+      scriptedClient.stopListener();
+      log.debug("stop script stop client");
+      scriptedClient.stopClient();
+
+      log.debug("stop script stop http server");
+      scriptedHttpServer.stop();
+      
+      log.debug("end of stop script");
+
+    </stop-script>
+
+    <event-script language="beanshell">
+
+        log = bsf.lookupBean("log");
+        log.debug("running on event script");
+        
+        ievent = bsf.lookupBean("event");
+        node = bsf.lookupBean("node");
+        
+        spmForwarder.handleEvent(ievent, node);
+
+        log.debug("end of on event script");
+
+    </event-script>
+
+
+</scriptd-configuration>
+

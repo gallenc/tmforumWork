@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!-- scriptd-config.xml revision CORTEX SPECIAL -->
+<!-- OpenNMSB catalyst  10.7.23.213 -->
+<!-- cortexA catalyst   10.7.23.204:10000 -->
+<!-- Messages sent to cortexA -->
+<!-- POST /api/flow/startflowAsync HTTP/1.1 -->
+<!-- Host: 3.15.141.111:10000 -->
+<!-- Content-Type: application/json -->
+<!-- Authorization: Basic Q29ydGV4RmxvdzpDMHJ0M3hGbDB3 -->
+<!-- { -->
+<!--   "NAME": "Catalyst-Link-Down", -->
+<!--   "ARGUMENTS": { -->
+<!--     "NMS-ID" : "OpenNMSB", -->
+<!--     "DEVICE-ID" : "192.168.102.231", -->
+<!--     "PORT-ID" : "Fa0/0" -->
+<!--   } -->
+<!-- } -->
+<!-- POST /api/flow/startflowAsync HTTP/1.1 -->
+<!-- Host: 3.15.141.111:10000 -->
+<!-- Content-Type: application/json -->
+<!-- Authorization: Basic Q29ydGV4RmxvdzpDMHJ0M3hGbDB3 -->
+<!-- { -->
+<!--   "NAME": "Catalyst-Link-Up", -->
+<!--   "ARGUMENTS": { -->
+<!--     "NMS-ID" : "OpenNMSB", -->
+<!--     "DEVICE-ID" : "192.168.102.231", -->
+<!--     "PORT-ID" : "Fa0/0" -->
+<!--   } -->
+<!-- } -->
+<scriptd-configuration>
+    <engine language="beanshell" className="bsh.util.BeanShellBSFEngine" extensions="bsh" />
+    <start-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running start script");
+
+      source("/opt/opennms/etc/scriptedApacheHttpAsyncClient.bsh");
+      scriptedClient = scriptedApacheHttpAsyncClient();
+      
+      /* set time out for async client http requests to 20 seconds */
+      scriptedClient.setTimeout(20000);
+      
+      /* name of fhe opennms system creating the message to cortex */
+      opennmsName="OpenNMSB";
+      
+      /* ----------------------------------------------------------*/
+      /* setting up client credentials for sending event to cortex */
+      /* ----------------------------------------------------------*/
+
+      /* cortexB */
+      cortexUrl="https://ec2-3-15-208-9.us-east-2.compute.amazonaws.com:10000/api/flow/startflowAsync";
+      cortexUsername="CortexFlow";
+      cortexPassword="C0rt3xFl0w";
+      
+      log.debug("start script starting message listener");
+      scriptedClient.startListener();
+      log.debug("start script starting httpAsyncClient");
+      scriptedClient.startClient();
+
+      log.debug("end of start script");
+
+    </start-script>
+
+    <stop-script language="beanshell">
+
+      log = bsf.lookupBean("log");
+      log.debug("running beanshell stop script");
+ 
+      log.debug("stop script stop client");
+      scriptedClient.stopClient();
+      
+      log.debug("end of stop script");
+
+    </stop-script>
+
+    <event-script language="beanshell">
+
+
+      import org.opennms.netmgt.xml.event.Event;
+      import org.json.simple.JSONArray;
+      import org.json.simple.JSONObject;
+      
+      log = bsf.lookupBean("log");
+      log.debug("running on event script");
+        
+      ievent = bsf.lookupBean("event");
+      node = bsf.lookupBean("node");
+
+      if ("uei.opennms.org/translator/traps/SNMP_Link_Down".equals(ievent.getUei())) {
+          log.debug("event-script received SNMP_Link_Down event:" + ievent + " node:"+node);
+            
+          event = Event.copyFrom(ievent);
+          ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
+          ipinterface = event.getInterface();
+          nodeName= node.getLabel();
+                 
+          jsonObject = new JSONObject();
+          jsonObject.put("NAME", "Catalyst-Link-Down");
+          arguments = new JSONObject();
+          arguments.put("DEVICE-ID", nodeName);
+          arguments.put("PORT-ID", ifName);
+          arguments.put("NMS-ID", opennmsName);
+          jsonObject.put("ARGUMENTS", arguments);
+          jsonMessage = jsonObject.toString();
+
+          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" + jsonMessage);
+          scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword);
+            
+      } else if ("uei.opennms.org/translator/traps/SNMP_Link_Up".equals(ievent.getUei())) {
+          log.debug("event-script received SNMP_Link_Up event:" + ievent + " node:"+node);
+          
+          event = Event.copyFrom(ievent);
+          ifName = (event.getParm("ifName") == null) ? "undefined" : event.getParm("ifName").getValue().getContent();
+          ipinterface = event.getInterface();
+          nodeName= node.getLabel();
+            
+          jsonObject = new JSONObject();
+          jsonObject.put("NAME", "Catalyst-Link-Up");
+          arguments = new JSONObject();
+          arguments.put("DEVICE-ID", nodeName);
+          arguments.put("PORT-ID", ifName);
+          arguments.put("NMS-ID", opennmsName);
+          jsonObject.put("ARGUMENTS", arguments);
+          jsonMessage = jsonObject.toString();
+
+          log.debug("event-script posting to "+ cortexUrl+" jsonMessage :" + jsonMessage);
+          scriptedClient.postRequest(cortexUrl, jsonMessage , cortexUsername, cortexPassword);
+            
+      } else {
+          log.debug("event-script received event:" + ievent + " node:"+node);
+      }
+
+      log.debug("end of on event script");
+
+    </event-script>
+
+
+</scriptd-configuration>
+
