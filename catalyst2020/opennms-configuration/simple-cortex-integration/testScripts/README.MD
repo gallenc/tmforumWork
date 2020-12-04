@@ -23,5 +23,12 @@ https://chrome.google.com/webstore/detail/rester/eejfoncpjfgmeleakejdcanedmefagg
 ## firefox plugin
 https://addons.mozilla.org/en-US/firefox/addon/rester/
 
+The plugin is shown below with the example POSTs loaded. Please note you also need to set the HEADERS
+```
+Accept application/xml
+Content-type application/xml
+```
+and you will need to supply the login credentials for OpenNMS
+
 ![alt text](../testScripts/images/rester.png "Figure rester.png")
 
