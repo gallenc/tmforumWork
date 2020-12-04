@@ -1,10 +1,12 @@
 # Simple OpenNMS Integration with Cortex
 
+This capability has been tested with OpenNMS Release 27.x It should work with other releases provided the OpenNMS API is not changed.
+
 ## Introduction
 
 This is a very simple script which posts messages to cortex based on link down and link up events from nodes in OpenNMS. 
 
-It uses OpenMMS scriptd [https://wiki.opennms.org/wiki/Scriptd](https://wiki.opennms.org/wiki/Scriptd) 
+It uses OpenNMS scriptd [https://wiki.opennms.org/wiki/Scriptd](https://wiki.opennms.org/wiki/Scriptd) 
 
 The script sets up an apache asynchronous http client to POST messages to cortex.
 An asynchronous http client is used because the scriptd script expects scripts to return quickly from handling an event.
@@ -75,7 +77,6 @@ Change the following lines in [scriptd-configuration.xml](../simple-cortex-integ
       cortexPassword="password";
 ```
 
-
 Logs for this scriptd configuration can be seen by changing the OpenNMS log4j scriptd setting to DEBUG
  
 ```
@@ -109,7 +110,7 @@ sudo /opt/opennms/bin/opennms start
 ## Testing
 
 If you are unable to generate link down and up events by genuine link down and up traps sent to OpenNMS ( possibly from equipment or an SNMP simulator)
-it is possible to inject events directly to OpenNMS directly using the ReST api documented in the [OpenNMS Developer Guide](https://docs.opennms.org/opennms/branches/latest/guide-development/guide-development.html#_events).
+it is possible to inject events directly to OpenNMS directly using the ReST api documented in the [OpenNMS 27 Developer Guide](https://docs.opennms.org/opennms/releases/27.0.2/guide-development/guide-development.html#_events).
 See [using a Rester client to post link up and link down events](../simple-cortex-integration/testScripts/README.MD)
 
 
