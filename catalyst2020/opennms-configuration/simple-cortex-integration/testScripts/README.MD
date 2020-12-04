@@ -23,5 +23,5 @@ https://chrome.google.com/webstore/detail/rester/eejfoncpjfgmeleakejdcanedmefagg
 ## firefox plugin
 https://addons.mozilla.org/en-US/firefox/addon/rester/
 
-![alt text](../rester-postman/images/rester.png "Figure rester.png")
+![alt text](../testScripts/images/rester.png "Figure rester.png")
 
