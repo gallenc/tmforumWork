@@ -1,5 +1,7 @@
 # Simple OpenNMS Integration with Cortex
 
+## Introduction
+
 This is a very simple script which posts messages to cortex based on link down and link up events from nodes in OpenNMS. 
 
 It uses OpenMMS scriptd [https://wiki.opennms.org/wiki/Scriptd](https://wiki.opennms.org/wiki/Scriptd) 
@@ -11,7 +13,7 @@ In this example the successful replies are simply logged and not used by OpenNMS
 
 The following JSON messages are posted
 
-## Link down message
+### Example Link down message sent to Cortex
 
 ```
 
@@ -28,7 +30,8 @@ Authorization: Basic xxx
   }
 }
 ```
-## Link up message
+
+### Example Link up message sent to Cortex
 
 ```
 POST /api/flow/startflowAsync HTTP/1.1
@@ -49,9 +52,8 @@ Authorization: Basic Q29ydGV4RmxvdzpDMHJ0M3hGbDB3
 Ensure OpenNMS is stopped before installation. 
 
 ```
-sudo \opt\opennms\bin\opennms stop
+sudo /opt/opennms/bin/opennms stop
 ```
-
 
 Before installing you are advised to save an original copy of scriptd-configuration.xml so that if needed you can restore the configuration without this feature.
 (Note that virgin configuration files are also held in /opt/opennms/share/etc-pristine if you need to restore anything)
@@ -64,31 +66,53 @@ sudo cp scriptedEventSPMForwarder.bsh /opt/opennms/etc/
 
 ```
 
+You will need to change the url and username / password to access the cortex system. 
+Change the following lines in [scriptd-configuration.xml](../simple-cortex-integration/scriptd-configuration.xml)
+```
+     /* cortex credentials */
+      cortexUrl="https://org.domainname.cortex:10000/api/flow/startflowAsync";
+      cortexUsername="username";
+      cortexPassword="password";
+```
+
+
 Logs for this scriptd configuration can be seen by changing the OpenNMS log4j scriptd setting to DEBUG
  
 ```
-\opt\opennms\etc\log4j2.xml
+# edit this file
+/opt/opennms/etc/log4j2.xml
 
+# change this line
 <KeyValuePair key="scriptd" value="DEBUG" />
 
 ```
 
-Logs are in
+Scriptd Logs are in
 
 ```
-\opt\opennms\logs\scriptd.log
+/opt/opennms/logs/scriptd.log
 ```
+
+Switching on DEBUG will enable you to see messages and any errors as they are posted.
 
 To see logs as they occur use
 
 ```
-tail -f \opt\opennms\logs\scriptd.log 
+tail -f /opt/opennms/logs/scriptd.log 
 ```
 
 After installing the script, start OpenNMS using
 ```
-sudo \opt\opennms\bin\opennms start
+sudo /opt/opennms/bin/opennms start
 ```
+
+## Testing
+
+If you are unable to generate link down and up events by genuine link down and up traps sent to OpenNMS ( possibly from equipment or an SNMP simulator)
+it is possible to inject events directly to OpenNMS directly using the ReST api documented in the [OpenNMS Developer Guide](https://docs.opennms.org/opennms/branches/latest/guide-development/guide-development.html#_events).
+See [using a Rester client to post link up and link down events](../simple-cortex-integration/testScripts/README.MD)
+
+
 
 
 

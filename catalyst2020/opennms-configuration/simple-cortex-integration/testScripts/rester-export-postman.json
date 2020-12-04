@@ -1,0 +1,59 @@
+{
+    "info": {
+        "name": "RESTer",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "OPENNMS",
+            "item": [
+                {
+                    "request": {
+                        "url": "http://az-src-opennms1.uksouth.cloudapp.azure.com:8980/opennms/rest/events ",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/xml"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/xml"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<event severity=\"MINOR\">\n    <logmsg>Agent Interface Down (linkDown Trap)</logmsg>\n    <host>11.0.0.4</host>\n    <source>event-translator</source>\n    <uei>uei.opennms.org/translator/traps/SNMP_Link_Down</uei>\n    <ifIndex>1</ifIndex>\n    <interface>11.0.0.4</interface>\n    <nodeid>2</nodeid>\n</event>\n"
+                        }
+                    },
+                    "id": "rester-95",
+                    "name": "LINKDOWN"
+                },
+                {
+                    "request": {
+                        "url": "http://az-src-opennms1.uksouth.cloudapp.azure.com:8980/opennms/rest/events ",
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/xml"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/xml"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<event severity=\"MINOR\">\n    <logmsg>Agent Interface Down (linkDown Trap)</logmsg>\n    <host>11.0.0.4</host>\n    <source>event-translator</source>\n    <uei>uei.opennms.org/translator/traps/SNMP_Link_Up</uei>\n    <ifIndex>1</ifIndex>\n    <interface>11.0.0.4</interface>\n    <nodeid>2</nodeid>\n</event>\n"
+                        }
+                    },
+                    "id": "rester-96",
+                    "name": "LINKUP"
+                }
+            ]
+        }
+
+     
+    ]
+}

@@ -47,10 +47,10 @@
       /* setting up client credentials for sending event to cortex */
       /* ----------------------------------------------------------*/
 
-      /* cortexB */
-      cortexUrl="https://ec2-3-15-208-9.us-east-2.compute.amazonaws.com:10000/api/flow/startflowAsync";
-      cortexUsername="CortexFlow";
-      cortexPassword="C0rt3xFl0w";
+      /* cortex credentials */
+      cortexUrl="https://org.domainname.cortex:10000/api/flow/startflowAsync";
+      cortexUsername="username";
+      cortexPassword="password";
       
       log.debug("start script starting message listener");
       scriptedClient.startListener();
